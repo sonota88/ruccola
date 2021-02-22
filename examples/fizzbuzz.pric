@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+
+#include ../selfhost/lib/std.pric
+
+def print_fizz()
+  putchar( 70); # F
+  putchar(105); # i
+  putchar(122); # z
+  putchar(122); # z
+end
+
+def print_buzz()
+  putchar( 66); # B
+  putchar(117); # u
+  putchar(122); # z
+  putchar(122); # z
+end
+
+def main()
+  var i = 1;
+
+  while (i < 101)
+    print_i(i);
+    putchar(C_SPC());
+
+    case
+    when (__mod(i, 15) == 0)
+      print_fizz();
+      print_buzz();
+    when (__mod(i, 3) == 0)
+      print_fizz();
+    when (__mod(i, 5) == 0)
+      print_buzz();
+    end
+
+    putchar(C_LF());
+
+    i = i + 1;
+  end
+end
