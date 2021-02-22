@@ -1,0 +1,55 @@
+# -*- mode: ruby -*-
+
+#include ../selfhost/lib/std.pric
+#include ../selfhost/lib/types.pric
+
+def is_prime(primes_, n)
+  var i;
+  var prime;
+  var do_break = FALSE();
+  var result = TRUE();
+
+  i = 0;
+  while (__not(do_break))
+    if (__le(NodeList_size(primes_), i))
+      do_break = TRUE();
+    else
+      prime = NodeList_get_as_int(primes_, i);
+
+      case
+      when (n < (prime * prime))
+        do_break = TRUE();
+      when (__mod(n, prime) == 0)
+        result = FALSE();
+        do_break = TRUE();
+      end
+    end
+
+    i = i + 1;
+  end
+
+  return result;
+end
+
+def main()
+  var [1]g;
+  var n;
+  var primes_;
+
+  # init globals
+  init_alloc_cursor(&g);
+
+  primes_ = NodeList_new(&g);
+
+  n = 2;
+  while (n < 101)
+    if (is_prime(primes_, n))
+      print_i(n);
+      putchar(C_LF());
+
+      NodeList_add_int(&g, primes_, n);
+    end
+
+    n = n + 1;
+  end
+end
