@@ -13,19 +13,18 @@ class Test100 < Minitest::Test
   def test_selfhost
     files = [
       "blank_main.pric",
-      "hello_world.pric",
       "add.pric",
       "addr_deref.pric",
       "array.pric",
       "less_than.pric",
       "if.pric",
-      "test_while.pric",
+      "while.pric",
     ]
 
     diff_cmd = "ruby " + project_path("selfhost/test/diff.rb")
 
     files.each do |file|
-      file_src = project_path("examples/#{file}")
+      file_src = project_path("selfhost/test/selfhost/#{file}")
 
       pricc_rb(  file_src, FILE_ASM_RB  , print_asm: true)
       pricc_pric(file_src, FILE_ASM_PRIC, print_asm: true)
