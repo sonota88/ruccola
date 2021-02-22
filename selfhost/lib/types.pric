@@ -32,13 +32,8 @@ end
 def Node_new_str(g_, str_)
   var self_ = Node_new(g_);
 
-  if (__le(NODE__STR_SIZE(), str_size(str_)))
-    p_s(str_);
-    panic(37);
-  end
-
   *(self_ + NODE__KIND()) = NODE_KIND__STR();
-  str_cp(self_ + NODE__STR(), str_);
+  str_cp_with_check(self_ + NODE__STR(), str_, NODE__STR_SIZE());
 
   return self_;
 end
