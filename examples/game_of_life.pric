@@ -13,19 +13,19 @@ def to_vi(w, x, y, offset)
 end
 
 def vram_set(w, x, y, val)
-  var vi; # vram index
+  var vi;
   vi = to_vi(w, x, y, 0);
   set_vram(vi, val);
 end
 
 def vram_set_buf(w, x, y, val)
-  var vi; # vram index
+  var vi;
   vi = to_vi(w, x, y, 25);
   set_vram(vi, val);
 end
 
 def vram_get(w, x, y)
-  var vi; # vram index
+  var vi;
   vi = to_vi(w, x, y, 0);
   return get_vram(vi);
 end
@@ -35,13 +35,10 @@ def adjust_index(width, i)
 
   case
   when (i == -1)
-    _cmt("下限を超えた場合");
     adjusted = width + -1;
   when (i == width)
-    _cmt("上限を超えた場合");
     adjusted = 0;
   when (1 == 1)
-    _cmt("補正が不要な場合");
     adjusted = i;
   end
 
@@ -78,59 +75,36 @@ def count_alive(w, h, x, y)
   var yt = y + -1;
   var yb = y +  1;
 
-  _cmt("★ xl の補正の直前");
   xl = adjust_index(w, xl);
-  _cmt("★ xl の補正の直後");
-
-  _cmt("★ xr の補正の直前");
   xr = adjust_index(w, xr);
-  _cmt("★ xr の補正の直後");
-
-  _cmt("★ yt の補正の直前");
   yt = adjust_index(h, yt);
-  _cmt("★ yt の補正の直後");
-
-  _cmt("★ yb の補正の直前");
   yb = adjust_index(h, yb);
-  _cmt("★ yb の補正の直後");
-
-  _cmt("★ 座標補正の直後");
 
   var tmp;
 
-  _cmt("左上");
   tmp = vram_get(w, xl, yt);
   count = count + tmp;
 
-  _cmt("上");
   tmp = vram_get(w, x, yt);
   count = count + tmp;
 
-  _cmt("右上");
   tmp = vram_get(w, xr, yt);
   count = count + tmp;
 
-  _cmt("左");
   tmp = vram_get(w, xl, y);
   count = count + tmp;
 
-  _cmt("右");
   tmp = vram_get(w, xr, y);
   count = count + tmp;
 
-  _cmt("左下");
   tmp = vram_get(w, xl, yb);
   count = count + tmp;
 
-  _cmt("下");
   tmp = vram_get(w, x, yb);
   count = count + tmp;
 
-  _cmt("右下");
   tmp = vram_get(w, xr, yb);
   count = count + tmp;
-
-  _cmt("★count_aliveの最後");
 
   return count;
 end
@@ -149,19 +123,9 @@ def make_next_gen(w, h)
     x = 0;
     while (x != w)
       count = count_alive(w, h, x, y);
-      _cmt("★ count_alive から戻った直後");
-
-      _cmt("★次世代の生死決定の直前");
-
       current_val = vram_get(w, x, y);
-
       next_val = calc_next_gen(current_val, count);
-
-      _cmt("★次世代の生死決定の直後");
-
       vram_set_buf(w, x, y, next_val);
-      _cmt("★ vram_set_buf から戻った直後");
-
       x = x + 1;
     end
     y = y + 1;
