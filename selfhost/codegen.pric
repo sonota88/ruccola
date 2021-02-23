@@ -324,7 +324,7 @@ def render_indirection_bp(dest_, disp, dest_size)
   aset(dest_, i,  58); i = i + 1; # :
   aset(dest_, i,   0);
 
-  str_append_with_check(dest_, &s_disp, dest_size);
+  append_str_with_check(dest_, &s_disp, dest_size);
   append_char_with_check(dest_, 93, dest_size); # ]
 end
 
@@ -346,7 +346,7 @@ def append_label_id(label_, id, dest_size)
   append_char_with_check(label_, 95, dest_size); # _
 
   unparse_int(&id_str, id);
-  str_append_with_check(label_, &id_str, dest_size);
+  append_str_with_check(label_, &id_str, dest_size);
 end
 
 # --------------------------------
@@ -545,7 +545,7 @@ def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
     aset(&s_src, 3,  58); # :
     aset(&s_src, 4,   0);
 
-    str_append_with_check(&s_src, &s_disp, s_src_size);
+    append_str_with_check(&s_src, &s_disp, s_src_size);
 
     append_char_with_check(&s_src, 93, s_src_size); # ]
 
@@ -564,7 +564,7 @@ def _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_)
 
   aset(&s_reg_a_ind, 0, 0);
   append_char_with_check(&s_reg_a_ind, 91, s_reg_a_ind_size); # [
-  str_append_with_check(&s_reg_a_ind, &s_reg_a, s_reg_a_ind_size);
+  append_str_with_check(&s_reg_a_ind, &s_reg_a, s_reg_a_ind_size);
   append_char_with_check(&s_reg_a_ind, 93, s_reg_a_ind_size); # ]
 
   gen_expr(g_, fn_arg_names_, lvar_names_, inner_expr_);
@@ -887,7 +887,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   aset(&vm_comment, 4, C_SPC());
   aset(&vm_comment, 5, C_SPC());
   aset(&vm_comment, 6, 0);
-  str_append_with_check(
+  append_str_with_check(
     &vm_comment, fn_name_,
     vm_comment_size
   );
@@ -918,7 +918,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
   # "[reg_a]"
   aset(&s_reg_a_ind, 0, 0);
   append_char_with_check(&s_reg_a_ind, 91, s_reg_a_ind_size); # [
-  str_append_with_check(&s_reg_a_ind, &s_reg_a, s_reg_a_ind_size);
+  append_str_with_check(&s_reg_a_ind, &s_reg_a, s_reg_a_ind_size);
   append_char_with_check(&s_reg_a_ind, 93, s_reg_a_ind_size); # ]
 
   dest_node_ = NodeList_get(stmt_, 1);
