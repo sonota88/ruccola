@@ -144,6 +144,7 @@ end
 class Vm
   FLAG_TRUE = 1
   FLAG_FALSE = 0
+  EOF = -1
 
   def initialize(mem, stack_size, debug, verbose, skip)
     @debug = debug
