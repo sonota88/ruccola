@@ -447,12 +447,7 @@ class Vm
     arg = @mem.main[@pc][1]
 
     c = $stdin_.getc
-    n =
-      if c.nil?
-        -1 # EOF
-      else
-        c.ord
-      end
+    n = c.nil? ? EOF : c.ord
 
     case arg
     when "reg_a"
