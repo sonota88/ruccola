@@ -1,5 +1,7 @@
 # -*- mode: ruby -*-
 
+# VERBOSE=1 SKIP=1000 ./pricrun examples/game_of_life.pric
+
 def to_vi(w, x, y, offset)
   return
     ((y * w) + x)

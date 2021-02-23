@@ -30,10 +30,10 @@ mkdir -p exe
 ./pricc ../examples/game_of_life.pric > exe/game_of_life.exe.txt
 
 # VM で実行
-VERBOSE=1 SKIP=100 ../pricvm exe/game_of_life.exe.txt
+VERBOSE=1 SKIP=1000 ../pricvm exe/game_of_life.exe.txt
 
 # コンパイル＋実行
-VERBOSE=1 SKIP=100 ./pricrun ../examples/game_of_life.pric
+VERBOSE=1 SKIP=1000 ./pricrun ../examples/game_of_life.pric
 ```
 
 ```sh
