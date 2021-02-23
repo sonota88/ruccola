@@ -15,7 +15,7 @@ get_envvar() {
   local default_value="$1"; shift
 
   if (env | grep "^${name}=" > /dev/null); then
-    eval 'echo $'"$name"
+    env | grep "^${name}=" | sed -e "s/^${name}=//"
   else
     echo $default_value
   fi
