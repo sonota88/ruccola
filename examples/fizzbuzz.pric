@@ -23,13 +23,10 @@ def main()
     print_i(i);
     putchar(C_SPC());
 
-    case
-    when (__mod(i, 15) == 0)
+    if (__mod(i, 3) == 0)
       print_fizz();
-      print_buzz();
-    when (__mod(i, 3) == 0)
-      print_fizz();
-    when (__mod(i, 5) == 0)
+    end
+    if (__mod(i, 5) == 0)
       print_buzz();
     end
 
