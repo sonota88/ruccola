@@ -6,14 +6,24 @@ def NODE_KIND__STR () return 2; end
 
 # --------------------------------
 
+def STRING__TYPE_SIZE() return 40; end
+
+def String_new(g_, str_)
+  var self_ = allocate(g_, STRING__TYPE_SIZE());
+
+  str_cp_with_check(self_, str_, STRING__TYPE_SIZE());
+
+  return self_;
+end
+
+# --------------------------------
+
 def NODE__KIND() return 0; end
 def NODE__LIST() return 1; end
 def NODE__INT () return 2; end
 def NODE__STR () return 3; end
 
-def NODE__STR_SIZE() return 40; end
-
-def NODE__TYPE_SIZE() return 43; end
+def NODE__TYPE_SIZE() return 4; end
 
 def Node_new(g_)
   var self_ = allocate(g_, NODE__TYPE_SIZE());
@@ -33,7 +43,7 @@ def Node_new_str(g_, str_)
   var self_ = Node_new(g_);
 
   *(self_ + NODE__KIND()) = NODE_KIND__STR();
-  str_cp_with_check(self_ + NODE__STR(), str_, NODE__STR_SIZE());
+  *(self_ + NODE__STR()) = String_new(g_, str_);
 
   return self_;
 end
@@ -62,8 +72,7 @@ end
 def Node_get_str(self_)
   assert(NODE_KIND__STR(), Node_get_kind(self_), 69);
 
-  var first_char_addr_ = self_ + NODE__STR();
-  return first_char_addr_;
+  return *(self_ + NODE__STR());
 end
 
 def Node_get_list(self_)
