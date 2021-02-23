@@ -1,61 +1,49 @@
 # -*- mode: ruby -*-
 
 def to_vi(w, x, y, offset)
-  var vi; # vram index
-
-  vi = 
+  return
     ((y * w) + x)
     +
     offset
   ;
-
-  return vi;
 end
 
 def vram_set(w, x, y, val)
-  var vi;
-  vi = to_vi(w, x, y, 0);
+  # vi: vram index
+  var vi = to_vi(w, x, y, 0);
   set_vram(vi, val);
 end
 
 def vram_set_buf(w, x, y, val)
-  var vi;
-  vi = to_vi(w, x, y, 25);
+  var vi = to_vi(w, x, y, 25);
   set_vram(vi, val);
 end
 
 def vram_get(w, x, y)
-  var vi;
-  vi = to_vi(w, x, y, 0);
+  var vi = to_vi(w, x, y, 0);
   return get_vram(vi);
 end
 
 def adjust_index(width, i)
-  var adjusted;
-
   case
   when (i == -1)
-    adjusted = width + -1;
+    return width + -1;
   when (i == width)
-    adjusted = 0;
-  when (1 == 1)
-    adjusted = i;
+    return 0;
+  else
+    return i;
   end
-
-  return adjusted;
 end
 
 def calc_next_gen(current_val, count)
   # 注目しているセルの次世代の生死
   var next_val = 0;
 
-  case
-  when (current_val == 0)
-    case
-    when (count == 3)
+  if (current_val == 0)
+    if (count == 3)
       next_val = 1;
     end
-  when (0 == 0)
+  else
     case
     when (count == 2)
       next_val = 1;
@@ -80,31 +68,16 @@ def count_alive(w, h, x, y)
   yt = adjust_index(h, yt);
   yb = adjust_index(h, yb);
 
-  var tmp;
-
-  tmp = vram_get(w, xl, yt);
-  count = count + tmp;
-
-  tmp = vram_get(w, x, yt);
-  count = count + tmp;
-
-  tmp = vram_get(w, xr, yt);
-  count = count + tmp;
-
-  tmp = vram_get(w, xl, y);
-  count = count + tmp;
-
-  tmp = vram_get(w, xr, y);
-  count = count + tmp;
-
-  tmp = vram_get(w, xl, yb);
-  count = count + tmp;
-
-  tmp = vram_get(w, x, yb);
-  count = count + tmp;
-
-  tmp = vram_get(w, xr, yb);
-  count = count + tmp;
+  count =
+    vram_get(w, xl, yt)
+  + vram_get(w, x , yt)
+  + vram_get(w, xr, yt)
+  + vram_get(w, xl, y )
+  + vram_get(w, xr, y )
+  + vram_get(w, xl, yb)
+  + vram_get(w, x , yb)
+  + vram_get(w, xr, yb)
+  ;
 
   return count;
 end
