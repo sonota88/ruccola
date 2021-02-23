@@ -115,7 +115,7 @@ def NodeList_size(self_)
 end
 
 def NodeList_add(self_, node_)
-  var size = *(self_ + NODE_LIST__SIZE());
+  var size = NodeList_size(self_);
 
   if (__le(NODE_LIST__ITEMS_WIDTH(), size))
     panic(114); # NodeList_add: capacity over
