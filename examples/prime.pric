@@ -11,10 +11,10 @@ def is_prime(primes_, n)
 
   i = 0;
   while (__not(do_break))
-    if (__le(NodeList_size(primes_), i))
+    if (__le(List_size(primes_), i))
       do_break = TRUE();
     else
-      prime = NodeList_get_as_int(primes_, i);
+      prime = List_get_as_int(primes_, i);
 
       case
       when (n < (prime * prime))
@@ -39,7 +39,7 @@ def main()
   # init globals
   init_alloc_cursor(&g);
 
-  primes_ = NodeList_new(&g);
+  primes_ = List_new(&g);
 
   n = 2;
   while (n < 101)
@@ -47,7 +47,7 @@ def main()
       print_i(n);
       putchar(C_LF());
 
-      NodeList_add_int(&g, primes_, n);
+      List_add_int(&g, primes_, n);
     end
 
     n = n + 1;

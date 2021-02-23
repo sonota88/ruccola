@@ -41,7 +41,7 @@ def Json_print_node(node_)
 end
 
 def Json_print_list(list_, lv)
-  var size = NodeList_size(list_);
+  var size = List_size(list_);
   var i;
   var node_;
 
@@ -51,7 +51,7 @@ def Json_print_list(list_, lv)
 
   i = 0;
   while (i < size)
-    node_ = NodeList_get(list_, i);
+    node_ = List_get(list_, i);
     _Json_print_node(node_, lv + 1);
 
     if (i < (size + -1))
@@ -113,7 +113,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
   );
   pos = pos + 1;
 
-  list_ = NodeList_new(g_);
+  list_ = List_new(g_);
 
   while (__not(do_break))
     c = char_at(rest_, pos);
@@ -125,7 +125,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
 
     when (c == 91) # [
       child_list_ = Json_parse_list(g_, rest_, pos, &size);
-      NodeList_add_list(g_, list_, child_list_);
+      List_add_list(g_, list_, child_list_);
       pos = pos + size;
 
     when (c == C_LF()   ) pos = pos + 1;
@@ -137,13 +137,13 @@ def Json_parse_list(g_, rest_, pos_start, size_)
             c == 45 # -
           ))
       n = Json_parse_int(rest_, pos, &size);
-      NodeList_add_int(g_, list_, n);
+      List_add_int(g_, list_, n);
       pos = pos + size;
 
     when (c == C_DQ())
       pos_end = char_index(rest_, C_DQ(), pos + 1);
       substr_with_check(&s_temp, rest_, pos + 1, pos_end, s_temp_size);
-      NodeList_add_str(g_, list_, &s_temp);
+      List_add_str(g_, list_, &s_temp);
       pos = pos + str_size(&s_temp) + 2;
 
     else

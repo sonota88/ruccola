@@ -15,39 +15,39 @@ def main()
   aset(&str, 1, 66); # B
   aset(&str, 2,  0);
 
-  child_list_ = NodeList_new(&g);
+  child_list_ = List_new(&g);
 
-  list_ = NodeList_new(&g);
+  list_ = List_new(&g);
   # []
 
-  NodeList_add_int(&g, list_, 123);
+  List_add_int(&g, list_, 123);
   # [123]
-  NodeList_add_str(&g, list_, &str);
+  List_add_str(&g, list_, &str);
   # [123, "AB"]
-  NodeList_add_list(&g, list_, child_list_);
+  List_add_list(&g, list_, child_list_);
   # [123, "AB", []]
 
   print_i(
-    NodeList_size(list_)
+    List_size(list_)
   );
   putchar(C_LF());
   #=> 3
 
   print_i(
-    NodeList_get_as_int(list_, 0)
+    List_get_as_int(list_, 0)
   );
   putchar(C_LF());
   #=> 123
 
   print_s(
-    NodeList_get_as_str(list_, 1)
+    List_get_as_str(list_, 1)
   );
   putchar(C_LF());
   #=> AB
 
   print_i(
-    NodeList_size(
-      NodeList_get_as_list(list_, 2)
+    List_size(
+      List_get_as_list(list_, 2)
     )
   );
   putchar(C_LF());

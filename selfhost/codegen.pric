@@ -357,18 +357,18 @@ def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
 
   asm_sub_sp(1);
 
-  if (NodeList_size(stmt_) == 3)
-    set_stmt_ = NodeList_new(g_);
-    NodeList_add_str(g_, set_stmt_, &s_set);
-    NodeList_add(set_stmt_, NodeList_get(stmt_, 1));
-    NodeList_add(set_stmt_, NodeList_get(stmt_, 2));
+  if (List_size(stmt_) == 3)
+    set_stmt_ = List_new(g_);
+    List_add_str(g_, set_stmt_, &s_set);
+    List_add(set_stmt_, List_get(stmt_, 1));
+    List_add(set_stmt_, List_get(stmt_, 2));
 
     gen_set(g_, fn_arg_names_, lvar_names_, set_stmt_);
   end
 end
 
 def gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_)
-  var width = NodeList_get_as_int(stmt_, 2);
+  var width = List_get_as_int(stmt_, 2);
 
   asm_sub_sp(width);
 end
@@ -422,14 +422,14 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   aset(&label_end_when_head, 8,   0);
   append_label_id(&label_end_when_head, label_id, label_size);
 
-  when_clauses_ = NodeList_rest(g_, stmt_, 1);
+  when_clauses_ = List_rest(g_, stmt_, 1);
 
   i = 0;
-  while (i < NodeList_size(when_clauses_))
+  while (i < List_size(when_clauses_))
     when_index = when_index + 1;
-    when_clause_ = NodeList_get_as_list(when_clauses_, i);
-    cond_expr_node_ = NodeList_get(when_clause_, 0);
-    stmts_ = NodeList_rest(g_, when_clause_, 1);
+    when_clause_ = List_get_as_list(when_clauses_, i);
+    cond_expr_node_ = List_get(when_clause_, 0);
+    stmts_ = List_rest(g_, when_clause_, 1);
 
     gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
     asm_cp(&s_0, &s_reg_b);
@@ -477,8 +477,8 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   var label_true_size = 10; var [10]label_true; # true_xxxx
 
   var label_id;
-  var cond_expr_node_ = NodeList_get(stmt_, 1);
-  var stmts_ = NodeList_get_as_list(stmt_, 2);
+  var cond_expr_node_ = List_get(stmt_, 1);
+  var stmts_ = List_get_as_list(stmt_, 2);
 
   aset(&s_0, 0, 48); # 0
   aset(&s_0, 1,  0);
@@ -530,7 +530,7 @@ end
 def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var list_ = Node_get_list(expr_);
-  var arg_ = NodeList_get_as_str(list_, 1);
+  var arg_ = List_get_as_str(list_, 1);
   var disp;
   var s_src_size = 15; var [15]s_src; # [bp:-xxxxxxxx]
   var [8]s_disp;
@@ -557,7 +557,7 @@ end
 
 def _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_)
   var list_ = Node_get_list(expr_);
-  var inner_expr_ = NodeList_get(list_, 1);
+  var inner_expr_ = List_get(list_, 1);
 
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var s_reg_a_ind_size = 8; var [8]s_reg_a_ind; # [reg_a]
@@ -760,7 +760,7 @@ def _gen_expr_unary(g_, fn_arg_names_, lvar_names_, expr_)
   var operator_;
 
   list_ = Node_get_list(expr_);
-  operator_ = NodeList_get_as_str(list_, 0);
+  operator_ = List_get_as_str(list_, 0);
 
   case
   when (str_eq_addr(operator_))
@@ -775,9 +775,9 @@ end
 
 def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
   var expr_els_ = Node_get_list(expr_);
-  var op_str_ = NodeList_get_as_str(expr_els_, 0);
-  var arg_l_ = NodeList_get(expr_els_, 1);
-  var arg_r_ = NodeList_get(expr_els_, 2);
+  var op_str_ = List_get_as_str(expr_els_, 0);
+  var arg_l_ = List_get(expr_els_, 1);
+  var arg_r_ = List_get(expr_els_, 2);
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [3]s_eq;
   var [4]s_neq;
@@ -851,15 +851,15 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
     list_ = Node_get_list(expr_);
 
     if (str_eq(
-          NodeList_get_as_str(list_, 0),
+          List_get_as_str(list_, 0),
           &s_funcall
         ))
       gen_call(g_, fn_arg_names_, lvar_names_, list_);
     else
       case
-      when (NodeList_size(list_) == 2)
+      when (List_size(list_) == 2)
         _gen_expr_unary(g_, fn_arg_names_, lvar_names_, expr_);
-      when (NodeList_size(list_) == 3)
+      when (List_size(list_) == 3)
         _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_);
       else
         panic(742);
@@ -880,8 +880,8 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   var node_;
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
 
-  fn_name_ = NodeList_get_as_str(stmt_, 1);
-  args_ = NodeList_rest(g_, stmt_, 2);
+  fn_name_ = List_get_as_str(stmt_, 1);
+  args_ = List_rest(g_, stmt_, 2);
 
   str_set_call(&vm_comment);
   aset(&vm_comment, 4, C_SPC());
@@ -892,9 +892,9 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
     vm_comment_size
   );
 
-  i = __sub(NodeList_size(args_), 1);
+  i = __sub(List_size(args_), 1);
   while (__le(0, i))
-    node_ = NodeList_get(args_, i);
+    node_ = List_get(args_, i);
     gen_expr(g_, fn_arg_names_, lvar_names_, node_);
     asm_push(&s_reg_a);
     i = __sub(i, 1);
@@ -902,7 +902,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
 
   asm_vm_comment(&vm_comment);
   asm_call(fn_name_);
-  asm_add_sp(NodeList_size(args_));
+  asm_add_sp(List_size(args_));
 end
 
 def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
@@ -921,8 +921,8 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
   append_str_with_check(&s_reg_a_ind, &s_reg_a, s_reg_a_ind_size);
   append_char_with_check(&s_reg_a_ind, 93, s_reg_a_ind_size); # ]
 
-  dest_node_ = NodeList_get(stmt_, 1);
-  expr_node_ = NodeList_get(stmt_, 2);
+  dest_node_ = List_get(stmt_, 1);
+  expr_node_ = List_get(stmt_, 2);
 
   gen_expr(g_, fn_arg_names_, lvar_names_, expr_node_);
 
@@ -943,10 +943,10 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
   when (Node_get_kind(dest_node_) == NODE_KIND__LIST())
     list_ = Node_get_list(dest_node_);
 
-    if (str_eq_deref(NodeList_get_as_str(list_, 0)))
+    if (str_eq_deref(List_get_as_str(list_, 0)))
       asm_push(&s_reg_a);
 
-      gen_expr(g_, fn_arg_names_, lvar_names_, NodeList_get(list_, 1));
+      gen_expr(g_, fn_arg_names_, lvar_names_, List_get(list_, 1));
 
       asm_pop(&s_reg_b);
       asm_cp(&s_reg_b, &s_reg_a_ind);
@@ -960,16 +960,16 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
 end
 
 def gen_return(g_, fn_arg_names_, lvar_names_, stmt_)
-  var expr_ = NodeList_get(stmt_, 1);
+  var expr_ = List_get(stmt_, 1);
   gen_expr(g_, fn_arg_names_, lvar_names_, expr_);
 end
 
 def gen_vm_comment(stmt_)
-  asm_vm_comment(NodeList_get_as_str(stmt_, 1));
+  asm_vm_comment(List_get_as_str(stmt_, 1));
 end
 
 def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
-  var head_str_ = NodeList_get_as_str(stmt_, 0);
+  var head_str_ = List_get_as_str(stmt_, 0);
 
   case
   when (str_eq_set(head_str_))
@@ -993,8 +993,8 @@ def gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_)
   var i = 0;
   var stmt_;
 
-  while (i < NodeList_size(stmts_))
-    stmt_ = NodeList_get_as_list(stmts_, i);
+  while (i < List_size(stmts_))
+    stmt_ = List_get_as_list(stmts_, i);
     gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_);
     i = i + 1;
   end
@@ -1010,17 +1010,17 @@ def gen_func(g_, func_)
   var lvar_width_;
   var fn_arg_names_;
 
-  assert(4, NodeList_size(func_), 243);
+  assert(4, List_size(func_), 243);
 
-  fn_name_ = Node_get_str(NodeList_get(func_, 1));
+  fn_name_ = Node_get_str(List_get(func_, 1));
 
   fn_arg_names_ =
     Names_from_node_list(
       g_,
-      NodeList_get_as_list(func_, 2)
+      List_get_as_list(func_, 2)
     );
 
-  stmts_ = Node_get_list(NodeList_get(func_, 3));
+  stmts_ = Node_get_list(List_get(func_, 3));
 
   asm_label(fn_name_);
 
@@ -1029,17 +1029,17 @@ def gen_func(g_, func_)
   lvar_names_ = Names_new(g_);
 
   i = 0;
-  while (i < NodeList_size(stmts_))
-    stmt_ = NodeList_get_as_list(stmts_, i);
+  while (i < List_size(stmts_))
+    stmt_ = List_get_as_list(stmts_, i);
 
     case
-    when (str_eq_var(NodeList_get_as_str(stmt_, 0)))
-      lvar_name_ = NodeList_get_as_str(stmt_, 1);
+    when (str_eq_var(List_get_as_str(stmt_, 0)))
+      lvar_name_ = List_get_as_str(stmt_, 1);
       Names_add(lvar_names_, lvar_name_, 1);
       gen_var(g_, fn_arg_names_, lvar_names_, stmt_);
-    when (str_eq_var_array(NodeList_get_as_str(stmt_, 0)))
-      lvar_name_ = NodeList_get_as_str(stmt_, 1);
-      lvar_width_ = NodeList_get_as_int(stmt_, 2);
+    when (str_eq_var_array(List_get_as_str(stmt_, 0)))
+      lvar_name_ = List_get_as_str(stmt_, 1);
+      lvar_width_ = List_get_as_int(stmt_, 2);
       Names_add(lvar_names_, lvar_name_, lvar_width_);
       gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_);
     else
@@ -1057,7 +1057,7 @@ def gen_func(g_, func_)
 end
 
 def gen_top_stmt(g_, top_stmt_)
-  var s_head_ = NodeList_get_as_str(top_stmt_, 0);
+  var s_head_ = List_get_as_str(top_stmt_, 0);
 
   case
   when (str_eq_func(s_head_))
@@ -1072,8 +1072,8 @@ def gen_top_stmts(g_, top_stmts_)
   var top_stmt_;
 
   i = 1;
-  while (i < NodeList_size(top_stmts_))
-    top_stmt_ = NodeList_get_as_list(top_stmts_, i);
+  while (i < List_size(top_stmts_))
+    top_stmt_ = List_get_as_list(top_stmts_, i);
     gen_top_stmt(g_, top_stmt_);
     i = i + 1;
   end

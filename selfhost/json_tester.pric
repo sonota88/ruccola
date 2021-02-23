@@ -7,22 +7,22 @@
 def INPUT_MAX() return 80; end
 
 def test_01(g_)
-  var nl_ = NodeList_new(g_);
+  var nl_ = List_new(g_);
 
   Json_print(nl_);
 end
 
 def test_02(g_)
-  var nl_ = NodeList_new(g_);
+  var nl_ = List_new(g_);
   var int_node_ = Node_new_int(g_, 1);
 
-  NodeList_add(nl_, int_node_);
+  List_add(nl_, int_node_);
 
   Json_print(nl_);
 end
 
 def test_03(g_)
-  var nl_ = NodeList_new(g_);
+  var nl_ = List_new(g_);
   var [5]str;
 
   aset(&str, 0, 102); # 0x66 f
@@ -33,7 +33,7 @@ def test_03(g_)
 
   var str_node_ = Node_new_str(g_, &str);
 
-  NodeList_add(nl_, str_node_);
+  List_add(nl_, str_node_);
 
   Json_print(nl_);
 end
@@ -44,10 +44,10 @@ def test_04(g_)
   var [5]str;
   var str_node_;
 
-  nl_ = NodeList_new(g_);
+  nl_ = List_new(g_);
 
   int_node_ = Node_new_int(g_, -123);
-  NodeList_add(nl_, int_node_);
+  List_add(nl_, int_node_);
 
   aset(&str, 0, 102); # 0x66 f
   aset(&str, 1, 100); # 0x63 d
@@ -55,7 +55,7 @@ def test_04(g_)
   aset(&str, 3,  97); # 0x61 a
   aset(&str, 4,   0);
   str_node_ = Node_new_str(g_, &str);
-  NodeList_add(nl_, str_node_);
+  List_add(nl_, str_node_);
 
   Json_print(nl_);
 end
@@ -65,12 +65,12 @@ def test_05(g_)
   var nl_inner_;
   var list_node_;
 
-  nl_ = NodeList_new(g_);
+  nl_ = List_new(g_);
 
-  nl_inner_ = NodeList_new(g_);
+  nl_inner_ = List_new(g_);
   list_node_ = Node_new_list(g_, nl_inner_);
 
-  NodeList_add(nl_, list_node_);
+  List_add(nl_, list_node_);
 
   Json_print(nl_);
 end
@@ -89,31 +89,31 @@ def test_06(g_)
 
   # ----
 
-  nl_ = NodeList_new(g_);
+  nl_ = List_new(g_);
 
   # 1
-  NodeList_add_int(g_, nl_, 1);
+  List_add_int(g_, nl_, 1);
   # "a"
-  NodeList_add_str(g_, nl_, &str_a);
+  List_add_str(g_, nl_, &str_a);
 
   # ----
 
-  nl_inner_ = NodeList_new(g_);
+  nl_inner_ = List_new(g_);
 
   # 2
-  NodeList_add_int(g_, nl_inner_, 2);
+  List_add_int(g_, nl_inner_, 2);
   # "b"
-  NodeList_add_str(g_, nl_inner_, &str_b);
+  List_add_str(g_, nl_inner_, &str_b);
 
   list_node_ = Node_new_list(g_, nl_inner_);
-  NodeList_add(nl_, list_node_);
+  List_add(nl_, list_node_);
 
   # ----
 
   # 3
-  NodeList_add_int(g_, nl_, 3);
+  List_add_int(g_, nl_, 3);
   # "c"
-  NodeList_add_str(g_, nl_, &str_c);
+  List_add_str(g_, nl_, &str_c);
 
   Json_print(nl_);
 end

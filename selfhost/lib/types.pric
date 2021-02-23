@@ -101,7 +101,7 @@ def LIST__TYPE_SIZE()
   );
 end
 
-def NodeList_new(g_)
+def List_new(g_)
   var self_ = allocate(g_, LIST__TYPE_SIZE());
 
   *(self_ + LIST__SIZE()) = 0;
@@ -109,72 +109,72 @@ def NodeList_new(g_)
   return self_;
 end
 
-def NodeList_size(self_)
+def List_size(self_)
   var size = *(self_ + LIST__SIZE());
   return size;
 end
 
-def NodeList_add(self_, node_)
-  var size = NodeList_size(self_);
+def List_add(self_, node_)
+  var size = List_size(self_);
 
   if (__le(LIST__ITEMS_WIDTH(), size))
-    panic(114); # NodeList_add: capacity over
+    panic(114); # List_add: capacity over
   end
 
   *(self_ + LIST__ITEMS() + size) = node_;
   *(self_ + LIST__SIZE()) = size + 1;
 end
 
-def NodeList_add_all(self_, list_)
+def List_add_all(self_, list_)
   var i = 0;
 
-  while (i < NodeList_size(list_))
-    NodeList_add(self_, NodeList_get(list_, i));
+  while (i < List_size(list_))
+    List_add(self_, List_get(list_, i));
     i = i + 1;
   end
 end
 
-def NodeList_add_int(g_, self_, n)
+def List_add_int(g_, self_, n)
   var node_ = Node_new_int(g_, n);
-  NodeList_add(self_, node_);
+  List_add(self_, node_);
 end
 
-def NodeList_add_str(g_, self_, str_)
+def List_add_str(g_, self_, str_)
   var node_ = Node_new_str(g_, str_);
-  NodeList_add(self_, node_);
+  List_add(self_, node_);
 end
 
-def NodeList_add_list(g_, self_, list_)
+def List_add_list(g_, self_, list_)
   var node_ = Node_new_list(g_, list_);
-  NodeList_add(self_, node_);
+  List_add(self_, node_);
 end
 
-def NodeList_get(self_, i)
+def List_get(self_, i)
   var node_ = *(self_ + LIST__ITEMS() + i);
   return node_;
 end
 
-def NodeList_get_as_int(self_, i)
-  var node_ = NodeList_get(self_, i);
+def List_get_as_int(self_, i)
+  var node_ = List_get(self_, i);
   return Node_get_int(node_);
 end
 
-def NodeList_get_as_str(self_, i)
-  var node_ = NodeList_get(self_, i);
+def List_get_as_str(self_, i)
+  var node_ = List_get(self_, i);
   return Node_get_str(node_);
 end
 
-def NodeList_get_as_list(self_, i)
-  var node_ = NodeList_get(self_, i);
+def List_get_as_list(self_, i)
+  var node_ = List_get(self_, i);
   return Node_get_list(node_);
 end
 
-def NodeList_rest(g_, list_, n)
-  var newlist_ = NodeList_new(g_);
+def List_rest(g_, list_, n)
+  var newlist_ = List_new(g_);
   var i = 0;
 
-  while ((n + i) < NodeList_size(list_))
-    NodeList_add(newlist_, NodeList_get(list_, n + i));
+  while ((n + i) < List_size(list_))
+    List_add(newlist_, List_get(list_, n + i));
     i = i + 1;
   end
 
@@ -276,15 +276,15 @@ def Token_val_eq(self_, value_)
 end
 
 def Token_to_plain(g_, self_)
-  var list_ = NodeList_new(g_);
+  var list_ = List_new(g_);
   var kind = Token_get_kind(self_);
   var kind_str_ = allocate(g_, 3);
 
   TokenKind_to_str(kind_str_, kind);
 
-  NodeList_add_int(g_, list_, kind);
-  NodeList_add_str(g_, list_, kind_str_);
-  NodeList_add_str(g_, list_, Token_get_val(self_));
+  List_add_int(g_, list_, kind);
+  List_add_str(g_, list_, kind_str_);
+  List_add_str(g_, list_, Token_get_val(self_));
 
   return list_;
 end
@@ -424,13 +424,13 @@ end
 def Names_from_node_list(g_, list_)
   var names_ = Names_new(g_);
   var i;
-  var size = NodeList_size(list_);
+  var size = List_size(list_);
 
   i = 0;
   while (i < size)
     Names_add(
       names_,
-      NodeList_get_as_str(list_, i),
+      List_get_as_str(list_, i),
       1
     );
     i = i + 1;
@@ -440,12 +440,12 @@ def Names_from_node_list(g_, list_)
 end
 
 def Names_to_plain(g_, self_)
-  var list_ = NodeList_new(g_);
+  var list_ = List_new(g_);
   var i = 0;
 
   while (i < Names_size(self_))
-    NodeList_add_str(g_, list_, Names_get(self_, i));
-    NodeList_add_int(g_, list_, Names_get_width(self_, i));
+    List_add_str(g_, list_, Names_get(self_, i));
+    List_add_int(g_, list_, Names_get_width(self_, i));
     i = i + 1;
   end
 
