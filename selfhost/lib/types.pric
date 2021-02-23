@@ -88,41 +88,41 @@ end
 
 # --------------------------------
 
-def NODE_LIST__SIZE() return 0; end
-def NODE_LIST__SIZE_WIDTH() return 1; end
+def LIST__SIZE() return 0; end
+def LIST__SIZE_WIDTH() return 1; end
 
-def NODE_LIST__ITEMS() return 1; end
-def NODE_LIST__ITEMS_WIDTH() return 240; end
+def LIST__ITEMS() return 1; end
+def LIST__ITEMS_WIDTH() return 240; end
 
-def NODE_LIST__TYPE_SIZE()
+def LIST__TYPE_SIZE()
   return (
-    NODE_LIST__SIZE_WIDTH()
-  + NODE_LIST__ITEMS_WIDTH()
+    LIST__SIZE_WIDTH()
+  + LIST__ITEMS_WIDTH()
   );
 end
 
 def NodeList_new(g_)
-  var self_ = allocate(g_, NODE_LIST__TYPE_SIZE());
+  var self_ = allocate(g_, LIST__TYPE_SIZE());
 
-  *(self_ + NODE_LIST__SIZE()) = 0;
+  *(self_ + LIST__SIZE()) = 0;
 
   return self_;
 end
 
 def NodeList_size(self_)
-  var size = *(self_ + NODE_LIST__SIZE());
+  var size = *(self_ + LIST__SIZE());
   return size;
 end
 
 def NodeList_add(self_, node_)
   var size = NodeList_size(self_);
 
-  if (__le(NODE_LIST__ITEMS_WIDTH(), size))
+  if (__le(LIST__ITEMS_WIDTH(), size))
     panic(114); # NodeList_add: capacity over
   end
 
-  *(self_ + NODE_LIST__ITEMS() + size) = node_;
-  *(self_ + NODE_LIST__SIZE()) = size + 1;
+  *(self_ + LIST__ITEMS() + size) = node_;
+  *(self_ + LIST__SIZE()) = size + 1;
 end
 
 def NodeList_add_all(self_, list_)
@@ -150,7 +150,7 @@ def NodeList_add_list(g_, self_, list_)
 end
 
 def NodeList_get(self_, i)
-  var node_ = *(self_ + NODE_LIST__ITEMS() + i);
+  var node_ = *(self_ + LIST__ITEMS() + i);
   return node_;
 end
 
