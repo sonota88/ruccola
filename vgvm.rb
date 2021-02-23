@@ -336,11 +336,11 @@ class Vm
       end
 
     case arg2
-    when "reg_a"          then @reg_a                               = src_val
-    when "reg_b"          then @reg_b                               = src_val
-    when "bp"             then @bp                                  = src_val
-    when "sp"             then set_sp(src_val)
-    when /^ind:/          then @mem.stack[calc_indirect_addr(arg2)] = src_val
+    when "reg_a" then @reg_a = src_val
+    when "reg_b" then @reg_b = src_val
+    when "bp"    then @bp    = src_val
+    when "sp"    then set_sp(src_val)
+    when /^ind:/ then @mem.stack[calc_indirect_addr(arg2)] = src_val
     else
       raise not_yet_impl("copy dest", arg2)
     end
