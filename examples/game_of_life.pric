@@ -1,0 +1,203 @@
+# -*- mode: ruby -*-
+
+def to_vi(w, x, y, offset)
+  var vi; # vram index
+
+  vi = 
+    ((y * w) + x)
+    +
+    offset
+  ;
+
+  return vi;
+end
+
+def vram_set(w, x, y, val)
+  var vi; # vram index
+  vi = to_vi(w, x, y, 0);
+  set_vram(vi, val);
+end
+
+def vram_set_buf(w, x, y, val)
+  var vi; # vram index
+  vi = to_vi(w, x, y, 25);
+  set_vram(vi, val);
+end
+
+def vram_get(w, x, y)
+  var vi; # vram index
+  vi = to_vi(w, x, y, 0);
+  return get_vram(vi);
+end
+
+def adjust_index(width, i)
+  var adjusted;
+
+  case
+  when (i == -1)
+    _cmt("下限を超えた場合");
+    adjusted = width + -1;
+  when (i == width)
+    _cmt("上限を超えた場合");
+    adjusted = 0;
+  when (1 == 1)
+    _cmt("補正が不要な場合");
+    adjusted = i;
+  end
+
+  return adjusted;
+end
+
+def calc_next_gen(current_val, count)
+  # 注目しているセルの次世代の生死
+  var next_val = 0;
+
+  case
+  when (current_val == 0)
+    case
+    when (count == 3)
+      next_val = 1;
+    end
+  when (0 == 0)
+    case
+    when (count == 2)
+      next_val = 1;
+    when (count == 3)
+      next_val = 1;
+    end
+  end
+  
+  return next_val;
+end
+
+def count_alive(w, h, x, y)
+  var count = 0;
+
+  var xl = x + -1;
+  var xr = x +  1;
+  var yt = y + -1;
+  var yb = y +  1;
+
+  _cmt("★ xl の補正の直前");
+  xl = adjust_index(w, xl);
+  _cmt("★ xl の補正の直後");
+
+  _cmt("★ xr の補正の直前");
+  xr = adjust_index(w, xr);
+  _cmt("★ xr の補正の直後");
+
+  _cmt("★ yt の補正の直前");
+  yt = adjust_index(h, yt);
+  _cmt("★ yt の補正の直後");
+
+  _cmt("★ yb の補正の直前");
+  yb = adjust_index(h, yb);
+  _cmt("★ yb の補正の直後");
+
+  _cmt("★ 座標補正の直後");
+
+  var tmp;
+
+  _cmt("左上");
+  tmp = vram_get(w, xl, yt);
+  count = count + tmp;
+
+  _cmt("上");
+  tmp = vram_get(w, x, yt);
+  count = count + tmp;
+
+  _cmt("右上");
+  tmp = vram_get(w, xr, yt);
+  count = count + tmp;
+
+  _cmt("左");
+  tmp = vram_get(w, xl, y);
+  count = count + tmp;
+
+  _cmt("右");
+  tmp = vram_get(w, xr, y);
+  count = count + tmp;
+
+  _cmt("左下");
+  tmp = vram_get(w, xl, yb);
+  count = count + tmp;
+
+  _cmt("下");
+  tmp = vram_get(w, x, yb);
+  count = count + tmp;
+
+  _cmt("右下");
+  tmp = vram_get(w, xr, yb);
+  count = count + tmp;
+
+  _cmt("★count_aliveの最後");
+
+  return count;
+end
+
+def make_next_gen(w, h)
+  var x = 0;
+  var y = 0;
+
+  var count;
+  # 注目しているセルの現世代の生死
+  var current_val;
+  # 注目しているセルの次世代の生死
+  var next_val;
+
+  while (y != h)
+    x = 0;
+    while (x != w)
+      count = count_alive(w, h, x, y);
+      _cmt("★ count_alive から戻った直後");
+
+      _cmt("★次世代の生死決定の直前");
+
+      current_val = vram_get(w, x, y);
+
+      next_val = calc_next_gen(current_val, count);
+
+      _cmt("★次世代の生死決定の直後");
+
+      vram_set_buf(w, x, y, next_val);
+      _cmt("★ vram_set_buf から戻った直後");
+
+      x = x + 1;
+    end
+    y = y + 1;
+  end
+end
+
+def replace_with_buf()
+  var vi = 0;
+
+  var vi_buf;
+  var temp;
+
+  while (vi != 25)
+    vi_buf = vi + 25;
+    temp = get_vram(vi_buf);
+    set_vram(vi, temp);
+    vi = vi + 1;
+  end
+end
+
+def main()
+  var w = 5; # 盤面の幅
+  var h = 5; # 盤面の高さ
+
+  # 初期状態の設定
+  vram_set(w, 1, 0, 1);
+  vram_set(w, 2, 1, 1);
+  vram_set(w, 0, 2, 1);
+  vram_set(w, 1, 2, 1);
+  vram_set(w, 2, 2, 1);
+
+  var gen_limit = 0;
+  var gen = 1;
+  while (gen != gen_limit)
+    make_next_gen(w, h);
+    replace_with_buf();
+    gen = gen + 1;
+  end
+end

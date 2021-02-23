@@ -27,13 +27,13 @@ rake test_v3
 mkdir -p exe
 
 # 第2世代コンパイラでライフゲームをコンパイル
-./pricc ../examples/gol.pric > exe/gol.exe.txt
+./pricc ../examples/game_of_life.pric > exe/game_of_life.exe.txt
 
 # VM で実行
-VERBOSE=1 SKIP=100 ../pricvm exe/gol.exe.txt
+VERBOSE=1 SKIP=100 ../pricvm exe/game_of_life.exe.txt
 
 # コンパイル＋実行
-VERBOSE=1 SKIP=100 ./pricrun ../examples/gol.pric
+VERBOSE=1 SKIP=100 ./pricrun ../examples/game_of_life.pric
 ```
 
 ```sh
