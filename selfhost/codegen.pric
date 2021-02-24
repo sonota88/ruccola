@@ -1182,12 +1182,7 @@ def gen_builtin_panic()
   asm_putchar(67); # C
   asm_putchar(C_LF());
 
-  asm_indent();
-  putchar(101); # e
-  putchar(120); # x
-  putchar(105); # i
-  putchar(116); # t
-  putchar(C_LF());
+  asm_exit();
 end
 
 def gen_builtin_set_vram()
