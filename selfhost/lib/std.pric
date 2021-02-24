@@ -328,24 +328,22 @@ def str_eq(s1_, s2_)
   var do_break = FALSE();
   var result = TRUE();
   var i = 0;
+  var c1;
 
-  if (str_size(s1_) == str_size(s2_))
     while (__not(do_break))
-      if (char_at(s1_, i) == char_at(s2_, i))
-        if (char_at(s1_, i) == 0)
+      c1 = char_at(s1_, i);
+
+      if (c1 == char_at(s2_, i))
+        if (c1 == 0)
           do_break = TRUE();
-        else
-          # continue
         end
       else
         result = FALSE();
         do_break = TRUE();
       end
+
       i = i + 1;
     end
-  else
-    result = FALSE();
-  end
 
   return result;
 end
