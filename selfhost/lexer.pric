@@ -72,10 +72,6 @@ def match_symbol(input_, pos_from)
     return 1;
   when (c0 == 93) # ]
     return 1;
-  when (c0 == 123) # {
-    return 1;
-  when (c0 == 125) # }
-    return 1;
   else
     return 0;
   end
