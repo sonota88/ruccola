@@ -330,20 +330,20 @@ def str_eq(s1_, s2_)
   var i = 0;
   var c1;
 
-    while (__not(do_break))
-      c1 = char_at(s1_, i);
+  while (__not(do_break))
+    c1 = char_at(s1_, i);
 
-      if (c1 == char_at(s2_, i))
-        if (c1 == 0)
-          do_break = TRUE();
-        end
-      else
-        result = FALSE();
+    if (c1 == char_at(s2_, i))
+      if (c1 == 0)
         do_break = TRUE();
       end
-
-      i = i + 1;
+    else
+      result = FALSE();
+      do_break = TRUE();
     end
+
+    i = i + 1;
+  end
 
   return result;
 end
