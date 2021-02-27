@@ -218,7 +218,7 @@ class Vm
     when "push"     then push()     ; @pc += 1
     when "pop"      then pop()      ; @pc += 1
     when "getchar"  then getchar()  ; @pc += 1
-    when "putchar"  then putchar()  ; @pc += 1
+    when "write"    then write()    ; @pc += 1
     when "set_vram" then set_vram() ; @pc += 1
     when "get_vram" then get_vram() ; @pc += 1
     when "_cmt"     then              @pc += 1
@@ -457,7 +457,7 @@ class Vm
     end
   end
 
-  def putchar
+  def write
     arg = @mem.main[@pc][1]
 
     n =
