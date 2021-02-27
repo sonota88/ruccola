@@ -217,7 +217,7 @@ class Vm
     when "ret"      then ret()
     when "push"     then push()     ; @pc += 1
     when "pop"      then pop()      ; @pc += 1
-    when "getchar"  then getchar()  ; @pc += 1
+    when "read"     then read()     ; @pc += 1
     when "write"    then write()    ; @pc += 1
     when "set_vram" then set_vram() ; @pc += 1
     when "get_vram" then get_vram() ; @pc += 1
@@ -441,7 +441,7 @@ class Vm
     set_sp(@sp + 1)
   end
 
-  def getchar
+  def read
     raise "stdin is not available" if $stdin_.nil?
 
     arg = @mem.main[@pc][1]
