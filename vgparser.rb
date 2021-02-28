@@ -247,7 +247,7 @@ def parse_expr_addr
   var_name = peek().value
   $pos += 1
 
-  ["addr", var_name]
+  [:addr, var_name]
 end
 
 def parse_deref
@@ -256,7 +256,7 @@ def parse_deref
   expr = parse_expr()
   consume ")"
 
-  ["deref", expr]
+  [:deref, expr]
 end
 
 def parse_expr
