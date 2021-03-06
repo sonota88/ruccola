@@ -291,7 +291,7 @@ class Vm
 
   def calc_indirect_addr(str)
     _, base_str, disp_str, index_str = str.split(":")
-    
+
     base  = get_value(base_str)
     disp  = get_value(disp_str)
     index = get_value(index_str)
