@@ -55,6 +55,7 @@ module Checker
       # builtin functions
       fn_sigs["getchar"] = []
       fn_sigs["putchar"] = ["char"]
+      fn_sigs["write"  ] = ["char", "fd"]
       fn_sigs["get_sp" ] = []
       fn_sigs["_panic" ] = []
       fn_sigs["_debug" ] = []

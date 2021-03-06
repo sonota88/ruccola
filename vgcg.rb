@@ -491,6 +491,19 @@ def codegen_builtin_putchar
   puts "  ret"
 end
 
+def codegen_builtin_write
+  puts "label write"
+  puts "  push bp"
+  puts "  cp sp bp"
+
+  puts "  cp [bp:2] reg_a"
+  puts "  write reg_a [bp:3]"
+
+  puts "  cp bp sp"
+  puts "  pop bp"
+  puts "  ret"
+end
+
 def codegen_builtin_get_sp
   puts "label get_sp"
   puts "  push bp"
@@ -546,6 +559,8 @@ def codegen(tree)
   puts ""
   puts "#>builtins"
   codegen_builtin_putchar()
+  puts ""
+  codegen_builtin_write()
   puts ""
   codegen_builtin_getchar()
   puts ""
