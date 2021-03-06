@@ -201,7 +201,7 @@ class Vm
     opcode = insn[0]
 
     case opcode
-    when "exit"     then return true
+    when "exit"     then return 0
     when "cp"       then copy()     ; @pc += 1
     when "lea"      then lea()      ; @pc += 1
     when "add_ab"   then add_ab()   ; @pc += 1
@@ -227,7 +227,7 @@ class Vm
       raise "Unknown opcode (#{opcode})"
     end
 
-    false
+    nil
   end
 
   def start
@@ -240,11 +240,11 @@ class Vm
     loop do
       @step += 1
 
-      do_exit = execute()
-      if do_exit
+      exit_status = execute()
+      if exit_status
         dump()
         $stderr.puts "exit" if @verbose
-        return
+        return exit_status
       end
 
       dump() if @step % @skip == 0
@@ -585,5 +585,6 @@ if $PROGRAM_NAME == __FILE__
     env_to_int("SKIP", 1)
   )
   vm.load_program_file(exe_file)
-  vm.start
+  exit_status = vm.start
+  exit exit_status
 end
