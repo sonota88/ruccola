@@ -48,12 +48,27 @@ def putchar(c)
   write(c, 1);
 end
 
+def putchar_e(c)
+  write(c, 2);
+end
+
 def print_s(str_)
   var i = 0;
   var c = char_at(str_, i);
 
   while (c != 0)
     putchar(c);
+    i = i + 1;
+    c = char_at(str_, i);
+  end
+end
+
+def print_s_e(str_)
+  var i = 0;
+  var c = char_at(str_, i);
+
+  while (c != 0)
+    putchar_e(c);
     i = i + 1;
     c = char_at(str_, i);
   end
@@ -69,6 +84,13 @@ def print_i(arg_n)
 
   unparse_int(&s_temp, arg_n);
   print_s(&s_temp);
+end
+
+def print_i_e(arg_n)
+  var [8]s_temp;
+
+  unparse_int(&s_temp, arg_n);
+  print_s_e(&s_temp);
 end
 
 def unparse_int(dest_, arg_n)
