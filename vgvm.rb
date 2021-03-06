@@ -201,7 +201,7 @@ class Vm
     opcode = insn[0]
 
     case opcode
-    when "exit"     then return 0
+    when "exit"     then return @mem.main[@pc][1]
     when "cp"       then copy()     ; @pc += 1
     when "lea"      then lea()      ; @pc += 1
     when "add_ab"   then add_ab()   ; @pc += 1

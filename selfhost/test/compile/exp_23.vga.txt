@@ -1,5 +1,5 @@
   call main
-  exit
+  exit 0
 
 label f2
   push bp

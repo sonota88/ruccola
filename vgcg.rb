@@ -508,7 +508,7 @@ def codegen_builtin_panic
   "PANIC\n".each_char do |c|
     puts "  putchar #{c.ord}"
   end
-  puts "  exit"
+  puts "  exit 1"
 end
 
 def codegen_builtin_set_vram
@@ -537,7 +537,7 @@ end
 
 def codegen(tree)
   puts "  call main"
-  puts "  exit"
+  puts "  exit 0"
 
   head, *rest = tree
   # assert head == "top_stmts"

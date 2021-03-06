@@ -12,7 +12,7 @@ def asm_indent()
   putchar(C_SPC());
 end
 
-def asm_exit()
+def asm_exit(exit_status)
   var [5]s_temp;
 
   aset(&s_temp, 0, 101); # e
@@ -23,6 +23,7 @@ def asm_exit()
 
   asm_indent();
   print_s(&s_temp);
+  putchar(C_SPC()); print_i(exit_status);
   putchar(C_LF());
 end
 
@@ -1189,7 +1190,7 @@ def gen_builtin_panic()
   asm_putchar(67); # C
   asm_putchar(C_LF());
 
-  asm_exit();
+  asm_exit(1);
 end
 
 def gen_builtin_set_vram()
@@ -1258,7 +1259,7 @@ def codegen(g_, ast_)
   aset(&s_temp, 4,   0);
   asm_call(&s_temp);
 
-  asm_exit();
+  asm_exit(0);
 
   gen_top_stmts(g_, ast_);
 
