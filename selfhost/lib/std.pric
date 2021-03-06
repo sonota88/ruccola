@@ -76,18 +76,19 @@ def println(str_)
   putchar(C_LF());
 end
 
-def print_i(arg_n)
+def _print_i(arg_n, fd)
   var [8]s_temp;
 
   unparse_int(&s_temp, arg_n);
-  print_s(&s_temp);
+  _print_s(&s_temp, fd);
+end
+
+def print_i(arg_n)
+  _print_i(arg_n, 1);
 end
 
 def print_i_e(arg_n)
-  var [8]s_temp;
-
-  unparse_int(&s_temp, arg_n);
-  print_s_e(&s_temp);
+  _print_i(arg_n, 2);
 end
 
 def unparse_int(dest_, arg_n)
