@@ -460,16 +460,7 @@ class Vm
   def write
     arg = @mem.main[@pc][1]
 
-    n =
-      case arg
-      when Integer
-        arg
-      when "reg_a"
-        @reg_a
-      else
-        raise not_yet_impl("arg", arg)
-      end
-
+    n = get_value(arg)
     c = n.chr
     $stdout.write c
 
