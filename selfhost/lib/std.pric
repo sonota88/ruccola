@@ -137,11 +137,11 @@ def unparse_int(dest_, arg_n)
 end
 
 def panic(errno)
-  putchar(C_LF());
-  putchar( 69); # E
-  putchar( 61); # =
-  print_i(errno);
-  putchar( 10); # LF
+  putchar_e(C_LF());
+  putchar_e( 69); # E
+  putchar_e( 61); # =
+  print_i_e(errno);
+  putchar_e( 10); # LF
   _panic();
 end
 
