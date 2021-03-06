@@ -18,6 +18,9 @@ Layout/ArrayAlignment:
   Exclude:
     - 'test/test_vgparser.rb'
 
+Layout/ExtraSpacing:
+  Enabled: false
+
 Layout/FirstArrayElementIndentation:
   Exclude:
     - 'test/test_vgparser.rb'
@@ -146,6 +149,9 @@ Style/Semicolon:
   Enabled: false
 
 Style/SlicingWithRange:
+  Enabled: false
+
+Style/YodaCondition:
   Enabled: false
 
 #--------------------------------
