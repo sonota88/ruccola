@@ -470,7 +470,9 @@ def codegen_builtin_getchar
   puts "label getchar"
   puts "  push bp"
   puts "  cp sp bp"
+
   puts "  read reg_a"
+
   puts "  cp bp sp"
   puts "  pop bp"
   puts "  ret"
@@ -480,8 +482,10 @@ def codegen_builtin_putchar
   puts "label putchar"
   puts "  push bp"
   puts "  cp sp bp"
+
   puts "  cp [bp:2] reg_a"
   puts "  write reg_a"
+
   puts "  cp bp sp"
   puts "  pop bp"
   puts "  ret"
