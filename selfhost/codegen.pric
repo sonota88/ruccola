@@ -1112,6 +1112,7 @@ def gen_builtin_putchar()
   asm_indent();
   print_s(&s_write);
   putchar(C_SPC()); print_s(&s_reg_a);
+  putchar(C_SPC()); print_i(1);
   putchar(C_LF());
 
   asm_fn_epilogue();

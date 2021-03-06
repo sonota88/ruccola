@@ -459,10 +459,29 @@ class Vm
 
   def write
     arg = @mem.main[@pc][1]
+    arg2 = @mem.main[@pc][2]
 
     n = get_value(arg)
     c = n.chr
-    $stdout.write c
+
+    fd =
+      case arg2
+      when Integer
+        arg2
+      when String
+        get_value(arg2)
+      else
+        raise not_yet_impl("arg2", arg2)
+      end
+
+    case fd
+    when 1
+      $stdout.write c
+    when 2
+      $stderr.write c
+    else
+      raise "invalid fd (#{fd})"
+    end
 
     @output += c
     if 80 < @output.size

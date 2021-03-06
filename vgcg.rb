@@ -484,7 +484,7 @@ def codegen_builtin_putchar
   puts "  cp sp bp"
 
   puts "  cp [bp:2] reg_a"
-  puts "  write reg_a"
+  puts "  write reg_a 1"
 
   puts "  cp bp sp"
   puts "  pop bp"
