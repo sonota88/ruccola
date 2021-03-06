@@ -44,6 +44,10 @@ end
 
 # --------------------------------
 
+def putchar(c)
+  write(c, 1);
+end
+
 def print_s(str_)
   var i = 0;
   var c = char_at(str_, i);

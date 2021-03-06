@@ -1,5 +1,9 @@
 # -*- mode: ruby -*-
 
+def putchar(c)
+  write(c, 1);
+end
+
 def main()
   putchar( 72); # H
   putchar(101); # e

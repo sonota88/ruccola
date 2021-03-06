@@ -69,6 +69,13 @@ FILE_ASM_RB   = temp_path("test_rb.vga.txt")
 FILE_ASM_PRIC = temp_path("test_pric.vga.txt")
 FILE_OUTPUT   = temp_path("output.txt")
 
+SRC_UTILS = <<SRC
+
+def putchar(c)
+  write(c, 1);
+end
+SRC
+
 def compile_to_asm(src)
   infile = FILE_SRC
   file_write(infile, src)
@@ -78,16 +85,22 @@ def compile_to_asm(src)
 end
 
 def build(infile, outfile)
-  _system %( ruby #{PROJECT_DIR}/vglexer.rb  #{infile     } > #{FILE_TOKENS} )
+  temp_src = temp_path("test_with_utils.pric")
+  file_write(temp_src, File.read(infile) + SRC_UTILS)
+
+  _system %( ruby #{PROJECT_DIR}/vglexer.rb  #{temp_src   } > #{FILE_TOKENS} )
   _system %( ruby #{PROJECT_DIR}/vgparser.rb #{FILE_TOKENS} > #{FILE_TREE  } )
   _system %( ruby #{PROJECT_DIR}/vgcg.rb     #{FILE_TREE  } > #{FILE_ASM   } )
   _system %( ruby #{PROJECT_DIR}/vgasm.rb    #{FILE_ASM   } > #{outfile    } )
 end
 
 def pricc_rb(infile, outfile, print_asm: false)
+  temp_src = project_path("tmp/test_with_utils.pric")
+  file_write(temp_src, File.read(infile) + SRC_UTILS)
+
   cmd = [
     project_path("pricc"),
-    infile,
+    temp_src,
     "> #{outfile}"
   ].join(" ")
 
@@ -99,9 +112,12 @@ def pricc_rb(infile, outfile, print_asm: false)
 end
 
 def pricc_pric(infile, outfile, print_asm: false)
+  temp_src = project_path("tmp/test_with_utils.pric")
+  file_write(temp_src, File.read(infile) + SRC_UTILS)
+
   cmd = [
     project_path("selfhost/pricc"),
-    infile,
+    temp_src,
     "> #{outfile}"
   ].join(" ")
 
