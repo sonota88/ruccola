@@ -441,12 +441,12 @@ def parse_stmt
   t = peek()
 
   case t.value
-  when "return"   then parse_return()
-  when "while"    then parse_while()
-  when "case"     then parse_case()
-  when "_cmt"     then parse_vm_comment()
-  when "_debug"   then parse_vm_debug()
-  when "_panic"   then parse_vm_panic()
+  when "return" then parse_return()
+  when "while"  then parse_while()
+  when "case"   then parse_case()
+  when "_cmt"   then parse_vm_comment()
+  when "_debug" then parse_vm_debug()
+  when "_panic" then parse_vm_panic()
   else
     if t.type == :ident && peek(1).is(:sym, "(")
       parse_call()
