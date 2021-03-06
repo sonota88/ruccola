@@ -11,6 +11,10 @@ def project_path(path)
   File.join(PROJECT_DIR, path)
 end
 
+def temp_path(path)
+  File.join(PROJECT_DIR, "tmp", path)
+end
+
 def _system(cmd)
   out = `#{cmd}`
   status = $?
@@ -55,15 +59,15 @@ def extract_asm_main_body(asm)
   lines.join("")
 end
 
-FILE_STDIN  = project_path("tmp/stdin")
-FILE_SRC    = project_path("tmp/test.vg.txt")
-FILE_TOKENS = project_path("tmp/test.tokens.txt")
-FILE_TREE   = project_path("tmp/test.vgt.json")
-FILE_ASM    = project_path("tmp/test.vga.txt")
-FILE_EXE    = project_path("tmp/test.vge.txt")
-FILE_ASM_RB = project_path("tmp/test_rb.vga.txt")
-FILE_ASM_PRIC = project_path("tmp/test_pric.vga.txt")
-FILE_OUTPUT = project_path("tmp/output.txt")
+FILE_STDIN    = temp_path("stdin")
+FILE_SRC      = temp_path("test.vg.txt")
+FILE_TOKENS   = temp_path("test.tokens.txt")
+FILE_TREE     = temp_path("test.vgt.json")
+FILE_ASM      = temp_path("test.vga.txt")
+FILE_EXE      = temp_path("test.vge.txt")
+FILE_ASM_RB   = temp_path("test_rb.vga.txt")
+FILE_ASM_PRIC = temp_path("test_pric.vga.txt")
+FILE_OUTPUT   = temp_path("output.txt")
 
 def compile_to_asm(src)
   infile = FILE_SRC
