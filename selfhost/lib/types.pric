@@ -92,7 +92,7 @@ def LIST__SIZE() return 0; end
 def LIST__SIZE_WIDTH() return 1; end
 
 def LIST__ITEMS() return 1; end
-def LIST__ITEMS_WIDTH() return 240; end
+def LIST__ITEMS_WIDTH() return 250; end
 
 def LIST__TYPE_SIZE()
   return (
@@ -287,6 +287,38 @@ def Token_to_plain(g_, self_)
   List_add_str(g_, list_, Token_get_val(self_));
 
   return list_;
+end
+
+# --------------------------------
+
+def NAME__WIDTH() return 0; end
+def NAME__WIDTH_WIDTH() return 1; end
+
+def NAME__STR() return 1; end
+def NAME__STR_WIDTH() return 30; end
+
+def NAME__TYPE_SIZE()
+  return (
+    NAME__WIDTH_WIDTH()
+  + NAME__STR_WIDTH()
+  );
+end
+
+def Name_new(g_, s_name_, width)
+  var self_ = allocate(g_, NAME__TYPE_SIZE());
+
+  *(self_ + NAME__WIDTH()) = width;
+  str_cp_with_check(self_ + NAME__STR(), s_name_, NAME__STR_WIDTH());
+
+  return self_;
+end
+
+def Name_get_str(self_)
+  return self_ + NAME__STR();
+end
+
+def Name_get_width(self_)
+  return *(self_ + NAME__WIDTH());
 end
 
 # --------------------------------
