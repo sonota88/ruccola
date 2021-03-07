@@ -358,7 +358,7 @@ def Names_add(self_, name_, width)
   *(self_ + NAMES__SIZE()) = size + 1;
 end
 
-def Names_get(self_, i)
+def Names_get_str(self_, i)
   return Names_str_offset(self_, i);
 end
 
@@ -375,7 +375,7 @@ def Names_index(self_, target_name_)
 
   i = 0;
   while (__not(do_break))
-    name_ = Names_get(self_, i);
+    name_ = Names_get_str(self_, i);
     case
     when (__le(size, i))
       do_break = TRUE();
@@ -407,7 +407,7 @@ def Names_disp_lvar(self_, target_name_)
     if (__le(Names_size(self_), i))
       do_break = TRUE();
     else
-      str_  = Names_get(self_, i);
+      str_  = Names_get_str(self_, i);
       width = Names_get_width(self_, i);
       disp = __sub(disp, width);
       if (str_eq(str_, target_name_))
@@ -444,7 +444,7 @@ def Names_to_plain(g_, self_)
   var i = 0;
 
   while (i < Names_size(self_))
-    List_add_str(g_, list_, Names_get(self_, i));
+    List_add_str(g_, list_, Names_get_str(self_, i));
     List_add_int(g_, list_, Names_get_width(self_, i));
     i = i + 1;
   end
