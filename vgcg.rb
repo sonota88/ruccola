@@ -506,7 +506,7 @@ end
 def codegen_builtin_panic
   puts "label _panic"
   "PANIC\n".each_char do |c|
-    puts "  putchar #{c.ord}"
+    puts "  write #{c.ord} 2"
   end
   puts "  exit 1"
 end

@@ -295,6 +295,24 @@ def asm_putchar(c)
   putchar(C_LF());
 end
 
+def asm_write(c, fd)
+  var [8]s_c;
+
+  unparse_int(&s_c, c);
+
+  asm_indent();
+  putchar(119); # w
+  putchar(114); # r
+  putchar(105); # i
+  putchar(116); # t
+  putchar(101); # e
+
+  putchar(C_SPC()); print_s(&s_c);
+  putchar(C_SPC()); print_i(fd);
+
+  putchar(C_LF());
+end
+
 def asm_fn_prologue()
   var [3]s_bp; str_set_bp(&s_bp);
   var [3]s_sp; str_set_sp(&s_sp);
@@ -1183,12 +1201,12 @@ def gen_builtin_panic()
 
   asm_label(&s__panic);
 
-  asm_putchar(80); # P
-  asm_putchar(65); # A
-  asm_putchar(78); # N
-  asm_putchar(73); # I
-  asm_putchar(67); # C
-  asm_putchar(C_LF());
+  asm_write(80, 2); # P
+  asm_write(65, 2); # A
+  asm_write(78, 2); # N
+  asm_write(73, 2); # I
+  asm_write(67, 2); # C
+  asm_write(C_LF(), 2);
 
   asm_exit(1);
 end
