@@ -461,7 +461,15 @@ class Vm
     arg = @mem.main[@pc][1]
     arg2 = @mem.main[@pc][2]
 
-    n = get_value(arg)
+    n =
+      case arg
+      when Integer
+        arg
+      when String
+        get_value(arg)
+      else
+        raise not_yet_impl("arg", arg)
+      end
     c = n.chr
 
     fd =
