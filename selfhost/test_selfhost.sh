@@ -18,9 +18,21 @@ test_selfhost() {
   ../pricc ${name}.pric > ${TEMP_DIR}/${name}_gen1.exe.txt
   ./pricc  ${name}.pric > ${TEMP_DIR}/${name}_gen2.exe.txt
 
+  local timestamp=$(date "+%Y%m%d_%H%M%S")
+
+  diff_file=/tmp/pric_test_selfhost_${timestamp}_${name}.diff
+
   diff -u \
     ${TEMP_DIR}/${name}_gen1.exe.txt \
-    ${TEMP_DIR}/${name}_gen2.exe.txt
+    ${TEMP_DIR}/${name}_gen2.exe.txt \
+    > $diff_file
+  local status=$?
+
+  if [ $status -ne 0 ]; then
+    echo "Diff exists." >&2
+    echo "See ${diff_file}" >&2
+    exit $status
+  fi
 }
 
 __DIR__="$(print_this_dir)"
