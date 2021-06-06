@@ -236,7 +236,7 @@ def main()
     else
       p_i(pos);
       p_c(c);
-      panic(163); # not yet impl
+      panic(239); # unexpected pattern
     end
 
     c = char_at(&input, pos);
