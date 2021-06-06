@@ -323,30 +323,16 @@ end
 
 # --------------------------------
 
-def NAMES__STR_SIZE_MAX() return 30; end
-def NAMES__NUM_STRS_MAX() return 14; end
-
 def NAMES__SIZE() return 0; end
 def NAMES__SIZE_WIDTH() return 1; end
 
-def NAMES__WIDTHS() return 1; end
-def NAMES__WIDTHS_WIDTH()
-  return NAMES__NUM_STRS_MAX();
-end
-
-def NAMES__STRS() return 15; end
-def NAMES__STRS_WIDTH()
-  return (
-    NAMES__STR_SIZE_MAX()
-  * NAMES__NUM_STRS_MAX()
-  );
-end
+def NAMES__ITEMS() return 1; end
+def NAMES__ITEMS_WIDTH() return 14; end
 
 def NAMES__TYPE_SIZE()
   return (
     NAMES__SIZE_WIDTH()
-  + NAMES__WIDTHS_WIDTH()
-  + NAMES__STRS_WIDTH()
+  + NAMES__ITEMS_WIDTH()
   );
 end
 
@@ -362,40 +348,34 @@ def Names_size(self_)
   return *(self_ + NAMES__SIZE());
 end
 
-def Names_str_offset(self_, i)
-  return (
-    self_
-    + NAMES__STRS()
-    + (NAMES__STR_SIZE_MAX() * i)
-  );
-end
-
-def Names_add(self_, name_, width)
+def Names_add(g_, self_, s_name_, width)
   var size = Names_size(self_);
+  var name_;
 
-  if (__le(NAMES__NUM_STRS_MAX(), size))
-    p_i(NAMES__NUM_STRS_MAX());
+  if (__le(NAMES__ITEMS_WIDTH(), size))
+    p_i(NAMES__ITEMS_WIDTH());
     p_i(size);
     panic(316);
   end
 
-  *(self_ + NAMES__WIDTHS() + size) = width;
-
-  str_cp_with_check(
-    Names_str_offset(self_, size),
-    name_,
-    NAMES__STR_SIZE_MAX()
-  );
+  name_ = Name_new(g_, s_name_, width);
+  *(self_ + NAMES__ITEMS() + size) = name_;
 
   *(self_ + NAMES__SIZE()) = size + 1;
 end
 
+def Names_get(self_, i)
+  return *(self_ + NAMES__ITEMS() + i);
+end
+
 def Names_get_str(self_, i)
-  return Names_str_offset(self_, i);
+  var name_ = Names_get(self_, i);
+  return Name_get_str(name_);
 end
 
 def Names_get_width(self_, i)
-  return *(self_ + NAMES__WIDTHS() + i);
+  var name_ = Names_get(self_, i);
+  return Name_get_width(name_);
 end
 
 def Names_index(self_, target_name_)
@@ -461,6 +441,7 @@ def Names_from_node_list(g_, list_)
   i = 0;
   while (i < size)
     Names_add(
+      g_,
       names_,
       List_get_as_str(list_, i),
       1
