@@ -465,7 +465,6 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
 end
 
 def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
-  var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [6]s_reg_b; str_set_reg_b(&s_reg_b);
 
   var [2]s_0;
