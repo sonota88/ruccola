@@ -156,7 +156,7 @@ def read_stdin_all(dest_, limit)
     c = getchar();
     if (c == -1)
       aset(dest_, i, 0);
-      do_break = 1;
+      do_break = TRUE();
     else
       aset(dest_, i, c);
       i = i + 1;
