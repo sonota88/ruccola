@@ -1,5 +1,3 @@
-# coding: utf-8
-
 require_relative "helper"
 
 class Test020 < Minitest::Test
