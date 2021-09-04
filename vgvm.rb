@@ -191,6 +191,10 @@ class Vm
 
   def load_program(insns)
     @mem.main = insns
+      .map do |insn|
+        opcode, *rest = insn
+        [opcode.to_sym, *rest]
+      end
   end
 
   def execute
@@ -199,28 +203,28 @@ class Vm
     opcode = insn[0]
 
     case opcode
-    when "exit"     then return @mem.main[@pc][1]
-    when "cp"       then copy()     ; @pc += 1
-    when "lea"      then lea()      ; @pc += 1
-    when "add_ab"   then add_ab()   ; @pc += 1
-    when "mult_ab"  then mult_ab()  ; @pc += 1
-    when "add_sp"   then add_sp()   ; @pc += 1
-    when "sub_sp"   then sub_sp()   ; @pc += 1
-    when "compare"  then compare()  ; @pc += 1
-    when "label"    then              @pc += 1
-    when "jump"     then jump()
-    when "jump_eq"  then jump_eq()
-    when "jump_g"   then jump_g()
-    when "call"     then call()
-    when "ret"      then ret()
-    when "push"     then push()     ; @pc += 1
-    when "pop"      then pop()      ; @pc += 1
-    when "read"     then read()     ; @pc += 1
-    when "write"    then write()    ; @pc += 1
-    when "set_vram" then set_vram() ; @pc += 1
-    when "get_vram" then get_vram() ; @pc += 1
-    when "_cmt"     then              @pc += 1
-    when "_debug"   then _debug()   ; @pc += 1
+    when :exit     then return @mem.main[@pc][1]
+    when :cp       then copy()     ; @pc += 1
+    when :lea      then lea()      ; @pc += 1
+    when :add_ab   then add_ab()   ; @pc += 1
+    when :mult_ab  then mult_ab()  ; @pc += 1
+    when :add_sp   then add_sp()   ; @pc += 1
+    when :sub_sp   then sub_sp()   ; @pc += 1
+    when :compare  then compare()  ; @pc += 1
+    when :label    then              @pc += 1
+    when :jump     then jump()
+    when :jump_eq  then jump_eq()
+    when :jump_g   then jump_g()
+    when :call     then call()
+    when :ret      then ret()
+    when :push     then push()     ; @pc += 1
+    when :pop      then pop()      ; @pc += 1
+    when :read     then read()     ; @pc += 1
+    when :write    then write()    ; @pc += 1
+    when :set_vram then set_vram() ; @pc += 1
+    when :get_vram then get_vram() ; @pc += 1
+    when :_cmt     then              @pc += 1
+    when :_debug   then _debug()   ; @pc += 1
     else
       raise "Unknown opcode (#{opcode})"
     end
