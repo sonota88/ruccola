@@ -439,16 +439,6 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
     append_label_id(&label_temp, when_index, label_size);
     asm_jump_eq(&label_temp);
 
-    # {label_when_head}_{when_index}
-    str_cp(&label_temp, &label_when_head);
-    append_label_id(&label_temp, when_index, label_size);
-    asm_jump(&label_temp);
-
-    # {label_when_head}_{when_index}
-    str_cp(&label_temp, &label_when_head);
-    append_label_id(&label_temp, when_index, label_size);
-    asm_label(&label_temp);
-
     gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_);
 
     asm_jump(&label_end);
