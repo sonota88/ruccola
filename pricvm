@@ -10,11 +10,25 @@ print_this_dir() {
   )
 }
 
+print_vm_cmd() {
+  set +o nounset
+  local val="$FASTVM"
+  set -o nounset
+
+  if [ "$val" = "1" ]; then
+    echo "${__DIR__}/fastvm/exe/pricvm"
+  else
+    echo "ruby ${__DIR__}/vgvm.rb"
+  fi
+}
+
 __DIR__="$(print_this_dir)"
 TMP_DIR=${__DIR__}/tmp/
+
+PRICVM="$(print_vm_cmd)"
 
 mkdir -p ${TMP_DIR}
 
 file="$1"
 
-ruby ${__DIR__}/vgvm.rb $file
+$PRICVM $file

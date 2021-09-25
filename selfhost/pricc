@@ -21,6 +21,18 @@ get_envvar() {
   fi
 }
 
+print_vm_cmd() {
+  set +o nounset
+  local val="$FASTVM"
+  set -o nounset
+
+  if [ "$val" = "1" ]; then
+    echo "${__DIR__}/../fastvm/exe/pricvm"
+  else
+    echo "${__DIR__}/../pricvm"
+  fi
+}
+
 run() {
   local name="$1"; shift
   local infile="$1"; shift
@@ -42,7 +54,7 @@ run() {
 __DIR__="$(print_this_dir)"
 
 TMP_DIR=${__DIR__}/tmp/
-PRICVM=${__DIR__}/../pricvm
+PRICVM="$(print_vm_cmd)"
 PRINT_ASM=$(get_envvar "PRINT_ASM" 0)
 
 mkdir -p ${TMP_DIR}

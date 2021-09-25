@@ -278,6 +278,16 @@ class Vm
     DUMP
   end
 
+  def dump_for_test
+    puts "reg_a (#{@reg_a})"
+    puts "reg_b (#{@reg_b})"
+    puts "pc (#{@pc})"
+    puts "bp (#{@bp})"
+    puts "sp (#{@sp})"
+    puts "zf (#{@zf})"
+    puts "sf (#{@sf})"
+  end
+
   def get_value(str)
     case str
     when "reg_a"   then @reg_a
@@ -596,5 +606,10 @@ if $PROGRAM_NAME == __FILE__
   )
   vm.load_program_file(exe_file)
   exit_status = vm.start
+
+  if ENV["DUMP_FOR_TEST"] == "1"
+    vm.dump_for_test
+  end
+
   exit exit_status
 end

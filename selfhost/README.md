@@ -48,4 +48,8 @@ VERBOSE=1 SKIP=1000 ./pricrun ../examples/game_of_life.pric
 # 上記 (1), (2) の出力（実行ファイル）が一致することを確認:
 ./test_selfhost.sh
 # （作者の環境だと 15分程度）
+
+# Crystal版のVMで確認:
+FASTVM=1 ./test_selfhost.sh
+# （作者の環境だと 2分程度）
 ```
