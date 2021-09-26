@@ -79,8 +79,8 @@ SRC
 def compile_to_asm(src)
   infile = FILE_SRC
   file_write(infile, src)
-  _system %( ruby #{PROJECT_DIR}/vglexer.rb  #{infile     } > #{FILE_TOKENS} )
-  _system %( ruby #{PROJECT_DIR}/vgparser.rb #{FILE_TOKENS} > #{FILE_TREE  } )
+  _system %( ruby #{PROJECT_DIR}/vglexer.rb   #{infile     } > #{FILE_TOKENS} )
+  _system %( ruby #{PROJECT_DIR}/vgparser.rb  #{FILE_TOKENS} > #{FILE_TREE  } )
   _system %( ruby #{PROJECT_DIR}/vgcodegen.rb #{FILE_TREE  } )
 end
 
@@ -88,10 +88,10 @@ def build(infile, outfile)
   temp_src = temp_path("test_with_utils.pric")
   file_write(temp_src, File.read(infile) + SRC_UTILS)
 
-  _system %( ruby #{PROJECT_DIR}/vglexer.rb  #{temp_src   } > #{FILE_TOKENS} )
-  _system %( ruby #{PROJECT_DIR}/vgparser.rb #{FILE_TOKENS} > #{FILE_TREE  } )
+  _system %( ruby #{PROJECT_DIR}/vglexer.rb   #{temp_src   } > #{FILE_TOKENS} )
+  _system %( ruby #{PROJECT_DIR}/vgparser.rb  #{FILE_TOKENS} > #{FILE_TREE  } )
   _system %( ruby #{PROJECT_DIR}/vgcodegen.rb #{FILE_TREE  } > #{FILE_ASM   } )
-  _system %( ruby #{PROJECT_DIR}/vgasm.rb    #{FILE_ASM   } > #{outfile    } )
+  _system %( ruby #{PROJECT_DIR}/vgasm.rb     #{FILE_ASM   } > #{outfile    } )
 end
 
 def pricc_rb(infile, outfile, print_asm: false)
