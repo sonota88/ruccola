@@ -369,7 +369,7 @@ end
 
 def codegen_return(fn_arg_names, lvar_names, stmt_rest)
   expr = stmt_rest[0]
-  codegen_expr(fn_arg_names, lvar_names, expr);
+  codegen_expr(fn_arg_names, lvar_names, expr)
 end
 
 def codegen_vm_comment(comment)
