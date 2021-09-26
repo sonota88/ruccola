@@ -1,4 +1,4 @@
-require_relative "./helper"
+require_relative "./helper_v2"
 require "vgvm"
 
 class Vm

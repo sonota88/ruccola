@@ -11,11 +11,12 @@ def project_path(path)
 end
 
 def _system(cmd)
-  system cmd
+  out = `#{cmd}`
   status = $?
   unless status.success?
     raise "Abnormal exit status (#{status.inspect})"
   end
+  out
 end
 
 def setup_common

@@ -1,4 +1,4 @@
-require_relative "helper"
+require_relative "helper_v3"
 
 class Test020 < Minitest::Test
 
