@@ -293,40 +293,7 @@ def _parse_expr
 end
 
 def parse_expr
-  t_left = peek()
-
-  expr_l =
-  case t_left.type
-  when :int
-    $pos += 1
-    t_left.value.to_i
-
-  when :ident
-    if peek(1).value == "("
-      fn_name, *args = parse_funcall()
-      [:funcall, fn_name, *args]
-    else
-      $pos += 1
-      t_left.value
-    end
-
-  when :sym
-    case t_left.value
-    when "("
-      consume "("
-      expr = parse_expr()
-      consume ")"
-      expr
-    when "&"
-      parse_expr_addr()
-    when "*"
-      parse_deref()
-    end
-
-  else
-    raise ParseError, t_left
-  end
-
+  expr_l = _parse_expr()
   parse_expr_right(expr_l)
 end
 
