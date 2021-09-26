@@ -260,21 +260,6 @@ end
 def parse_expr
   t_left = peek()
 
-  case t_left.value
-  when "("
-    consume "("
-    expr_l = parse_expr()
-    consume ")"
-
-    return parse_expr_right(expr_l)
-  when "&"
-    expr_l = parse_expr_addr()
-    return parse_expr_right(expr_l)
-  when "*"
-    expr_l = parse_deref()
-    return parse_expr_right(expr_l)
-  end
-
   if t_left.type == :int
     $pos += 1
 
@@ -293,6 +278,23 @@ def parse_expr
       expr_l = t_left.value
       parse_expr_right(expr_l)
     end
+
+  elsif t_left.type == :sym
+    case t_left.value
+    when "("
+      consume "("
+      expr_l = parse_expr()
+      consume ")"
+
+      parse_expr_right(expr_l)
+    when "&"
+      expr_l = parse_expr_addr()
+      parse_expr_right(expr_l)
+    when "*"
+      expr_l = parse_deref()
+      parse_expr_right(expr_l)
+    end
+
   else
     raise ParseError, t_left
   end
