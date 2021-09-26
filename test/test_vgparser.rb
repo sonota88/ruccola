@@ -9,7 +9,8 @@ class ParserTest < Minitest::Test
 
   def test_func_1
     src = <<-EOS
-      func f1(){}
+      def f1()
+      end
     EOS
 
     tree_exp = [
@@ -23,7 +24,8 @@ class ParserTest < Minitest::Test
 
   def test_func_2
     src = <<-EOS
-      func f1(a, b){}
+      def f1(a, b)
+      end
     EOS
 
     tree_exp = [
@@ -57,19 +59,6 @@ class ParserTest < Minitest::Test
 
     tree_exp = [
       [:return, 1]]
-
-    tree_act = parse_stmts(src)
-
-    assert_equal(format(tree_exp), format_stmts(tree_act))
-  end
-
-  def test_return_3
-    src = <<-EOS
-      return vram[vi];
-    EOS
-
-    tree_exp = [
-      [:return, "vram[vi]"]]
 
     tree_act = parse_stmts(src)
 
@@ -152,7 +141,7 @@ class ParserTest < Minitest::Test
 
   def test_set_1
     src = <<-EOS
-      set a = 1;
+      a = 1;
     EOS
 
     tree_exp = [
@@ -165,7 +154,7 @@ class ParserTest < Minitest::Test
 
   def test_set_2
     src = <<-EOS
-      set a = b;
+      a = b;
     EOS
 
     tree_exp = [
@@ -176,24 +165,11 @@ class ParserTest < Minitest::Test
     assert_equal(format(tree_exp), format_stmts(tree_act))
   end
 
-  def test_set_3
-    src = <<-EOS
-      set vram[vi] = b;
-    EOS
-
-    tree_exp = [
-      [:set, "vram[vi]", "b"]]
-
-    tree_act = parse_stmts(src)
-
-    assert_equal(format(tree_exp), format_stmts(tree_act))
-  end
-
   # --------------------------------
 
   def test_call_1
     src = <<-EOS
-      call foo();
+      foo();
     EOS
 
     tree_exp = [
@@ -206,7 +182,7 @@ class ParserTest < Minitest::Test
 
   def test_call_2
     src = <<-EOS
-  call foo(a, 1);
+      foo(a, 1);
     EOS
 
     tree_exp = [
@@ -221,12 +197,12 @@ class ParserTest < Minitest::Test
 
   def test_call_set_1
     src = <<-EOS
-      call_set a = f2();
+      a = f2();
     EOS
 
     tree_exp = [
-      [:call_set, "a",
-       ["f2"]]]
+      [:set, "a",
+       [:funcall, "f2"]]]
 
     tree_act = parse_stmts(src)
 
@@ -235,12 +211,12 @@ class ParserTest < Minitest::Test
 
   def test_call_set_2
     src = <<-EOS
-      call_set a = f2(a, 1);
+      a = f2(a, 1);
     EOS
 
     tree_exp = [
-      [:call_set, "a",
-       ["f2", "a", 1]]]
+      [:set, "a",
+       [:funcall, "f2", "a", 1]]]
 
     tree_act = parse_stmts(src)
 
@@ -251,7 +227,8 @@ class ParserTest < Minitest::Test
 
   def test_while_1
     src = <<-EOS
-      while (a == 1) {}
+      while (a == 1)
+      end
     EOS
 
     tree_exp = [
@@ -265,9 +242,9 @@ class ParserTest < Minitest::Test
   def test_while_2
     src = <<-EOS
       var a;
-      while (a == 1) {
-        set a = 2;
-      }
+      while (a == 1)
+        a = 2;
+      end
     EOS
 
     tree_exp = [
@@ -282,7 +259,8 @@ class ParserTest < Minitest::Test
 
   def test_while_3
     src = <<-EOS
-      while (a != b) {}
+      while (a != b)
+      end
     EOS
 
     tree_exp = [
@@ -300,9 +278,10 @@ class ParserTest < Minitest::Test
   def test_case_1
     src = <<-EOS
       var a;
-      case {
-        (1){ set a = 2; }
-      }
+      case
+      when (1)
+        a = 2;
+      end
     EOS
 
     tree_exp = [
@@ -318,10 +297,10 @@ class ParserTest < Minitest::Test
   def test_case_2
     src = <<-EOS
       var a;
-      case {
-        (1){ set a = 3; }
-        (2){ set a = 4; }
-      }
+      case
+      when (1) a = 3;
+      when (2) a = 4;
+      end
     EOS
 
     tree_exp = [
@@ -338,9 +317,10 @@ class ParserTest < Minitest::Test
   def test_case_3
     src = <<-EOS
       var a;
-      case {
-        (a == 1){ set a = 2; }
-      }
+      case
+      when (a == 1)
+        a = 2;
+      end
     EOS
 
     tree_exp = [
@@ -370,21 +350,12 @@ class ParserTest < Minitest::Test
 
   # --------------------------------
 
-  def _parse(src)
+  def parse(src)
     File.open(VG_FILE, "wb") { |f| f.print src }
     _system %( ruby #{PROJECT_DIR}/vglexer.rb  #{VG_FILE} > #{TOKENS_FILE} )
     _system %( ruby #{PROJECT_DIR}/vgparser.rb #{TOKENS_FILE} > #{TREE_FILE} )
     json = File.read(TREE_FILE)
     JSON.parse(json)
-  end
-
-  def parse(src)
-    begin
-      _parse(src)
-    rescue ParseError => e
-      parser.dump_state()
-      raise e
-    end
   end
 
   def format(tree)
@@ -393,12 +364,12 @@ class ParserTest < Minitest::Test
 
   def parse_stmts(src)
     wrapped_src = <<-EOS
-      func test(){
+      def test()
         #{src}
-      }
+      end
     EOS
 
-    _parse(wrapped_src)
+    parse(wrapped_src)
   end
 
   def format_stmts(tree)
