@@ -1,7 +1,6 @@
 require_relative "common"
 
 module Checker
-
   class FuncallChecker
     def initialize
       @exit_status = 0
@@ -92,7 +91,6 @@ module Checker
       # OK: グローバル変数を使っていない
     end
   end
-
 end
 
 cmd = ARGV.shift
