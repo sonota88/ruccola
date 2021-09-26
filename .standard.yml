@@ -39,5 +39,4 @@ ignore:
     - Style/SlicingWithRange
     - Style/StringLiterals
     - Style/TernaryParentheses
-    - Style/TrailingCommaInArrayLiteral
     - Style/YodaCondition
