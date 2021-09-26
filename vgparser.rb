@@ -260,15 +260,15 @@ end
 def parse_expr
   t_left = peek()
 
-  if t_left.type == :int
+  case t_left.type
+  when :int
     $pos += 1
 
     expr_l = t_left.value.to_i
 
     parse_expr_right(expr_l)
 
-  elsif t_left.type == :ident
-
+  when :ident
     if peek(1).value == "("
       fn_name, *args = parse_funcall()
       expr_l = [:funcall, fn_name, *args]
@@ -279,7 +279,7 @@ def parse_expr
       parse_expr_right(expr_l)
     end
 
-  elsif t_left.type == :sym
+  when :sym
     case t_left.value
     when "("
       consume "("
