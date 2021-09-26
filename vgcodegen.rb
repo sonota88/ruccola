@@ -55,50 +55,6 @@ def codegen_var_array(fn_arg_names, lvar_names, stmt_rest)
   puts "  sub_sp #{size}"
 end
 
-def codegen_case(fn_arg_names, lvar_names, when_blocks)
-  $label_id += 1
-  label_id = $label_id
-
-  when_idx = -1
-
-  label_end = "end_case_#{label_id}"
-  label_when_head = "when_#{label_id}"
-  label_end_when_head = "end_when_#{label_id}"
-
-  puts ""
-  puts "  # -->> case_#{label_id}"
-
-  when_blocks.each do |when_block|
-    when_idx += 1
-    cond, *rest = when_block
-    cond_head, *cond_rest = cond
-
-    puts "  # when_#{label_id}_#{when_idx}: #{cond.inspect}"
-
-    # 条件式の結果が reg_a に入る
-    puts "  # -->> expr"
-    codegen_expr(fn_arg_names, lvar_names, cond)
-    puts "  # <<-- expr"
-
-    # 式の結果と比較するための値を reg_b に入れる
-    puts "  cp 0 reg_b"
-
-    puts "  compare"
-    puts "  jump_eq #{label_end_when_head}_#{when_idx}" # 偽の場合
-
-    codegen_stmts(fn_arg_names, lvar_names, rest)
-
-    puts "  jump #{label_end}"
-
-    # 条件式の結果が偽の場合ここにジャンプ
-    puts "label #{label_end_when_head}_#{when_idx}"
-  end
-
-  puts "label #{label_end}"
-  puts "  # <<-- case_#{label_id}"
-  puts ""
-end
-
 def _codegen_expr_addr(fn_arg_names, lvar_names, expr)
   _, arg = expr
 
@@ -369,6 +325,50 @@ def codegen_while(fn_arg_names, lvar_names, rest)
   puts "  jump #{label_begin}"
 
   puts "label #{label_end}"
+  puts ""
+end
+
+def codegen_case(fn_arg_names, lvar_names, when_blocks)
+  $label_id += 1
+  label_id = $label_id
+
+  when_idx = -1
+
+  label_end = "end_case_#{label_id}"
+  label_when_head = "when_#{label_id}"
+  label_end_when_head = "end_when_#{label_id}"
+
+  puts ""
+  puts "  # -->> case_#{label_id}"
+
+  when_blocks.each do |when_block|
+    when_idx += 1
+    cond, *rest = when_block
+    cond_head, *cond_rest = cond
+
+    puts "  # when_#{label_id}_#{when_idx}: #{cond.inspect}"
+
+    # 条件式の結果が reg_a に入る
+    puts "  # -->> expr"
+    codegen_expr(fn_arg_names, lvar_names, cond)
+    puts "  # <<-- expr"
+
+    # 式の結果と比較するための値を reg_b に入れる
+    puts "  cp 0 reg_b"
+
+    puts "  compare"
+    puts "  jump_eq #{label_end_when_head}_#{when_idx}" # 偽の場合
+
+    codegen_stmts(fn_arg_names, lvar_names, rest)
+
+    puts "  jump #{label_end}"
+
+    # 条件式の結果が偽の場合ここにジャンプ
+    puts "label #{label_end_when_head}_#{when_idx}"
+  end
+
+  puts "label #{label_end}"
+  puts "  # <<-- case_#{label_id}"
   puts ""
 end
 
