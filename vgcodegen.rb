@@ -99,40 +99,6 @@ def codegen_case(fn_arg_names, lvar_names, when_blocks)
   puts ""
 end
 
-def codegen_while(fn_arg_names, lvar_names, rest)
-  cond_expr, body = rest
-
-  $label_id += 1
-  label_id = $label_id
-
-  label_begin = "while_#{label_id}"
-  label_end = "end_while_#{label_id}"
-
-  puts ""
-
-  # ループの先頭
-  puts "label #{label_begin}"
-
-  # 条件式の評価 ... 結果が reg_a に入る
-  codegen_expr(fn_arg_names, lvar_names, cond_expr)
-
-  # 比較対象の値をセット
-  puts "  cp 0 reg_b"
-  puts "  compare"
-
-  # 条件式の結果が偽の場合ループを抜ける
-  puts "  jump_eq #{label_end}"
-
-  # ループの本体
-  codegen_stmts(fn_arg_names, lvar_names, body)
-
-  # ループの先頭に戻る
-  puts "  jump #{label_begin}"
-
-  puts "label #{label_end}"
-  puts ""
-end
-
 def _codegen_expr_addr(fn_arg_names, lvar_names, expr)
   _, arg = expr
 
@@ -370,6 +336,40 @@ end
 def codegen_return(fn_arg_names, lvar_names, stmt_rest)
   expr = stmt_rest[0]
   codegen_expr(fn_arg_names, lvar_names, expr)
+end
+
+def codegen_while(fn_arg_names, lvar_names, rest)
+  cond_expr, body = rest
+
+  $label_id += 1
+  label_id = $label_id
+
+  label_begin = "while_#{label_id}"
+  label_end = "end_while_#{label_id}"
+
+  puts ""
+
+  # ループの先頭
+  puts "label #{label_begin}"
+
+  # 条件式の評価 ... 結果が reg_a に入る
+  codegen_expr(fn_arg_names, lvar_names, cond_expr)
+
+  # 比較対象の値をセット
+  puts "  cp 0 reg_b"
+  puts "  compare"
+
+  # 条件式の結果が偽の場合ループを抜ける
+  puts "  jump_eq #{label_end}"
+
+  # ループの本体
+  codegen_stmts(fn_arg_names, lvar_names, body)
+
+  # ループの先頭に戻る
+  puts "  jump #{label_begin}"
+
+  puts "label #{label_end}"
+  puts ""
 end
 
 def codegen_vm_comment(comment)
