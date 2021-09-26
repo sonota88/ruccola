@@ -15,7 +15,13 @@ class VmTest < Minitest::Test
 
     stack_size = 50
     mem = Memory.new(stack_size)
-    @vm = Vm.new(mem, stack_size)
+    @vm = Vm.new(
+      mem,
+      stack_size,
+      false,
+      false,
+      1
+    )
   end
 
   def execute(*insns)
@@ -67,7 +73,7 @@ class VmTest < Minitest::Test
     @vm.bp = 45
     @vm.mem.stack[@vm.bp + 2] = 42
 
-    execute(["cp", "ind:bp:2", "reg_a"])
+    execute(["cp", "ind:bp:2:0", "reg_a"])
 
     assert_equal(42, @vm.reg_a)
   end
@@ -75,7 +81,7 @@ class VmTest < Minitest::Test
   def test_cp_from_bp_minus
     @vm.mem.stack[@vm.bp - 2] = 42
 
-    execute(["cp", "ind:bp:-2", "reg_a"])
+    execute(["cp", "ind:bp:-2:0", "reg_a"])
 
     assert_equal(42, @vm.reg_a)
   end
@@ -97,7 +103,7 @@ class VmTest < Minitest::Test
   def test_cp_to_bp_minus
     assert_equal(49, @vm.bp)
 
-    execute(["cp", 42, "ind:bp:-2"])
+    execute(["cp", 42, "ind:bp:-2:0"])
 
     assert_equal(42, @vm.mem.stack[49 - 2])
   end
@@ -214,7 +220,7 @@ class VmTest < Minitest::Test
     @vm.mem.stack[@vm.sp] = 0
     @vm.pc = 1
 
-    execute(nil, ["ret"])
+    execute(["exit", 0], ["ret"])
 
     assert_equal(45 + 1, @vm.sp)
     assert_equal(0, @vm.pc)
@@ -222,14 +228,14 @@ class VmTest < Minitest::Test
 
   # --------------------------------
 
-  def test_push_imm
-    @vm.sp = 48
+  # def test_push_imm
+  #   @vm.sp = 48
 
-    execute(["push", 42])
+  #   execute(["push", 42])
 
-    assert_equal(48 - 1, @vm.sp)
-    assert_equal(42, @vm.mem.stack[@vm.sp])
-  end
+  #   assert_equal(48 - 1, @vm.sp)
+  #   assert_equal(42, @vm.mem.stack[@vm.sp])
+  # end
 
   def test_push_reg_a
     @vm.reg_a = 42
@@ -256,7 +262,7 @@ class VmTest < Minitest::Test
     assert_equal(49, @vm.bp)
     @vm.mem.stack[49 - 2] = 42
 
-    execute(["push", "ind:bp:-2"])
+    execute(["push", "ind:bp:-2:0"])
 
     assert_equal(49 - 1, @vm.sp)
     assert_equal(42, @vm.mem.stack[@vm.sp])
@@ -267,7 +273,7 @@ class VmTest < Minitest::Test
     @vm.bp = 45
     @vm.mem.stack[45 + 2] = 42
 
-    execute(["push", "ind:bp:2"])
+    execute(["push", "ind:bp:2:0"])
 
     assert_equal(45 - 1, @vm.sp)
     assert_equal(42, @vm.mem.stack[@vm.sp])
@@ -313,7 +319,7 @@ class VmTest < Minitest::Test
 
     assert_equal(0, @vm.mem.vram[0])
 
-    execute(["set_vram", 0, "ind:bp:2"])
+    execute(["set_vram", 0, "ind:bp:2:0"])
 
     assert_equal(1, @vm.mem.vram[0])
   end
@@ -324,21 +330,21 @@ class VmTest < Minitest::Test
 
     assert_equal(0, @vm.mem.vram[0])
 
-    execute(["set_vram", 0, "ind:bp:-2"])
+    execute(["set_vram", 0, "ind:bp:-2:0"])
 
     assert_equal(1, @vm.mem.vram[0])
   end
 
-  def test_set_vram_set_to_bp_minus
-    @vm.bp = 45
-    @vm.mem.stack[@vm.bp - 2] = 0
+  # def test_set_vram_set_to_bp_minus
+  #   @vm.bp = 45
+  #   @vm.mem.stack[@vm.bp - 2] = 0
 
-    assert_equal(0, @vm.mem.vram[0])
+  #   assert_equal(0, @vm.mem.vram[0])
 
-    execute(["set_vram", "ind:bp:-2", 1])
+  #   execute(["set_vram", "ind:bp:-2:0", 1])
 
-    assert_equal(1, @vm.mem.vram[0])
-  end
+  #   assert_equal(1, @vm.mem.vram[0])
+  # end
 
   # --------------------------------
 
@@ -354,7 +360,7 @@ class VmTest < Minitest::Test
     @vm.mem.vram[0] = 1
     @vm.mem.stack[@vm.bp - 2] = 0
 
-    execute(["get_vram", "ind:bp:-2", "reg_a"])
+    execute(["get_vram", "ind:bp:-2:0", "reg_a"])
 
     assert_equal(1, @vm.reg_a)
   end
