@@ -257,6 +257,41 @@ def parse_deref
   [:deref, expr]
 end
 
+def _parse_expr
+  t = peek()
+
+  case t.type
+  when :int
+    $pos += 1
+    t.value.to_i
+
+  when :ident
+    if peek(1).value == "("
+      fn_name, *args = parse_funcall()
+      [:funcall, fn_name, *args]
+    else
+      $pos += 1
+      t.value
+    end
+
+  when :sym
+    case t.value
+    when "("
+      consume "("
+      expr = parse_expr()
+      consume ")"
+      expr
+    when "&"
+      parse_expr_addr()
+    when "*"
+      parse_deref()
+    end
+
+  else
+    raise ParseError, t
+  end
+end
+
 def parse_expr
   t_left = peek()
 
