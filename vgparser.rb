@@ -257,6 +257,10 @@ def parse_deref
   [:deref, expr]
 end
 
+def binary_op?(t)
+  %(+ * == != <).include?(t.value)
+end
+
 def _parse_expr
   t = peek()
 
@@ -293,8 +297,26 @@ def _parse_expr
 end
 
 def parse_expr
-  expr_l = _parse_expr()
-  parse_expr_right(expr_l)
+  expr = _parse_expr()
+
+  while binary_op?(peek())
+    op = peek().value
+    $pos += 1
+    op =
+      case op
+      when "==" then :eq
+      when "!=" then :neq
+      when "<"  then :lt
+      else
+        op
+      end
+
+    expr_r = _parse_expr()
+
+    expr = [op.to_sym, expr, expr_r]
+  end
+
+  expr
 end
 
 def parse_set
