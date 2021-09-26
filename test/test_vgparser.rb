@@ -335,6 +335,28 @@ class ParserTest < Minitest::Test
 
   # --------------------------------
 
+  def test_expr_1
+    src = <<-EOS
+      var a = 1 + 2 + 3;
+    EOS
+
+    tree_exp = [
+      [:var, "a",
+       ["+".to_sym,
+        ["+".to_sym, 1, 2],
+        3]]]
+
+    tree_act = parse_stmts(src)
+
+    assert_equal(
+      format(tree_exp),
+      format_stmts(tree_act),
+      "should be left-associative"
+    )
+  end
+
+  # --------------------------------
+
   def test_cmt
     src = <<-EOS
       _cmt("vm comment");
