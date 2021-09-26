@@ -30,6 +30,6 @@ exefile=${TEMP_DIR}/${bname}.vge.txt
 
 ruby vglexer.rb $src_temp > $tokensfile
 ruby vgparser.rb $tokensfile > $treefile
-ruby vgcg.rb $treefile > $asmfile
+ruby vgcodegen.rb $treefile > $asmfile
 ruby vgasm.rb $asmfile > $exefile
 ruby vgvm.rb $exefile

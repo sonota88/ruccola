@@ -81,7 +81,7 @@ def compile_to_asm(src)
   file_write(infile, src)
   _system %( ruby #{PROJECT_DIR}/vglexer.rb  #{infile     } > #{FILE_TOKENS} )
   _system %( ruby #{PROJECT_DIR}/vgparser.rb #{FILE_TOKENS} > #{FILE_TREE  } )
-  _system %( ruby #{PROJECT_DIR}/vgcg.rb     #{FILE_TREE  } )
+  _system %( ruby #{PROJECT_DIR}/vgcodegen.rb #{FILE_TREE  } )
 end
 
 def build(infile, outfile)
@@ -90,7 +90,7 @@ def build(infile, outfile)
 
   _system %( ruby #{PROJECT_DIR}/vglexer.rb  #{temp_src   } > #{FILE_TOKENS} )
   _system %( ruby #{PROJECT_DIR}/vgparser.rb #{FILE_TOKENS} > #{FILE_TREE  } )
-  _system %( ruby #{PROJECT_DIR}/vgcg.rb     #{FILE_TREE  } > #{FILE_ASM   } )
+  _system %( ruby #{PROJECT_DIR}/vgcodegen.rb #{FILE_TREE  } > #{FILE_ASM   } )
   _system %( ruby #{PROJECT_DIR}/vgasm.rb    #{FILE_ASM   } > #{outfile    } )
 end
 
