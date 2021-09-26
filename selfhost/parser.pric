@@ -777,27 +777,6 @@ def _parse_when_clause(g_)
   return when_clause_;
 end
 
-def parse_case(g_)
-  var stmt_;
-  var [5]s_case; str_set_case(&s_case);
-  var [4]s_end; str_set_end(&s_end);
-  var when_clause_;
-
-  consume_kw(g_, &s_case);
-
-  stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, &s_case);
-
-  while (__not(Token_val_eq(peek(g_, 0), &s_end)))
-    when_clause_ = _parse_when_clause(g_);
-    List_add_list(g_, stmt_, when_clause_);
-  end
-
-  consume_kw(g_, &s_end);
-
-  return stmt_;
-end
-
 def parse_while(g_)
   var [6]s_while; str_set_while(&s_while);
   var [4]s_end; str_set_end(&s_end);
@@ -819,6 +798,27 @@ def parse_while(g_)
   List_add_str(g_, stmt_, &s_while);
   List_add(stmt_, expr_node_);
   List_add_list(g_, stmt_, stmts_);
+
+  return stmt_;
+end
+
+def parse_case(g_)
+  var stmt_;
+  var [5]s_case; str_set_case(&s_case);
+  var [4]s_end; str_set_end(&s_end);
+  var when_clause_;
+
+  consume_kw(g_, &s_case);
+
+  stmt_ = List_new(g_);
+  List_add_str(g_, stmt_, &s_case);
+
+  while (__not(Token_val_eq(peek(g_, 0), &s_end)))
+    when_clause_ = _parse_when_clause(g_);
+    List_add_list(g_, stmt_, when_clause_);
+  end
+
+  consume_kw(g_, &s_end);
 
   return stmt_;
 end
