@@ -263,20 +263,15 @@ def parse_expr
   case t_left.type
   when :int
     $pos += 1
-
     expr_l = t_left.value.to_i
-
-    parse_expr_right(expr_l)
 
   when :ident
     if peek(1).value == "("
       fn_name, *args = parse_funcall()
       expr_l = [:funcall, fn_name, *args]
-      parse_expr_right(expr_l)
     else
       $pos += 1
       expr_l = t_left.value
-      parse_expr_right(expr_l)
     end
 
   when :sym
@@ -285,19 +280,17 @@ def parse_expr
       consume "("
       expr_l = parse_expr()
       consume ")"
-
-      parse_expr_right(expr_l)
     when "&"
       expr_l = parse_expr_addr()
-      parse_expr_right(expr_l)
     when "*"
       expr_l = parse_deref()
-      parse_expr_right(expr_l)
     end
 
   else
     raise ParseError, t_left
   end
+
+  parse_expr_right(expr_l)
 end
 
 def parse_set
