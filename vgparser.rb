@@ -202,44 +202,6 @@ def parse_var
   end
 end
 
-def parse_expr_right(expr_l)
-  t = peek()
-
-  if t.value == ";" || t.value == ")" || t.value == "]" || t.value == ","
-    return expr_l
-  end
-
-  case t.value
-  when "+"
-    consume "+"
-    expr_r = parse_expr()
-    [:+, expr_l, expr_r]
-
-  when "*"
-    consume "*"
-    expr_r = parse_expr()
-    [:*, expr_l, expr_r]
-
-  when "=="
-    consume "=="
-    expr_r = parse_expr()
-    [:eq, expr_l, expr_r]
-
-  when "!="
-    consume "!="
-    expr_r = parse_expr()
-    [:neq, expr_l, expr_r]
-
-  when "<"
-    consume "<"
-    expr_r = parse_expr()
-    [:lt, expr_l, expr_r]
-
-  else
-    raise ParseError, t
-  end
-end
-
 def parse_expr_addr
   consume "&"
   var_name = peek().value
