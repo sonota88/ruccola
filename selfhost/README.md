@@ -7,7 +7,7 @@ https://qiita.com/sonota88/items/1e683276541cf1b87b76
 
 ```sh
 # テスト
-rake test_v3
+rake test
 ```
 
 ```sh

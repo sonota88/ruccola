@@ -62,6 +62,6 @@ task :"build-all" => [
 
 # --------------------------------
 
-Rake::TestTask.new(:test_v3) do |t|
-  t.test_files = FileList["../test_v3/**/test_*.rb"]
+Rake::TestTask.new(:test) do |t|
+  t.test_files = FileList["../test/**/test_*.rb"]
 end
