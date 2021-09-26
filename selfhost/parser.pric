@@ -583,6 +583,75 @@ def parse_expr_deref(g_)
   return Node_new_list(g_, list_);
 end
 
+def is_binop(t_)
+  var [3]s_double_equal;
+  var [3]s_not_equal;
+
+  aset(&s_double_equal, 0, 61); # =
+  aset(&s_double_equal, 1, 61); # =
+  aset(&s_double_equal, 2,  0);
+
+  aset(&s_not_equal, 0, 33); # !
+  aset(&s_not_equal, 1, 61); # =
+  aset(&s_not_equal, 2,  0);
+
+  case
+  when (char_at(Token_get_val(t_), 0) == 43) # +
+    return TRUE();
+  when (char_at(Token_get_val(t_), 0) == 42) # *
+    return TRUE();
+  when (Token_val_eq(t_, &s_double_equal))
+    return TRUE();
+  when (Token_val_eq(t_, &s_not_equal))
+    return TRUE();
+  when (char_at(Token_get_val(t_), 0) == 60) # <
+    return TRUE();
+  else
+    return FALSE();
+  end
+end
+
+def convert_binop(t_, s_)
+  var [3]s_double_equal;
+  var [3]s_not_equal;
+
+  aset(&s_double_equal, 0, 61); # =
+  aset(&s_double_equal, 1, 61); # =
+  aset(&s_double_equal, 2,  0);
+
+  aset(&s_not_equal, 0, 33); # !
+  aset(&s_not_equal, 1, 61); # =
+  aset(&s_not_equal, 2,  0);
+
+  case
+  when (char_at(Token_get_val(t_), 0) == 43) # +
+    aset(s_, 0, 43); # +
+    aset(s_, 1,  0);
+
+  when (char_at(Token_get_val(t_), 0) == 42) # *
+    aset(s_, 0, 42); # *
+    aset(s_, 1,  0);
+
+  when (Token_val_eq(t_, &s_double_equal))
+    aset(s_, 0, 101); # e
+    aset(s_, 1, 113); # q
+    aset(s_, 2,   0);
+
+  when (Token_val_eq(t_, &s_not_equal))
+    aset(s_, 0, 110); # n
+    aset(s_, 1, 101); # e
+    aset(s_, 2, 113); # q
+    aset(s_, 3,   0);
+
+  when (char_at(Token_get_val(t_), 0) == 60) # <
+    str_set_lt(s_);
+
+  else
+    p_s(Token_get_val(t_));
+    panic(651); # convert_binop: must not happen
+  end
+end
+
 def _parse_expr(g_)
   var t_left_;
   var n;
@@ -649,10 +718,28 @@ def _parse_expr(g_)
 end
 
 def parse_expr(g_)
-  var expr_node_l_;
+  var list_;
+  var expr_node_;
+  var expr_node_r_;
+  var [4]s_op;
 
-  expr_node_l_ = _parse_expr(g_);
-  return _parse_expr_right(g_, expr_node_l_);
+  expr_node_ = _parse_expr(g_);
+
+  while (is_binop(peek(g_, 0)))
+    convert_binop(peek(g_, 0), &s_op);
+    inc_token_index(g_);
+
+    expr_node_r_ = _parse_expr(g_);
+
+    list_ = List_new(g_);
+    List_add_str(g_, list_, &s_op);
+    List_add(list_, expr_node_);
+    List_add(list_, expr_node_r_);
+
+    expr_node_ = Node_new_list(g_, list_);
+  end
+
+  return expr_node_;
 end
 
 def parse_set(g_)
