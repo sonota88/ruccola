@@ -594,26 +594,6 @@ def parse_expr(g_)
 
   t_left_ = peek(g_, 0);
 
-  case
-  when (char_at(Token_get_val(t_left_), 0) == 40) # (
-    consume_sym_paren_l(g_); # (
-    expr_node_l_ = parse_expr(g_);
-    consume_sym_paren_r(g_); # )
-
-    return _parse_expr_right(g_, expr_node_l_);
-
-  when (char_at(Token_get_val(t_left_), 0) == 38) # &
-    expr_node_l_ = parse_expr_addr(g_);
-
-    return _parse_expr_right(g_, expr_node_l_);
-
-  when (char_at(Token_get_val(t_left_), 0) == 42) # *
-    expr_node_l_ = parse_expr_deref(g_);
-
-    return _parse_expr_right(g_, expr_node_l_);
-
-  else
-
     case
     when (Token_kind_eq(t_left_, TOKEN_KIND__INT()))
       inc_token_index(g_);
@@ -648,13 +628,34 @@ def parse_expr(g_)
         return _parse_expr_right(g_, expr_node_l_);
       end
 
+    when (Token_kind_eq(t_left_, TOKEN_KIND__SYM()))
+
+      case
+      when (char_at(Token_get_val(t_left_), 0) == 40) # (
+        consume_sym_paren_l(g_); # (
+        expr_node_l_ = parse_expr(g_);
+        consume_sym_paren_r(g_); # )
+
+        return _parse_expr_right(g_, expr_node_l_);
+
+      when (char_at(Token_get_val(t_left_), 0) == 38) # &
+        expr_node_l_ = parse_expr_addr(g_);
+
+        return _parse_expr_right(g_, expr_node_l_);
+
+      when (char_at(Token_get_val(t_left_), 0) == 42) # *
+        expr_node_l_ = parse_expr_deref(g_);
+
+        return _parse_expr_right(g_, expr_node_l_);
+
+      else
+        panic(652); # unexpected symbol
+      end
+
     else
       Json_print(Token_to_plain(g_, t_left_));
       panic(433); # not yet impl
     end
-
-  end
-
 end
 
 def parse_set(g_)
