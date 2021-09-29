@@ -350,22 +350,6 @@ end
 
 # --------------------------------
 
-def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
-  var set_stmt_;
-  var [4]s_set; str_set_set(&s_set);
-
-  asm_sub_sp(1);
-
-  if (List_size(stmt_) == 3)
-    set_stmt_ = List_new(g_);
-    List_add_str(g_, set_stmt_, &s_set);
-    List_add(set_stmt_, List_get(stmt_, 1));
-    List_add(set_stmt_, List_get(stmt_, 2));
-
-    gen_set(g_, fn_arg_names_, lvar_names_, set_stmt_);
-  end
-end
-
 def gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_)
   var width = List_get_as_int(stmt_, 2);
 
@@ -985,6 +969,22 @@ def gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_)
     stmt_ = List_get_as_list(stmts_, i);
     gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_);
     i = i + 1;
+  end
+end
+
+def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
+  var set_stmt_;
+  var [4]s_set; str_set_set(&s_set);
+
+  asm_sub_sp(1);
+
+  if (List_size(stmt_) == 3)
+    set_stmt_ = List_new(g_);
+    List_add_str(g_, set_stmt_, &s_set);
+    List_add(set_stmt_, List_get(stmt_, 1));
+    List_add(set_stmt_, List_get(stmt_, 2));
+
+    gen_set(g_, fn_arg_names_, lvar_names_, set_stmt_);
   end
 end
 
