@@ -716,6 +716,31 @@ def parse_return(g_)
   return stmt_;
 end
 
+def parse_while(g_)
+  var [6]s_while; str_set_while(&s_while);
+  var [4]s_end; str_set_end(&s_end);
+  var stmt_;
+  var expr_node_;
+  var stmts_;
+
+  consume_kw(g_, &s_while);
+
+  consume_sym_paren_l(g_); # (
+  expr_node_ = parse_expr(g_);
+  consume_sym_paren_r(g_); # )
+
+  stmts_ = parse_stmts(g_);
+
+  consume_kw(g_, &s_end);
+
+  stmt_ = List_new(g_);
+  List_add_str(g_, stmt_, &s_while);
+  List_add(stmt_, expr_node_);
+  List_add_list(g_, stmt_, stmts_);
+
+  return stmt_;
+end
+
 def _parse_when_clause(g_)
   var when_clause_;
   var cond_expr_node_;
@@ -747,31 +772,6 @@ def _parse_when_clause(g_)
   List_add_all(when_clause_, stmts_);
 
   return when_clause_;
-end
-
-def parse_while(g_)
-  var [6]s_while; str_set_while(&s_while);
-  var [4]s_end; str_set_end(&s_end);
-  var stmt_;
-  var expr_node_;
-  var stmts_;
-
-  consume_kw(g_, &s_while);
-
-  consume_sym_paren_l(g_); # (
-  expr_node_ = parse_expr(g_);
-  consume_sym_paren_r(g_); # )
-
-  stmts_ = parse_stmts(g_);
-
-  consume_kw(g_, &s_end);
-
-  stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, &s_while);
-  List_add(stmt_, expr_node_);
-  List_add_list(g_, stmt_, stmts_);
-
-  return stmt_;
 end
 
 def parse_case(g_)
