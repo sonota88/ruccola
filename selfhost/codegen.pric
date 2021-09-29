@@ -350,12 +350,6 @@ end
 
 # --------------------------------
 
-def gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_)
-  var width = List_get_as_int(stmt_, 2);
-
-  asm_sub_sp(width);
-end
-
 def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var list_ = Node_get_list(expr_);
@@ -986,6 +980,12 @@ def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
 
     gen_set(g_, fn_arg_names_, lvar_names_, set_stmt_);
   end
+end
+
+def gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_)
+  var width = List_get_as_int(stmt_, 2);
+
+  asm_sub_sp(width);
 end
 
 def gen_func(g_, func_)
