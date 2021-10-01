@@ -417,16 +417,16 @@ def parse_var(g_)
     _parse_var_array(g_);
   else
 
-  t_ = peek(g_, 2);
-  case
-  when (Token_val_eq(t_, &s_semicolon))
-    _parse_var_declare(g_);
-  when (Token_val_eq(t_, &s_equal))
-    _parse_var_init(g_);
-  else
-    print_s(Token_get_val(t_));
-    panic(426); # parse_var: unexpected token
-  end
+    t_ = peek(g_, 2);
+    case
+    when (Token_val_eq(t_, &s_semicolon))
+      _parse_var_declare(g_);
+    when (Token_val_eq(t_, &s_equal))
+      _parse_var_init(g_);
+    else
+      print_s(Token_get_val(t_));
+      panic(426); # parse_var: unexpected token
+    end
 
   end
 end
