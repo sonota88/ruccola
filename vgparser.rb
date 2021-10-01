@@ -129,10 +129,8 @@ def parse_func
 
   stmts = []
   while peek().value != "end"
-    t = peek()
-
     stmts <<
-      if t.value == "var"
+      if peek().value == "var"
         parse_var()
       else
         parse_stmt()
