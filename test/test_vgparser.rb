@@ -342,8 +342,8 @@ class ParserTest < Minitest::Test
 
     tree_exp = [
       [:var, "a",
-       ["+".to_sym,
-        ["+".to_sym, 1, 2],
+       [:+.to_sym,
+        [:+.to_sym, 1, 2],
         3]]]
 
     tree_act = parse_stmts(src)

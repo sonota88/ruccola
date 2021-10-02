@@ -424,7 +424,7 @@ end
 def parse_stmts
   stmts = []
 
-  while ! (
+  until (
     peek().value == "end" ||
     peek().value == "when" ||
     peek().value == "else"

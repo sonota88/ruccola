@@ -1,9 +1,9 @@
 require_relative "./common"
 
-KEYWORDS = %w(
+KEYWORDS = %w[
   def end var return case when while
   _cmt
-)
+]
 
 def tokenize(src)
   tokens = []
