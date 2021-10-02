@@ -303,3 +303,17 @@ def str_eq_while(str_)
   str_set_while(&pattern);
   return str_eq(str_, &pattern);
 end
+
+def str_set_true(str_)
+  aset(str_, 0, 116); # t
+  aset(str_, 1, 114); # r
+  aset(str_, 2, 117); # u
+  aset(str_, 3, 101); # e
+  aset(str_, 4,   0);
+end
+
+def str_eq_true(str_)
+  var [5]pattern;
+  str_set_true(&pattern);
+  return str_eq(str_, &pattern);
+end

@@ -555,6 +555,14 @@ def _parse_expr(g_)
       panic(640); # unexpected symbol
     end
 
+  when (Token_kind_eq(t_left_, TOKEN_KIND__KW()))
+    if (str_eq_true(Token_get_val(t_left_)))
+      expr_node_ = Node_new_str(g_, Token_get_val(t_left_));
+      inc_token_index(g_);
+    else
+      panic(563); # unexpected token
+    end
+
   else
     Json_print(Token_to_plain(g_, t_left_));
     panic(645); # not yet impl

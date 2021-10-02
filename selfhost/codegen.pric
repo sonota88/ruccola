@@ -653,6 +653,11 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
     str_ = Node_get_str(expr_);
 
     case
+    when (str_eq_true(str_))
+      aset(&cp_src, 0, 49); # 1
+      aset(&cp_src, 1,  0);
+      asm_cp(&cp_src, &s_reg_a);
+
     when (Names_includes(fn_arg_names_, str_))
       to_fn_arg_addr(&cp_src, fn_arg_names_, str_, cp_src_size);
       asm_cp(&cp_src, &s_reg_a);
