@@ -1,4 +1,4 @@
-require_relative "./helper_v2"
+require_relative "helper"
 
 class ParserTest < Minitest::Test
   VG_FILE     = project_path("tmp/test.vg.txt")
