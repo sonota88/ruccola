@@ -397,10 +397,10 @@ def gen_stmt(fn_arg_names, lvar_names, stmt)
     gen_set(fn_arg_names, lvar_names, stmt)
   when "return"
     gen_return(fn_arg_names, lvar_names, stmt)
-  when "case"
-    gen_case(fn_arg_names, lvar_names, stmt)
   when "while"
     gen_while(fn_arg_names, lvar_names, stmt)
+  when "case"
+    gen_case(fn_arg_names, lvar_names, stmt)
   when "_cmt"
     gen_vm_comment(stmt[1])
   else
