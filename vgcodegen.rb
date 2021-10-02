@@ -51,8 +51,8 @@ def gen_var(fn_arg_names, lvar_names, stmt)
   end
 end
 
-def gen_var_array(fn_arg_names, lvar_names, stmt_rest)
-  _, size = stmt_rest
+def gen_var_array(fn_arg_names, lvar_names, stmt)
+  _, _, size = stmt
   puts "  sub_sp #{size}"
 end
 
@@ -439,7 +439,7 @@ def gen_func_def(func_def)
       _, *stmt_rest = stmt
       lvar_name, size = stmt_rest
       lvar_names.add(lvar_name, size)
-      gen_var_array(fn_arg_names, lvar_names, stmt_rest)
+      gen_var_array(fn_arg_names, lvar_names, stmt)
     else
       gen_stmt(fn_arg_names, lvar_names, stmt)
     end
