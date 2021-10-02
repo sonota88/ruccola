@@ -387,9 +387,7 @@ def gen_vm_comment(comment)
 end
 
 def gen_stmt(fn_arg_names, lvar_names, stmt)
-  stmt_head, *stmt_rest = stmt
-
-  case stmt_head
+  case stmt[0]
   when "call"
     gen_call(fn_arg_names, lvar_names, stmt)
   when "set"
@@ -403,7 +401,7 @@ def gen_stmt(fn_arg_names, lvar_names, stmt)
   when "_cmt"
     gen_vm_comment(stmt[1])
   else
-    raise not_yet_impl("stmt_head", stmt_head)
+    raise not_yet_impl("stmt", stmt)
   end
 end
 
