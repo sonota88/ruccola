@@ -432,12 +432,10 @@ def gen_func_def(func_def)
   body.each do |stmt|
     case stmt[0]
     when "var"
-      _, *stmt_rest = stmt
-      lvar_names.add(stmt_rest[0], 1)
+      lvar_names.add(stmt[1], 1)
       gen_var(fn_arg_names, lvar_names, stmt)
     when "var_array"
-      _, *stmt_rest = stmt
-      lvar_name, size = stmt_rest
+      _, lvar_name, size = stmt
       lvar_names.add(lvar_name, size)
       gen_var_array(fn_arg_names, lvar_names, stmt)
     else
