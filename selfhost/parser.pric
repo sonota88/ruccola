@@ -529,7 +529,8 @@ def convert_binop(t_, s_)
     str_cp(s_, t_val_);
 
   when (char_at(t_val_, 0) == 60) # <
-    str_set_lt(s_);
+    aset(s_, 0, 60); # <
+    aset(s_, 1,  0);
 
   else
     p_s(Token_get_val(t_));
