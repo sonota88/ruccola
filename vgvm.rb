@@ -204,7 +204,7 @@ class Vm
 
     case opcode
     when :exit     then return @mem.main[@pc][1]
-    when :cp       then copy()     ; @pc += 1
+    when :cp       then cp()       ; @pc += 1
     when :lea      then lea()      ; @pc += 1
     when :add_ab   then add_ab()   ; @pc += 1
     when :mult_ab  then mult_ab()  ; @pc += 1
@@ -336,7 +336,7 @@ class Vm
     @reg_a = @reg_a * @reg_b
   end
 
-  def copy
+  def cp
     arg1 = @mem.main[@pc][1]
     arg2 = @mem.main[@pc][2]
 
