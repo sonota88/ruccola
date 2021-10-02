@@ -233,6 +233,24 @@ def gen_expr(fn_arg_names, lvar_names, expr)
   end
 end
 
+def _gen_funcall(fn_arg_names, lvar_names, funcall)
+  fn_name, *fn_args = funcall
+
+  if fn_name == "_debug"
+    puts "  _debug"
+    return
+  end
+
+  fn_args.reverse.each do |fn_arg|
+    gen_expr(fn_arg_names, lvar_names, fn_arg)
+    puts "  push reg_a"
+  end
+
+  gen_vm_comment("call  #{fn_name}")
+  puts "  call #{fn_name}"
+  puts "  add_sp #{fn_args.size}"
+end
+
 def gen_call(fn_arg_names, lvar_names, stmt_rest)
   fn_name, *fn_args = stmt_rest
 
