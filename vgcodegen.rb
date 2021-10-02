@@ -42,16 +42,17 @@ end
 
 # --------------------------------
 
-def gen_var(fn_arg_names, lvar_names, stmt_rest)
+def gen_var(fn_arg_names, lvar_names, stmt)
   puts "  sub_sp 1"
 
-  if stmt_rest.size == 2
-    gen_set(fn_arg_names, lvar_names, stmt_rest)
+  if stmt.size == 3
+    _, dest, expr = stmt
+    _gen_set(fn_arg_names, lvar_names, dest, expr)
   end
 end
 
-def gen_var_array(fn_arg_names, lvar_names, stmt_rest)
-  _, size = stmt_rest
+def gen_var_array(fn_arg_names, lvar_names, stmt)
+  _, _, size = stmt
   puts "  sub_sp #{size}"
 end
 
@@ -214,7 +215,7 @@ def gen_expr(fn_arg_names, lvar_names, expr)
 
   when Array
     if expr[0] == "funcall"
-      gen_call(fn_arg_names, lvar_names, expr[1..-1])
+      _gen_funcall(fn_arg_names, lvar_names, expr[1..-1])
       return
     end
 
@@ -232,8 +233,8 @@ def gen_expr(fn_arg_names, lvar_names, expr)
   end
 end
 
-def gen_call(fn_arg_names, lvar_names, stmt_rest)
-  fn_name, *fn_args = stmt_rest
+def _gen_funcall(fn_arg_names, lvar_names, funcall)
+  fn_name, *fn_args = funcall
 
   if fn_name == "_debug"
     puts "  _debug"
@@ -250,10 +251,12 @@ def gen_call(fn_arg_names, lvar_names, stmt_rest)
   puts "  add_sp #{fn_args.size}"
 end
 
-def gen_set(fn_arg_names, lvar_names, rest)
-  dest = rest[0]
-  expr = rest[1]
+def gen_call(fn_arg_names, lvar_names, stmt)
+  _, *funcall = stmt
+  _gen_funcall(fn_arg_names, lvar_names, funcall)
+end
 
+def _gen_set(fn_arg_names, lvar_names, dest, expr)
   gen_expr(fn_arg_names, lvar_names, expr)
 
   case dest
@@ -289,13 +292,18 @@ def gen_set(fn_arg_names, lvar_names, rest)
   end
 end
 
-def gen_return(fn_arg_names, lvar_names, stmt_rest)
-  expr = stmt_rest[0]
+def gen_set(fn_arg_names, lvar_names, stmt)
+  _, dest, expr = stmt
+  _gen_set(fn_arg_names, lvar_names, dest, expr)
+end
+
+def gen_return(fn_arg_names, lvar_names, stmt)
+  _, expr = stmt
   gen_expr(fn_arg_names, lvar_names, expr)
 end
 
-def gen_while(fn_arg_names, lvar_names, rest)
-  cond_expr, body = rest
+def gen_while(fn_arg_names, lvar_names, stmt)
+  _, cond_expr, body = stmt
 
   $label_id += 1
   label_id = $label_id
@@ -328,7 +336,9 @@ def gen_while(fn_arg_names, lvar_names, rest)
   puts ""
 end
 
-def gen_case(fn_arg_names, lvar_names, when_clauses)
+def gen_case(fn_arg_names, lvar_names, stmt)
+  _, *when_clauses = stmt
+
   $label_id += 1
   label_id = $label_id
 
@@ -377,23 +387,21 @@ def gen_vm_comment(comment)
 end
 
 def gen_stmt(fn_arg_names, lvar_names, stmt)
-  stmt_head, *stmt_rest = stmt
-
-  case stmt_head
+  case stmt[0]
   when "call"
-    gen_call(fn_arg_names, lvar_names, stmt_rest)
+    gen_call(fn_arg_names, lvar_names, stmt)
   when "set"
-    gen_set(fn_arg_names, lvar_names, stmt_rest)
+    gen_set(fn_arg_names, lvar_names, stmt)
   when "return"
-    gen_return(fn_arg_names, lvar_names, stmt_rest)
+    gen_return(fn_arg_names, lvar_names, stmt)
   when "case"
-    gen_case(fn_arg_names, lvar_names, stmt_rest)
+    gen_case(fn_arg_names, lvar_names, stmt)
   when "while"
-    gen_while(fn_arg_names, lvar_names, stmt_rest)
+    gen_while(fn_arg_names, lvar_names, stmt)
   when "_cmt"
-    gen_vm_comment(stmt_rest[0])
+    gen_vm_comment(stmt[1])
   else
-    raise not_yet_impl("stmt_head", stmt_head)
+    raise not_yet_impl("stmt", stmt)
   end
 end
 
@@ -403,13 +411,13 @@ def gen_stmts(fn_arg_names, lvar_names, stmts)
   end
 end
 
-def gen_func_def(rest)
-  fn_name = rest[0]
+def gen_func_def(func_def)
+  fn_name = func_def[1]
 
   fn_arg_names = Names.new
-  rest[1].each { |fn_arg_name| fn_arg_names.add(fn_arg_name, 1) }
+  func_def[2].each { |fn_arg_name| fn_arg_names.add(fn_arg_name, 1) }
 
-  body = rest[2]
+  body = func_def[3]
 
   puts ""
   puts "label #{fn_name}"
@@ -424,14 +432,12 @@ def gen_func_def(rest)
   body.each do |stmt|
     case stmt[0]
     when "var"
-      _, *stmt_rest = stmt
-      lvar_names.add(stmt_rest[0], 1)
-      gen_var(fn_arg_names, lvar_names, stmt_rest)
+      lvar_names.add(stmt[1], 1)
+      gen_var(fn_arg_names, lvar_names, stmt)
     when "var_array"
-      _, *stmt_rest = stmt
-      lvar_name, size = stmt_rest
+      _, lvar_name, size = stmt
       lvar_names.add(lvar_name, size)
-      gen_var_array(fn_arg_names, lvar_names, stmt_rest)
+      gen_var_array(fn_arg_names, lvar_names, stmt)
     else
       gen_stmt(fn_arg_names, lvar_names, stmt)
     end
@@ -445,15 +451,15 @@ def gen_func_def(rest)
   puts "  ret"
 end
 
-def gen_top_stmts(rest)
-  rest.each do |stmt|
-    stmt_head, *stmt_rest = stmt
+def gen_top_stmts(tree)
+  _, *top_stmts = tree
 
-    case stmt_head
+  top_stmts.each do |top_stmt|
+    case top_stmt[0]
     when "func"
-      gen_func_def(stmt_rest)
+      gen_func_def(top_stmt)
     else
-      raise not_yet_impl("stmt_head", stmt_head)
+      raise not_yet_impl("top_stmt", top_stmt)
     end
   end
 end
@@ -531,9 +537,7 @@ def codegen(tree)
   puts "  call main"
   puts "  exit 0"
 
-  head, *rest = tree
-  # assert head == "top_stmts"
-  gen_top_stmts(rest)
+  gen_top_stmts(tree)
 
   puts ""
   puts "#>builtins"
