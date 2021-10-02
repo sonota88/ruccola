@@ -401,7 +401,7 @@ def gen_stmt(fn_arg_names, lvar_names, stmt)
   when "while"
     gen_while(fn_arg_names, lvar_names, stmt)
   when "_cmt"
-    gen_vm_comment(stmt_rest[0])
+    gen_vm_comment(stmt[1])
   else
     raise not_yet_impl("stmt_head", stmt_head)
   end
