@@ -156,10 +156,9 @@ class Vm
 
     @skip = skip
 
-    # program counter
-    @pc = 0
+    @pc = 0 # program counter
 
-    # register
+    # registers
     @reg_a = 0
     @reg_b = 0
 
