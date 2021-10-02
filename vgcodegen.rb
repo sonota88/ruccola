@@ -46,7 +46,8 @@ def gen_var(fn_arg_names, lvar_names, stmt_rest)
   puts "  sub_sp 1"
 
   if stmt_rest.size == 2
-    gen_set(fn_arg_names, lvar_names, stmt_rest)
+    dest, expr = stmt_rest
+    _gen_set(fn_arg_names, lvar_names, dest, expr)
   end
 end
 
@@ -287,42 +288,8 @@ def _gen_set(fn_arg_names, lvar_names, dest, expr)
 end
 
 def gen_set(fn_arg_names, lvar_names, rest)
-  dest = rest[0]
-  expr = rest[1]
-
-  gen_expr(fn_arg_names, lvar_names, expr)
-
-  case dest
-  when String
-
-    case
-    when lvar_names.include?(dest)
-      disp = lvar_names.disp_lvar(dest)
-      puts "  cp reg_a [bp:#{disp}]"
-    else
-      raise not_yet_impl("dest", dest)
-    end
-
-  when Array
-    if dest[0] == "deref"
-      puts "  push reg_a"
-
-      gen_expr(fn_arg_names, lvar_names, dest[1])
-
-      # この時点で
-      #   スタック先頭: セットする値（代入の右辺）
-      #   reg_a: 転送先アドレス（代入の左辺）
-      # という状態になる
-
-      puts "  pop reg_b"
-      puts "  cp reg_b [reg_a]"
-
-    else
-      raise not_yet_impl("dest", dest)
-    end
-  else
-    raise not_yet_impl("dest", dest)
-  end
+  dest, expr = rest
+  _gen_set(fn_arg_names, lvar_names, dest, expr)
 end
 
 def gen_return(fn_arg_names, lvar_names, stmt_rest)
