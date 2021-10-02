@@ -23,7 +23,7 @@ class ParseError < StandardError; end
 
 def rest_head
   $tokens[$pos ... $pos + 8]
-    .map { |t| format("%s<%s>", t.type, t.value) }
+    .map { |t| format("%s<%s>", t.kind, t.value) }
 end
 
 def peek(offset = 0)
@@ -65,7 +65,7 @@ end
 def _parse_arg
   t = peek()
 
-  unless t.type == :ident
+  unless t.kind == :ident
     raise ParseError, t
   end
 
@@ -223,7 +223,7 @@ end
 def _parse_expr
   t = peek()
 
-  case t.type
+  case t.kind
   when :int
     $pos += 1
     t.value.to_i
@@ -422,7 +422,7 @@ def parse_stmt
   when "_debug" then parse_vm_debug()
   when "_panic" then parse_vm_panic()
   else
-    if t.type == :ident && peek(1).is(:sym, "(")
+    if t.kind == :ident && peek(1).is(:sym, "(")
       parse_call()
     else
       parse_set()

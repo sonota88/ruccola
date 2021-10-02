@@ -1,22 +1,22 @@
 require "pp"
 
 class Token
-  attr_reader :type, :value
+  attr_reader :kind, :value
 
-  # type:
+  # kind:
   #   str:   string
   #   kw:    keyword
   #   int:   integer
   #   sym:   symbol
   #   ident: identifier
-  def initialize(type, value, lineno)
-    @type = type
+  def initialize(kind, value, lineno)
+    @kind = kind
     @value = value
     @lineno = lineno
   end
 
   def to_line
-    "#{@lineno}:#{@type}:#{@value}"
+    "#{@lineno}:#{@kind}:#{@value}"
   end
 
   def self.from_line(line)
@@ -29,11 +29,11 @@ class Token
   end
 
   def to_s
-    "(Token type=#{@type} value=(_#{@value}_) lineno=#{@lineno})"
+    "(Token kind=#{@kind} value=(_#{@value}_) lineno=#{@lineno})"
   end
 
-  def is(type, str)
-    @type == type && @value == str
+  def is(kind, str)
+    @kind == kind && @value == str
   end
 end
 
