@@ -189,10 +189,9 @@ def parse_var
   else
     t = peek(1)
 
-    if t.value == ";"
-      _parse_var_declare()
-    elsif t.value == "="
-      _parse_var_init()
+    case t.value
+    when ";" then _parse_var_declare()
+    when "=" then _parse_var_init()
     else
       raise ParseError, t
     end
