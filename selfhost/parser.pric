@@ -498,46 +498,6 @@ def is_binop(t_)
   end
 end
 
-def convert_binop(t_, s_)
-  var [3]s_double_equal;
-  var [3]s_not_equal;
-  var t_val_;
-
-  aset(&s_double_equal, 0, 61); # =
-  aset(&s_double_equal, 1, 61); # =
-  aset(&s_double_equal, 2,  0);
-
-  aset(&s_not_equal, 0, 33); # !
-  aset(&s_not_equal, 1, 61); # =
-  aset(&s_not_equal, 2,  0);
-
-  t_val_ = Token_get_val(t_);
-
-  case
-  when (char_at(t_val_, 0) == 43) # +
-    aset(s_, 0, 43); # +
-    aset(s_, 1,  0);
-
-  when (char_at(t_val_, 0) == 42) # *
-    aset(s_, 0, 42); # *
-    aset(s_, 1,  0);
-
-  when (str_eq(t_val_, &s_double_equal))
-    str_cp(s_, t_val_);
-
-  when (str_eq(t_val_, &s_not_equal))
-    str_cp(s_, t_val_);
-
-  when (char_at(t_val_, 0) == 60) # <
-    aset(s_, 0, 60); # <
-    aset(s_, 1,  0);
-
-  else
-    p_s(Token_get_val(t_));
-    panic(651); # convert_binop: must not happen
-  end
-end
-
 def _parse_expr(g_)
   var t_left_;
   var n;
@@ -607,12 +567,16 @@ def parse_expr(g_)
   var list_;
   var expr_node_;
   var expr_node_r_;
-  var [4]s_op;
+  var s_op_size = 4; var [4]s_op;
 
   expr_node_ = _parse_expr(g_);
 
   while (is_binop(peek(g_, 0)))
-    convert_binop(peek(g_, 0), &s_op);
+    str_cp_with_check(
+      &s_op,
+      Token_get_val(peek(g_, 0)),
+      s_op_size
+    );
     inc_token_index(g_);
 
     expr_node_r_ = _parse_expr(g_);
