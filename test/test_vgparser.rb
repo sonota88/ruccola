@@ -232,7 +232,7 @@ class ParserTest < Minitest::Test
     EOS
 
     tree_exp = [
-      [:while, [:eq, "a", 1], []]]
+      [:while, [:"==", "a", 1], []]]
 
     tree_act = parse_stmts(src)
 
@@ -249,7 +249,7 @@ class ParserTest < Minitest::Test
 
     tree_exp = [
       [:var, "a"],
-      [:while, [:eq, "a", 1], [
+      [:while, [:"==", "a", 1], [
          [:set, "a", 2]]]]
 
     tree_act = parse_stmts(src)
@@ -326,7 +326,7 @@ class ParserTest < Minitest::Test
     tree_exp = [
       [:var, "a"],
       [:case,
-       [[:eq, "a", 1], [:set, "a", 2]]]]
+       [[:"==", "a", 1], [:set, "a", 2]]]]
 
     tree_act = parse_stmts(src)
 

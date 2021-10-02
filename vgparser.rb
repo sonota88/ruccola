@@ -263,7 +263,7 @@ def parse_expr
     $pos += 1
     op =
       case op
-      when "==" then :eq
+      when "==" then :"=="
       when "!=" then :neq
       when "<"  then :lt
       else

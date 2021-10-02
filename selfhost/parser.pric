@@ -523,9 +523,7 @@ def convert_binop(t_, s_)
     aset(s_, 1,  0);
 
   when (str_eq(t_val_, &s_double_equal))
-    aset(s_, 0, 101); # e
-    aset(s_, 1, 113); # q
-    aset(s_, 2,   0);
+    str_cp(s_, t_val_);
 
   when (str_eq(t_val_, &s_not_equal))
     aset(s_, 0, 110); # n

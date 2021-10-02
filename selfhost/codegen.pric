@@ -606,9 +606,9 @@ def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
   var [4]s_neq;
   var [3]s_lt; str_set_lt(&s_lt);
 
-  aset(&s_eq, 0, 101); # e
-  aset(&s_eq, 1, 113); # q
-  aset(&s_eq, 2,   0);
+  aset(&s_eq, 0, 61); # =
+  aset(&s_eq, 1, 61); # =
+  aset(&s_eq, 2,  0);
 
   aset(&s_neq, 0, 110); # n
   aset(&s_neq, 1, 101); # e
@@ -626,7 +626,7 @@ def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
     _gen_expr_add();
   when (char_at(op_str_, 0) == 42) # *
     _gen_expr_mult();
-  when (str_eq(op_str_, &s_eq)) # eq
+  when (str_eq(op_str_, &s_eq)) # ==
     _gen_expr_eq(g_);
   when (str_eq(op_str_, &s_neq)) # neq
     _gen_expr_neq(g_);
