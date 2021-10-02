@@ -303,7 +303,7 @@ def gen_return(fn_arg_names, lvar_names, stmt)
 end
 
 def gen_while(fn_arg_names, lvar_names, stmt)
-  _, cond_expr, body = stmt
+  _, cond_expr, stmts = stmt
 
   $label_id += 1
   label_id = $label_id
@@ -328,7 +328,7 @@ def gen_while(fn_arg_names, lvar_names, stmt)
   puts "  jump_eq #{label_end}"
 
   # 結果が true の場合
-  gen_stmts(fn_arg_names, lvar_names, body)
+  gen_stmts(fn_arg_names, lvar_names, stmts)
 
   # ループの先頭に戻る
   puts "  jump #{label_begin}"
@@ -353,7 +353,7 @@ def gen_case(fn_arg_names, lvar_names, stmt)
 
   when_clauses.each do |when_clause|
     when_idx += 1
-    cond, *rest = when_clause
+    cond, *stmts = when_clause
     cond_head, *cond_rest = cond
 
     puts "  # when_#{label_id}_#{when_idx}: #{cond.inspect}"
@@ -372,7 +372,7 @@ def gen_case(fn_arg_names, lvar_names, stmt)
     puts "  jump_eq #{label_end_when_head}_#{when_idx}"
 
     # true の場合
-    gen_stmts(fn_arg_names, lvar_names, rest)
+    gen_stmts(fn_arg_names, lvar_names, stmts)
 
     puts "  jump #{label_end}"
 
@@ -420,7 +420,7 @@ def gen_func_def(func_def)
   fn_arg_names = Names.new
   func_def[2].each { |fn_arg_name| fn_arg_names.add(fn_arg_name, 1) }
 
-  body = func_def[3]
+  stmts = func_def[3]
 
   puts ""
   puts "label #{fn_name}"
@@ -432,7 +432,7 @@ def gen_func_def(func_def)
 
   lvar_names = Names.new
 
-  body.each do |stmt|
+  stmts.each do |stmt|
     case stmt[0]
     when "var"
       lvar_names.add(stmt[1], 1)
