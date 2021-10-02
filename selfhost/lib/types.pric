@@ -378,16 +378,16 @@ def Names_index(self_, target_name_)
   var result = -1;
   var size = Names_size(self_);
   var s_name_;
-  var do_break = FALSE();
+  var do_break = false;
 
   i = 0;
   while (__not(do_break))
     s_name_ = Names_get_str(self_, i);
     case
     when (__le(size, i))
-      do_break = TRUE();
+      do_break = true;
     when (str_eq(s_name_, target_name_))
-      do_break = TRUE();
+      do_break = true;
       result = i;
     end
     i = i + 1;
@@ -405,20 +405,20 @@ end
 def Names_disp_lvar(self_, target_name_)
   var i;
   var disp = 0;
-  var do_break = FALSE();
+  var do_break = false;
   var s_name_;
   var width;
 
   i = 0;
   while (__not(do_break))
     if (__le(Names_size(self_), i))
-      do_break = TRUE();
+      do_break = true;
     else
       s_name_ = Names_get_str(self_, i);
       width = Names_get_width(self_, i);
       disp = __sub(disp, width);
       if (str_eq(s_name_, target_name_))
-        do_break = TRUE();
+        do_break = true;
       end
     end
 

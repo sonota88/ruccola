@@ -7,9 +7,6 @@
 def GO_ALLOC_CURSOR() return 0; end
 def GS_ALLOC_CURSOR() return 1; end
 
-def TRUE () return 1; end
-def FALSE() return 0; end
-
 def C_LF   () return 10; end # 0x0a
 def C_SPC  () return 32; end # 0x20
 def C_DQ   () return 34; end # 0x22
@@ -97,7 +94,7 @@ def unparse_int(dest_, arg_n)
   var mod;
   var [8]buf;
   var digit = 0;
-  var do_break = FALSE();
+  var do_break = false;
   var i;
   var dest_offset = 0;
 
@@ -110,7 +107,7 @@ def unparse_int(dest_, arg_n)
   while (__not(do_break))
     if (n < 10)
       aset(&buf, digit, n);
-      do_break = TRUE();
+      do_break = true;
     else
       div = __div(n, 10);
       mod = __mod(n, 10);
@@ -146,7 +143,7 @@ end
 def read_stdin_all(dest_, limit)
   var i = 0;
   var c;
-  var do_break = FALSE();
+  var do_break = false;
 
   while (__not(do_break))
     if (i == limit)
@@ -156,7 +153,7 @@ def read_stdin_all(dest_, limit)
     c = getchar();
     if (c == -1)
       aset(dest_, i, 0);
-      do_break = TRUE();
+      do_break = true;
     else
       aset(dest_, i, c);
       i = i + 1;
@@ -315,14 +312,14 @@ end
 def substr(dest_, src_, from, to)
   var i = from;
   var dest_i = 0;
-  var do_break = FALSE();
+  var do_break = false;
 
   while (__not(do_break))
     if (__or(
       i == to,
       char_at(src_, i) == 0
     ))
-      do_break = TRUE();
+      do_break = true;
     else
       aset(dest_, dest_i, char_at(src_, i));
       i = i + 1;
@@ -349,8 +346,8 @@ def substr_with_check(dest_, src_, from, to, dest_size)
 end
 
 def str_eq(s1_, s2_)
-  var do_break = FALSE();
-  var result = TRUE();
+  var do_break = false;
+  var result = true;
   var i = 0;
   var c1;
 
@@ -359,11 +356,11 @@ def str_eq(s1_, s2_)
 
     if (c1 == char_at(s2_, i))
       if (c1 == 0)
-        do_break = TRUE();
+        do_break = true;
       end
     else
-      result = FALSE();
-      do_break = TRUE();
+      result = false;
+      do_break = true;
     end
 
     i = i + 1;
@@ -378,7 +375,7 @@ end
 
 def char_index(str_, target_c, pos_from)
   var pos = pos_from;
-  var do_break = FALSE();
+  var do_break = false;
   var c;
   var idx = -1;
 
@@ -387,9 +384,9 @@ def char_index(str_, target_c, pos_from)
     case
     when (c == target_c)
       idx = pos;
-      do_break = TRUE();
+      do_break = true;
     when (c == 0)
-      do_break = TRUE();
+      do_break = true;
     else
       pos = pos + 1;
       c = char_at(str_, pos);
@@ -426,14 +423,14 @@ def is_digit_char(c)
 end
 
 def non_digit_index(str_, from)
-  var do_break = FALSE();
+  var do_break = false;
   var c;
   var pos = from;
 
   while (__not(do_break))
     c = char_at(str_, pos);
-    if (is_digit_char(c) != TRUE())
-      do_break = TRUE();
+    if (is_digit_char(c) != true)
+      do_break = true;
     else
       pos = pos + 1;
     end
@@ -454,10 +451,10 @@ end
 
 def range_include(from, to, target)
   case
-  when (target < from) return FALSE();
-  when (to < target  ) return FALSE();
+  when (target < from) return false;
+  when (to < target  ) return false;
   else
-    return TRUE();
+    return true;
   end
 end
 
@@ -472,30 +469,30 @@ end
 def __and(a, b)
   if (a)
     if (b)
-      return TRUE();
+      return true;
     else
-      return FALSE();
+      return false;
     end
   else
-    return FALSE();
+    return false;
   end
 end
 
 # TODO || 演算子を用意するまでの代替
 def __or(a, b)
   case
-  when (a) return TRUE();
-  when (b) return TRUE();
-  else     return FALSE();
+  when (a) return true;
+  when (b) return true;
+  else     return false;
   end
 end
 
 # TODO ! 演算子を用意するまでの代替
 def __not(a)
   if (a)
-    return FALSE();
+    return false;
   else
-    return TRUE();
+    return true;
   end
 end
 
@@ -503,11 +500,11 @@ end
 def __le(a, b)
   case
   when (a == b)
-    return TRUE();
+    return true;
   when (a < b)
-    return TRUE();
+    return true;
   else
-    return FALSE();
+    return false;
   end
 end
 

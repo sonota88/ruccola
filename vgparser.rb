@@ -249,6 +249,15 @@ def _parse_expr_factor
       parse_deref()
     end
 
+  when :kw
+    case t.value
+    when "true", "false"
+      $pos += 1
+      t.value
+    else
+      raise "unexpected token value (#{t})"
+    end
+
   else
     raise ParseError, t
   end

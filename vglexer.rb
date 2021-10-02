@@ -2,6 +2,7 @@ require_relative "./common"
 
 KEYWORDS = %w[
   def end var return case when while
+  true false
   _cmt
 ]
 

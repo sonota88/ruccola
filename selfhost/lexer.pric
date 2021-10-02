@@ -6,15 +6,15 @@
 def is_ident_char(c)
   case
   when (range_include(48, 57, c)) # 0..9
-    return TRUE();
+    return true;
   when (range_include(65, 90, c)) # A..Z
-    return TRUE();
+    return true;
   when (range_include(97, 122, c)) # a..z
-    return TRUE();
+    return true;
   when (c == 95) # _
-    return TRUE();
+    return true;
   else
-    return FALSE();
+    return false;
   end
 end
 
@@ -22,14 +22,14 @@ def find_non_ident_char(input_, pos_from)
   var pos = pos_from;
 
   var c = char_at(input_, pos);
-  var do_break = FALSE();
+  var do_break = false;
 
   while (__not(do_break))
     if (is_ident_char(c))
       pos = pos + 1;
       c = char_at(input_, pos);
     else
-      do_break = TRUE();
+      do_break = true;
     end
   end
 
@@ -164,7 +164,7 @@ def main()
   var [1]g;
   var [60000]input; # INPUT_MAX
   var pos = 0;
-  var do_break = FALSE();
+  var do_break = false;
   var size;
   var [5]s_case; str_set_case(&s_case);
   var [5]s_when; str_set_when(&s_when);
@@ -224,6 +224,8 @@ def main()
       when (str_eq_when(  &s_temp)) print_kw(&s_temp);
       when (str_eq_else(  &s_temp)) print_kw(&s_temp);
       when (str_eq__cmt(  &s_temp)) print_kw(&s_temp);
+      when (str_eq_true(  &s_temp)) print_kw(&s_temp);
+      when (str_eq_false( &s_temp)) print_kw(&s_temp);
       when (str_eq_if(    &s_temp))
         print_kw(&s_case);
         print_kw(&s_when);
@@ -244,7 +246,7 @@ def main()
           c == 0,
           __le(INPUT_MAX(), pos)
         ))
-      do_break = TRUE();
+      do_break = true;
     end
   end
 end
