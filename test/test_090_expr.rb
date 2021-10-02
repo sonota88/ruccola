@@ -24,4 +24,20 @@ class Test090 < Minitest::Test
     assert_equal("A", output)
   end
 
+  def test_false
+    src = <<~SRC
+      def main()
+        if (false)
+          putchar(65); # A
+        else
+          putchar(66); # B
+        end
+      end
+    SRC
+
+    output = run_vm(src)
+
+    assert_equal("B", output)
+  end
+
 end

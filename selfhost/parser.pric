@@ -556,7 +556,12 @@ def _parse_expr(g_)
     end
 
   when (Token_kind_eq(t_left_, TOKEN_KIND__KW()))
-    if (str_eq_true(Token_get_val(t_left_)))
+    if (
+      __or(
+        str_eq_true(Token_get_val(t_left_)),
+        str_eq_false(Token_get_val(t_left_))
+      )
+    )
       expr_node_ = Node_new_str(g_, Token_get_val(t_left_));
       inc_token_index(g_);
     else

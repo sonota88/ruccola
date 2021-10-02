@@ -225,6 +225,7 @@ def main()
       when (str_eq_else(  &s_temp)) print_kw(&s_temp);
       when (str_eq__cmt(  &s_temp)) print_kw(&s_temp);
       when (str_eq_true(  &s_temp)) print_kw(&s_temp);
+      when (str_eq_false( &s_temp)) print_kw(&s_temp);
       when (str_eq_if(    &s_temp))
         print_kw(&s_case);
         print_kw(&s_when);

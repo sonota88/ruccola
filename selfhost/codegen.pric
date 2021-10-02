@@ -658,6 +658,11 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
       aset(&cp_src, 1,  0);
       asm_cp(&cp_src, &s_reg_a);
 
+    when (str_eq_false(str_))
+      aset(&cp_src, 0, 48); # 0
+      aset(&cp_src, 1,  0);
+      asm_cp(&cp_src, &s_reg_a);
+
     when (Names_includes(fn_arg_names_, str_))
       to_fn_arg_addr(&cp_src, fn_arg_names_, str_, cp_src_size);
       asm_cp(&cp_src, &s_reg_a);

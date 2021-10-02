@@ -203,6 +203,8 @@ def gen_expr(fn_arg_names, lvar_names, expr)
       case
       when expr == "true"
         1
+      when expr == "false"
+        0
       when fn_arg_names.include?(expr)
         disp = fn_arg_names.disp_fn_arg(expr)
         "[bp:#{disp}]"

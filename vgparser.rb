@@ -251,7 +251,7 @@ def _parse_expr_factor
 
   when :kw
     case t.value
-    when "true"
+    when "true", "false"
       $pos += 1
       t.value
     else
