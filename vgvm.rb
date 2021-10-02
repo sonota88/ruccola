@@ -338,7 +338,7 @@ class Vm
 
   def cp
     arg_src = @mem.main[@pc][1]
-    arg2 = @mem.main[@pc][2]
+    arg_dest = @mem.main[@pc][2]
 
     src_val =
       case arg_src
@@ -348,14 +348,14 @@ class Vm
         raise not_yet_impl("copy src", arg_src)
       end
 
-    case arg2
+    case arg_dest
     when "reg_a" then @reg_a = src_val
     when "reg_b" then @reg_b = src_val
     when "bp"    then @bp    = src_val
     when "sp"    then set_sp(src_val)
-    when /^ind:/ then @mem.stack[calc_indirect_addr(arg2)] = src_val
+    when /^ind:/ then @mem.stack[calc_indirect_addr(arg_dest)] = src_val
     else
-      raise not_yet_impl("copy dest", arg2)
+      raise not_yet_impl("copy dest", arg_dest)
     end
   end
 

@@ -219,7 +219,7 @@ class Vm
 
   def cp
     arg_src = @mem.main[@pc][1]
-    dest = @mem.main[@pc][2].as(String)
+    arg_dest = @mem.main[@pc][2].as(String)
 
     src_val =
       case arg_src
@@ -229,14 +229,14 @@ class Vm
         raise "invalid type (#{arg_src.class})"
       end
 
-    case dest
+    case arg_dest
     when "reg_a" then @reg_a = src_val
     when "reg_b" then @reg_b = src_val
     when "bp"    then @bp    = src_val
     when "sp"    then @sp    = src_val
-    when /^ind:/ then @mem.stack[calc_indirect_addr(dest)] = src_val
+    when /^ind:/ then @mem.stack[calc_indirect_addr(arg_dest)] = src_val
     else
-      raise "TODO (#{dest.inspect})"
+      raise "TODO (#{arg_dest.inspect})"
     end
   end
 
