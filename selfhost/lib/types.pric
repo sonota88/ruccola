@@ -385,9 +385,9 @@ def Names_index(self_, target_name_)
     s_name_ = Names_get_str(self_, i);
     case
     when (__le(size, i))
-      do_break = TRUE();
+      do_break = true;
     when (str_eq(s_name_, target_name_))
-      do_break = TRUE();
+      do_break = true;
       result = i;
     end
     i = i + 1;
@@ -412,13 +412,13 @@ def Names_disp_lvar(self_, target_name_)
   i = 0;
   while (__not(do_break))
     if (__le(Names_size(self_), i))
-      do_break = TRUE();
+      do_break = true;
     else
       s_name_ = Names_get_str(self_, i);
       width = Names_get_width(self_, i);
       disp = __sub(disp, width);
       if (str_eq(s_name_, target_name_))
-        do_break = TRUE();
+        do_break = true;
       end
     end
 

@@ -7,21 +7,21 @@ def is_prime(primes_, n)
   var i;
   var prime;
   var do_break = FALSE();
-  var result = TRUE();
+  var result = true;
 
   i = 0;
   while (__not(do_break))
     if (__le(List_size(primes_), i))
-      do_break = TRUE();
+      do_break = true;
     else
       prime = List_get_as_int(primes_, i);
 
       case
       when (n < (prime * prime))
-        do_break = TRUE();
+        do_break = true;
       when (__mod(n, prime) == 0)
         result = FALSE();
-        do_break = TRUE();
+        do_break = true;
       end
     end
 

@@ -6,13 +6,13 @@
 def is_ident_char(c)
   case
   when (range_include(48, 57, c)) # 0..9
-    return TRUE();
+    return true;
   when (range_include(65, 90, c)) # A..Z
-    return TRUE();
+    return true;
   when (range_include(97, 122, c)) # a..z
-    return TRUE();
+    return true;
   when (c == 95) # _
-    return TRUE();
+    return true;
   else
     return FALSE();
   end
@@ -29,7 +29,7 @@ def find_non_ident_char(input_, pos_from)
       pos = pos + 1;
       c = char_at(input_, pos);
     else
-      do_break = TRUE();
+      do_break = true;
     end
   end
 
@@ -245,7 +245,7 @@ def main()
           c == 0,
           __le(INPUT_MAX(), pos)
         ))
-      do_break = TRUE();
+      do_break = true;
     end
   end
 end

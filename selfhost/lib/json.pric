@@ -121,7 +121,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
     case
     when (c == 93) # ]
       pos = pos + 1;
-      do_break = TRUE();
+      do_break = true;
 
     when (c == 91) # [
       child_list_ = Json_parse_list(g_, rest_, pos, &size);
@@ -152,7 +152,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
     end
 
     if (char_at(rest_, pos) == 0)
-      do_break = TRUE();
+      do_break = true;
     end
   end
 
