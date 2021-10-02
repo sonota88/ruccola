@@ -218,15 +218,15 @@ class Vm
   end
 
   def cp
-    src = @mem.main[@pc][1]
+    arg_src = @mem.main[@pc][1]
     dest = @mem.main[@pc][2].as(String)
 
     src_val =
-      case src
-      when Int32  then src
-      when String then get_value(src)
+      case arg_src
+      when Int32  then arg_src
+      when String then get_value(arg_src)
       else
-        raise "invalid type (#{src.class})"
+        raise "invalid type (#{arg_src.class})"
       end
 
     case dest

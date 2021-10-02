@@ -337,15 +337,15 @@ class Vm
   end
 
   def cp
-    arg1 = @mem.main[@pc][1]
+    arg_src = @mem.main[@pc][1]
     arg2 = @mem.main[@pc][2]
 
     src_val =
-      case arg1
-      when Integer then arg1
-      when String  then get_value(arg1)
+      case arg_src
+      when Integer then arg_src
+      when String  then get_value(arg_src)
       else
-        raise not_yet_impl("copy src", arg1)
+        raise not_yet_impl("copy src", arg_src)
       end
 
     case arg2
