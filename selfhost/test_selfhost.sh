@@ -13,7 +13,7 @@ print_this_dir() {
 test_selfhost() {
   local name="$1"
 
-  echo "${name}:"
+  echo "compile ${name}:"
 
   ../pricc ${name}.pric > ${TEMP_DIR}/${name}_gen1.exe.txt
   ./pricc  ${name}.pric > ${TEMP_DIR}/${name}_gen2.exe.txt
