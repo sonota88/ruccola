@@ -265,7 +265,7 @@ class ParserTest < Minitest::Test
 
     tree_exp = [
       [:while,
-       [:neq, "a", "b"],
+       [:"!=", "a", "b"],
        []]]
 
     tree_act = parse_stmts(src)

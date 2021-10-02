@@ -526,10 +526,7 @@ def convert_binop(t_, s_)
     str_cp(s_, t_val_);
 
   when (str_eq(t_val_, &s_not_equal))
-    aset(s_, 0, 110); # n
-    aset(s_, 1, 101); # e
-    aset(s_, 2, 113); # q
-    aset(s_, 3,   0);
+    str_cp(s_, t_val_);
 
   when (char_at(t_val_, 0) == 60) # <
     str_set_lt(s_);

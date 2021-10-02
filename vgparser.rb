@@ -264,7 +264,7 @@ def parse_expr
     op =
       case op
       when "==" then :"=="
-      when "!=" then :neq
+      when "!=" then :"!="
       when "<"  then :lt
       else
         op

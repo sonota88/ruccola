@@ -603,17 +603,16 @@ def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
   var arg_r_ = List_get(expr_els_, 2);
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [3]s_eq;
-  var [4]s_neq;
+  var [3]s_neq;
   var [3]s_lt; str_set_lt(&s_lt);
 
   aset(&s_eq, 0, 61); # =
   aset(&s_eq, 1, 61); # =
   aset(&s_eq, 2,  0);
 
-  aset(&s_neq, 0, 110); # n
-  aset(&s_neq, 1, 101); # e
-  aset(&s_neq, 2, 113); # q
-  aset(&s_neq, 3,   0);
+  aset(&s_neq, 0, 33); # !
+  aset(&s_neq, 1, 61); # =
+  aset(&s_neq, 2,  0);
 
   gen_expr(g_, fn_arg_names_, lvar_names_, arg_l_);
   asm_push(&s_reg_a);
