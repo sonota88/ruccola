@@ -498,7 +498,7 @@ def is_binop(t_)
   end
 end
 
-def _parse_expr(g_)
+def _parse_expr_factor(g_)
   var t_left_;
   var n;
   var expr_node_;
@@ -582,7 +582,7 @@ def parse_expr(g_)
   var expr_node_r_;
   var s_op_size = 4; var [4]s_op;
 
-  expr_node_ = _parse_expr(g_);
+  expr_node_ = _parse_expr_factor(g_);
 
   while (is_binop(peek(g_, 0)))
     str_cp_with_check(
@@ -592,7 +592,7 @@ def parse_expr(g_)
     );
     inc_token_index(g_);
 
-    expr_node_r_ = _parse_expr(g_);
+    expr_node_r_ = _parse_expr_factor(g_);
 
     list_ = List_new(g_);
     List_add_str(g_, list_, &s_op);
