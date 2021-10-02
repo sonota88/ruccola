@@ -411,13 +411,13 @@ def gen_stmts(fn_arg_names, lvar_names, stmts)
   end
 end
 
-def gen_func_def(rest)
-  fn_name = rest[0]
+def gen_func_def(func_def)
+  fn_name = func_def[1]
 
   fn_arg_names = Names.new
-  rest[1].each { |fn_arg_name| fn_arg_names.add(fn_arg_name, 1) }
+  func_def[2].each { |fn_arg_name| fn_arg_names.add(fn_arg_name, 1) }
 
-  body = rest[2]
+  body = func_def[3]
 
   puts ""
   puts "label #{fn_name}"
@@ -459,7 +459,7 @@ def gen_top_stmts(rest)
 
     case stmt_head
     when "func"
-      gen_func_def(stmt_rest)
+      gen_func_def(stmt)
     else
       raise not_yet_impl("stmt_head", stmt_head)
     end
