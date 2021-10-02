@@ -42,11 +42,11 @@ end
 
 # --------------------------------
 
-def gen_var(fn_arg_names, lvar_names, stmt_rest)
+def gen_var(fn_arg_names, lvar_names, stmt)
   puts "  sub_sp 1"
 
-  if stmt_rest.size == 2
-    dest, expr = stmt_rest
+  if stmt.size == 3
+    _, dest, expr = stmt
     _gen_set(fn_arg_names, lvar_names, dest, expr)
   end
 end
@@ -429,7 +429,7 @@ def gen_func_def(rest)
     when "var"
       _, *stmt_rest = stmt
       lvar_names.add(stmt_rest[0], 1)
-      gen_var(fn_arg_names, lvar_names, stmt_rest)
+      gen_var(fn_arg_names, lvar_names, stmt)
     when "var_array"
       _, *stmt_rest = stmt
       lvar_name, size = stmt_rest
