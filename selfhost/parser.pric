@@ -579,7 +579,7 @@ end
 def parse_expr(g_)
   var list_;
   var expr_node_;
-  var expr_node_r_;
+  var factor_node_;
   var s_op_size = 4; var [4]s_op;
 
   expr_node_ = _parse_expr_factor(g_);
@@ -592,12 +592,12 @@ def parse_expr(g_)
     );
     inc_token_index(g_);
 
-    expr_node_r_ = _parse_expr_factor(g_);
+    factor_node_ = _parse_expr_factor(g_);
 
     list_ = List_new(g_);
     List_add_str(g_, list_, &s_op);
     List_add(list_, expr_node_);
-    List_add(list_, expr_node_r_);
+    List_add(list_, factor_node_);
 
     expr_node_ = Node_new_list(g_, list_);
   end
