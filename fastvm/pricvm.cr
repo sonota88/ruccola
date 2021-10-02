@@ -404,14 +404,14 @@ class Vm
 
   def set_vram
     arg_vram = @mem.main[@pc][1] # dest
-    arg_src = @mem.main[@pc][2]
+    arg_val = @mem.main[@pc][2]
 
     src_val =
-      case arg_src
-      when Int32  then arg_src
-      when String then get_value(arg_src)
+      case arg_val
+      when Int32  then arg_val
+      when String then get_value(arg_val)
       else
-        raise "invalid type (#{arg_src.inspect})"
+        raise "invalid type (#{arg_val.inspect})"
       end
 
     case arg_vram

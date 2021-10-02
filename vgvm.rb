@@ -511,9 +511,9 @@ class Vm
 
   def set_vram
     arg_vram = @mem.main[@pc][1] # dest (vram)
-    arg2 = @mem.main[@pc][2] # src
+    arg_val = @mem.main[@pc][2] # src
 
-    src_val = get_value(arg2)
+    src_val = get_value(arg_val)
 
     case arg_vram
     when Integer
