@@ -220,7 +220,7 @@ def binary_op?(t)
   %(+ * == != <).include?(t.value)
 end
 
-def _parse_expr
+def _parse_expr_factor
   t = peek()
 
   case t.kind
@@ -256,13 +256,13 @@ def _parse_expr
 end
 
 def parse_expr
-  expr = _parse_expr()
+  expr = _parse_expr_factor()
 
   while binary_op?(peek())
     op = peek().value
     $pos += 1
 
-    expr_r = _parse_expr()
+    expr_r = _parse_expr_factor()
 
     expr = [op.to_sym, expr, expr_r]
   end
