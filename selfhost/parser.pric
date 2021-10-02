@@ -29,7 +29,7 @@ def set_token(g_, ti, t_)
 end
 
 def read_tokens(g_)
-  var do_break = FALSE();
+  var do_break = false;
   var line_size = 80; var [80]line;
   var size;
   var pos = 0;
@@ -187,7 +187,7 @@ def parse_args(g_)
   var args_;
   var t_;
   var arg_node_;
-  var do_break = FALSE();
+  var do_break = false;
   var [2]s_comma;
 
   aset(&s_comma, 0, C_COMMA());
@@ -225,7 +225,7 @@ def parse_exprs(g_)
   var exprs_;
   var t_;
   var expr_node_;
-  var do_break = FALSE();
+  var do_break = false;
   var [2]s_comma;
 
   aset(&s_comma, 0, C_COMMA());
@@ -264,7 +264,7 @@ def parse_func(g_)
   var t_;
   var stmts_;
   var stmt_;
-  var do_break = FALSE();
+  var do_break = false;
   var [4]s_var; str_set_var(&s_var);
   var [5]s_func; str_set_func(&s_func);
   var [4]s_def; str_set_def(&s_def);
@@ -494,7 +494,7 @@ def is_binop(t_)
   when (char_at(Token_get_val(t_), 0) == 60) # <
     return true;
   else
-    return FALSE();
+    return false;
   end
 end
 
@@ -825,7 +825,7 @@ end
 def parse_stmts(g_)
   var stmt_;
   var stmts_;
-  var do_break = FALSE();
+  var do_break = false;
   var t_;
 
   stmts_ = List_new(g_);

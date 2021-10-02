@@ -7,8 +7,6 @@
 def GO_ALLOC_CURSOR() return 0; end
 def GS_ALLOC_CURSOR() return 1; end
 
-def FALSE() return 0; end
-
 def C_LF   () return 10; end # 0x0a
 def C_SPC  () return 32; end # 0x20
 def C_DQ   () return 34; end # 0x22
@@ -96,7 +94,7 @@ def unparse_int(dest_, arg_n)
   var mod;
   var [8]buf;
   var digit = 0;
-  var do_break = FALSE();
+  var do_break = false;
   var i;
   var dest_offset = 0;
 
@@ -145,7 +143,7 @@ end
 def read_stdin_all(dest_, limit)
   var i = 0;
   var c;
-  var do_break = FALSE();
+  var do_break = false;
 
   while (__not(do_break))
     if (i == limit)
@@ -314,7 +312,7 @@ end
 def substr(dest_, src_, from, to)
   var i = from;
   var dest_i = 0;
-  var do_break = FALSE();
+  var do_break = false;
 
   while (__not(do_break))
     if (__or(
@@ -348,7 +346,7 @@ def substr_with_check(dest_, src_, from, to, dest_size)
 end
 
 def str_eq(s1_, s2_)
-  var do_break = FALSE();
+  var do_break = false;
   var result = true;
   var i = 0;
   var c1;
@@ -361,7 +359,7 @@ def str_eq(s1_, s2_)
         do_break = true;
       end
     else
-      result = FALSE();
+      result = false;
       do_break = true;
     end
 
@@ -377,7 +375,7 @@ end
 
 def char_index(str_, target_c, pos_from)
   var pos = pos_from;
-  var do_break = FALSE();
+  var do_break = false;
   var c;
   var idx = -1;
 
@@ -425,7 +423,7 @@ def is_digit_char(c)
 end
 
 def non_digit_index(str_, from)
-  var do_break = FALSE();
+  var do_break = false;
   var c;
   var pos = from;
 
@@ -453,8 +451,8 @@ end
 
 def range_include(from, to, target)
   case
-  when (target < from) return FALSE();
-  when (to < target  ) return FALSE();
+  when (target < from) return false;
+  when (to < target  ) return false;
   else
     return true;
   end
@@ -473,10 +471,10 @@ def __and(a, b)
     if (b)
       return true;
     else
-      return FALSE();
+      return false;
     end
   else
-    return FALSE();
+    return false;
   end
 end
 
@@ -485,14 +483,14 @@ def __or(a, b)
   case
   when (a) return true;
   when (b) return true;
-  else     return FALSE();
+  else     return false;
   end
 end
 
 # TODO ! 演算子を用意するまでの代替
 def __not(a)
   if (a)
-    return FALSE();
+    return false;
   else
     return true;
   end
@@ -506,7 +504,7 @@ def __le(a, b)
   when (a < b)
     return true;
   else
-    return FALSE();
+    return false;
   end
 end
 

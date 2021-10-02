@@ -14,7 +14,7 @@ def is_ident_char(c)
   when (c == 95) # _
     return true;
   else
-    return FALSE();
+    return false;
   end
 end
 
@@ -22,7 +22,7 @@ def find_non_ident_char(input_, pos_from)
   var pos = pos_from;
 
   var c = char_at(input_, pos);
-  var do_break = FALSE();
+  var do_break = false;
 
   while (__not(do_break))
     if (is_ident_char(c))
@@ -164,7 +164,7 @@ def main()
   var [1]g;
   var [60000]input; # INPUT_MAX
   var pos = 0;
-  var do_break = FALSE();
+  var do_break = false;
   var size;
   var [5]s_case; str_set_case(&s_case);
   var [5]s_when; str_set_when(&s_when);
