@@ -45,11 +45,7 @@ end
 def asm_call(label_)
   var [5]s_temp;
 
-  aset(&s_temp, 0,  99); # c
-  aset(&s_temp, 1,  97); # a
-  aset(&s_temp, 2, 108); # l
-  aset(&s_temp, 3, 108); # l
-  aset(&s_temp, 4,   0);
+  str_set_call(&s_temp);
 
   asm_indent();
   print_s(&s_temp);
