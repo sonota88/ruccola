@@ -1,0 +1,8 @@
+FASTVM_EXE = "exe/pricvm"
+FASTVM_SRC = "pricvm.cr"
+
+file FASTVM_EXE => [FASTVM_SRC] do
+  sh "./run.sh build-release"
+end
+
+task "build" => FASTVM_EXE
