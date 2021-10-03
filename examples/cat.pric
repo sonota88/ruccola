@@ -5,14 +5,14 @@
 def main()
   var EOF = -1;
   var c;
-  var do_break = 0; # false
+  var do_break = false;
 
   while (do_break == 0)
     c = getchar();
 
     case
     when (c == EOF)
-      do_break = 1; # true
+      do_break = true;
     when (0 == 0)
       write(c, 1);
     end
