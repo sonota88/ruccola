@@ -20,17 +20,11 @@ end
 
 def find_non_ident_char(input_, pos_from)
   var pos = pos_from;
-
   var c = char_at(input_, pos);
-  var do_break = false;
 
-  while (__not(do_break))
-    if (is_ident_char(c))
-      pos = pos + 1;
-      c = char_at(input_, pos);
-    else
-      do_break = true;
-    end
+  while (is_ident_char(c))
+    pos = pos + 1;
+    c = char_at(input_, pos);
   end
 
   return pos;
