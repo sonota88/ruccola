@@ -22,11 +22,7 @@ get_envvar() {
 }
 
 print_vm_cmd() {
-  set +o nounset
-  local val="$FASTVM"
-  set -o nounset
-
-  if [ "$val" = "1" ]; then
+  if [ "$(get_envvar FASTVM 0)" = "1" ]; then
     echo "${__DIR__}/../fastvm/exe/pricvm"
   else
     echo "${__DIR__}/../pricvm"
