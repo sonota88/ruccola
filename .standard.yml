@@ -2,6 +2,7 @@ ignore:
   - "selfhost/tmp/*"
   - "**/*":
     - Layout/ExtraSpacing
+    - Layout/SpaceBeforeComma
     - Layout/SpaceBeforeSemicolon
     - Style/GlobalVars
     - Style/MethodCallWithoutArgsParentheses
@@ -17,7 +18,6 @@ ignore:
     - Layout/MultilineMethodCallIndentation
     - Layout/SpaceAroundOperators
     - Layout/SpaceBeforeBlockBraces
-    - Layout/SpaceBeforeComma
     - Layout/SpaceInsideBlockBraces
     - Layout/SpaceInsideHashLiteralBraces
     - Layout/SpaceInsideParens
