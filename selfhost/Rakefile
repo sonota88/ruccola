@@ -48,8 +48,14 @@ dep_map = {
 
 dep_map.each_key do |name|
   file "exe/#{name}.exe.txt" => dep_map[name] do |t|
+    $stderr.puts "compile (gen1): #{name}"
+
     exe_file = t.name
-    sh %( PRINT_ASM=0 ../pricc #{name}.pric > #{exe_file} )
+    exe_file_temp = exe_file + ".tmp"
+
+    sh %( rm -f #{exe_file_temp} ), verbose: false
+    sh %( PRINT_ASM=0 ../pricc #{name}.pric > #{exe_file_temp} ), verbose: false
+    sh %( mv #{exe_file_temp} #{exe_file} ), verbose: false
   end
 end
 
