@@ -40,6 +40,10 @@ TEMP_DIR="${__DIR__}/tmp"
 
 mkdir -p tmp exe
 rake build-all
+status=$?
+if [ $status -ne 0 ]; then
+  exit $status
+fi
 
 test_selfhost lexer
 test_selfhost parser
