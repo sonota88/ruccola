@@ -10,6 +10,15 @@ print_this_dir() {
   )
 }
 
+build_all() {
+  rake build-all
+  status=$?
+
+  if [ $status -ne 0 ]; then
+    exit $status
+  fi
+}
+
 test_selfhost() {
   local name="$1"
 
@@ -39,11 +48,7 @@ __DIR__="$(print_this_dir)"
 TEMP_DIR="${__DIR__}/tmp"
 
 mkdir -p tmp exe
-rake build-all
-status=$?
-if [ $status -ne 0 ]; then
-  exit $status
-fi
+build_all
 
 test_selfhost lexer
 test_selfhost parser
