@@ -788,7 +788,11 @@ end
 
 def gen_return(g_, fn_arg_names_, lvar_names_, stmt_)
   var expr_ = List_get(stmt_, 1);
+
   gen_expr(g_, fn_arg_names_, lvar_names_, expr_);
+
+  asm_fn_epilogue();
+  asm_ret();
 end
 
 def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)

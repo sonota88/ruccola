@@ -303,7 +303,12 @@ end
 
 def gen_return(fn_arg_names, lvar_names, stmt)
   _, expr = stmt
+
   gen_expr(fn_arg_names, lvar_names, expr)
+
+  puts "  cp bp sp"
+  puts "  pop bp"
+  puts "  ret"
 end
 
 def gen_while(fn_arg_names, lvar_names, stmt)
