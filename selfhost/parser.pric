@@ -249,22 +249,22 @@ def parse_args(g_)
     return args_;
   end
 
-    arg_node_ = _parse_arg(g_);
-    List_add(args_, arg_node_);
+  arg_node_ = _parse_arg(g_);
+  List_add(args_, arg_node_);
 
-    while (__not(do_break))
-      t_ = peek(g_, 0);
+  while (__not(do_break))
+    t_ = peek(g_, 0);
 
-      if (char_at(Token_get_val(t_), 0) == C_COMMA())
-        consume_sym(g_, &s_comma);
-        arg_node_ = _parse_arg(g_);
-        List_add(args_, arg_node_);
-      else
-        do_break = true;
-      end
+    if (char_at(Token_get_val(t_), 0) == C_COMMA())
+      consume_sym(g_, &s_comma);
+      arg_node_ = _parse_arg(g_);
+      List_add(args_, arg_node_);
+    else
+      do_break = true;
     end
+  end
 
-    return args_;
+  return args_;
 end
 
 def parse_exprs(g_)
@@ -285,22 +285,22 @@ def parse_exprs(g_)
     return exprs_;
   end
 
-    expr_node_ = parse_expr(g_);
-    List_add(exprs_, expr_node_);
+  expr_node_ = parse_expr(g_);
+  List_add(exprs_, expr_node_);
 
-    while (__not(do_break))
-      t_ = peek(g_, 0);
+  while (__not(do_break))
+    t_ = peek(g_, 0);
 
-      if (char_at(Token_get_val(t_), 0) == C_COMMA())
-        consume_sym(g_, &s_comma);
-        expr_node_ = parse_expr(g_);
-        List_add(exprs_, expr_node_);
-      else
-        do_break = true;
-      end
+    if (char_at(Token_get_val(t_), 0) == C_COMMA())
+      consume_sym(g_, &s_comma);
+      expr_node_ = parse_expr(g_);
+      List_add(exprs_, expr_node_);
+    else
+      do_break = true;
     end
+  end
 
-    return exprs_;
+  return exprs_;
 end
 
 def parse_func(g_)
