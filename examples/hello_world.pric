@@ -1,22 +1,22 @@
 # -*- mode: ruby -*-
 
+#include ../selfhost/lib/std.pric
+
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 20; end
+
 def putchar(c)
   write(c, 1);
 end
 
 def main()
-  putchar( 72); # H
-  putchar(101); # e
-  putchar(108); # l
-  putchar(108); # l
-  putchar(111); # o
-  putchar( 44); # ,
-  putchar( 32); # (SPACE)
-  putchar( 87); # W
-  putchar(111); # o
-  putchar(114); # r
-  putchar(108); # l
-  putchar(100); # d
-  putchar( 33); # !
-  putchar( 10); # (LF)
+  var [21]g;
+  var g_ = &g;
+
+  # init globals
+  init_alloc_cursor(g_);
+  init_strings(g_);
+
+  print_s("Hello, World!");
+  putchar(10); # (LF)
 end

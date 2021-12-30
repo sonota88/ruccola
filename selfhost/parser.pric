@@ -5,6 +5,28 @@
 #include lib/types.pric
 #include lib/json.pric
 
+def str_lit_GO_STRINGS(g_)
+  return "GO_STRINGS";
+end
+
+def str_lit_funcall(g_)
+  return "funcall";
+end
+
+def str_lit_offset_(g_)
+  return "offset_";
+end
+
+def str_lit_g_(g_)
+  return "g_";
+end
+
+def str_lit_plus(g_)
+  return "+";
+end
+
+# --------------------------------
+
 def get_line_size(input_, pos_from)
   var pos_to;
   var lf_pos = char_index(input_, C_LF(), pos_from);
@@ -166,6 +188,32 @@ end
 
 def consume_sym_equal(g_)
   consume_sym_one_char(g_, 61); # =
+end
+
+# --------------------------------
+
+def StrLitList_init(g_)
+  *(g_ + GO_STR_LIT_LIST()) = List_new(g_);
+end
+
+def StrLitList_get_self(g_)
+  return *(g_ + GO_STR_LIT_LIST());
+end
+
+def StrLitList_get_offset(g_)
+  var self_ = StrLitList_get_self(g_);
+  var offset = 0;
+  var s_temp_;
+  var i;
+
+  i = 0;
+  while (i < List_size(self_))
+    s_temp_ = List_get_as_str(self_, i);
+    offset = offset + str_size(s_temp_) + 1;
+    i = i + 1;
+  end
+
+  return offset;
 end
 
 # --------------------------------
@@ -498,6 +546,28 @@ def is_binop(t_)
   end
 end
 
+def _make_str_expr(g_, offset)
+  var expr1_ = List_new(g_);
+  var expr2_ = List_new(g_);
+  var expr3_ = List_new(g_);
+
+  # GO_STRINGS()
+  List_add_str(g_, expr1_, str_lit_funcall(g_));
+  List_add_str(g_, expr1_, str_lit_GO_STRINGS(g_));
+
+  # g_ + GO_STRINGS()
+  List_add_str(g_, expr2_, str_lit_plus(g_));
+  List_add_str(g_, expr2_, str_lit_g_(g_));
+  List_add_list(g_, expr2_, expr1_);
+
+  # g_ + GO_STRINGS() + offset
+  List_add_str(g_, expr3_, str_lit_plus(g_));
+  List_add_list(g_, expr3_, expr2_);
+  List_add_int(g_, expr3_, offset);
+
+  return expr3_;
+end
+
 def _parse_expr_factor(g_)
   var t_;
   var n;
@@ -506,6 +576,9 @@ def _parse_expr_factor(g_)
   var funcall_list_;
   var [8]s_funcall; str_set_funcall(&s_funcall);
   var i;
+  var str_offset;
+  var expr_list_;
+  var str_lit_list_;
 
   t_ = peek(g_, 0);
 
@@ -567,6 +640,22 @@ def _parse_expr_factor(g_)
     else
       panic(563); # unexpected token
     end
+
+  when (Token_kind_eq(t_, TOKEN_KIND__STR()))
+    inc_token_index(g_);
+
+    str_offset = StrLitList_get_offset(g_);
+
+    # # debug
+    # print_i_e(str_offset);
+    # putchar_e(C_SPC());
+    # print_s_e(Token_get_val(t_));
+    # putchar_e(C_LF());
+
+    List_add_str(g_, StrLitList_get_self(g_), Token_get_val(t_));
+
+    expr_list_ = _make_str_expr(g_, str_offset);
+    expr_node_ = Node_new_list(g_, expr_list_);
 
   else
     Json_print(Token_to_plain(g_, t_));
@@ -892,7 +981,93 @@ def parse(g_)
   return parse_top_stmts(g_);
 end
 
-def GO_TOKENS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def make_set_char_stmt(g_, ci, c)
+  var expr1_ = List_new(g_);
+  var expr2_ = List_new(g_);
+  var stmt_ = List_new(g_);
+
+  # offset_ + ci
+  List_add_str(g_, expr1_, str_lit_plus(g_));
+  List_add_str(g_, expr1_, str_lit_offset_(g_));
+  List_add_int(g_, expr1_, ci);
+
+  # *(offset_ + ci)
+  List_add_str(g_, expr2_, "deref");
+  List_add_list(g_, expr2_, expr1_);
+
+  # *(offset_ + ci) = c
+  List_add_str(g_, stmt_, "set");
+  List_add_list(g_, stmt_, expr2_);
+  List_add_int(g_, stmt_, c);
+
+  return stmt_;
+end
+
+def make_fn_init_strings(g_)
+  var fn_ = List_new(g_);
+  var args_ = List_new(g_);
+  var stmts_ = List_new(g_);
+
+  List_add_str(g_, args_, str_lit_g_(g_));
+
+  # ----
+  # var offset_ = g_ + GO_STRINGS();
+
+  # GO_STRINGS()
+  var funcall_ = List_new(g_);
+  List_add_str(g_, funcall_, str_lit_funcall(g_));
+  List_add_str(g_, funcall_, str_lit_GO_STRINGS(g_));
+
+  # g_  + GO_STRINGS()
+  var g_funcall_ = List_new(g_);
+  List_add_str(g_, g_funcall_, str_lit_plus(g_));
+  List_add_str(g_, g_funcall_, str_lit_g_(g_));
+  List_add_list(g_, g_funcall_, funcall_);
+
+  # var offset_ = g_ + GO_STRINGS()
+  var var_offset_ = List_new(g_);
+  List_add_str(g_, var_offset_, "var");
+  List_add_str(g_, var_offset_, str_lit_offset_(g_));
+  List_add_list(g_, var_offset_, g_funcall_);
+
+  List_add_list(g_, stmts_, var_offset_);
+
+  # ----
+
+  var i = 0;
+  var ci = 0;
+  var str_ci;
+  var str_;
+  var c;
+  var str_lit_list_ = StrLitList_get_self(g_);
+  while (i < List_size(str_lit_list_))
+    str_ = List_get_as_str(str_lit_list_, i);
+    str_ci = 0;
+    while (str_ci < str_size(str_))
+      c = char_at(str_, str_ci);
+      List_add_list(g_, stmts_, make_set_char_stmt(g_, ci, c));
+      ci = ci + 1;
+      str_ci = str_ci + 1;
+    end
+    List_add_list(g_, stmts_, make_set_char_stmt(g_, ci, 0));
+    ci = ci + 1;
+    i = i + 1;
+  end
+
+  # ----
+
+  List_add_str(g_, fn_, "func");
+  List_add_str(g_, fn_, "init_strings");
+  List_add_list(g_, fn_, args_);
+  List_add_list(g_, fn_, stmts_);
+
+  return fn_;
+end
+
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 1000; end
+
+def GO_TOKENS() return GO_STRINGS() + GS_STRINGS(); end
 def GS_TOKENS() return 15000; end
 
 def GO_TOKEN_INDEX() return GO_TOKENS() + GS_TOKENS(); end
@@ -901,21 +1076,34 @@ def GS_TOKEN_INDEX() return 1; end
 def GO_NUM_TOKENS() return GO_TOKEN_INDEX() + GS_TOKEN_INDEX(); end
 def GS_NUM_TOKENS() return 1; end
 
+def GO_STR_LIT_LIST() return GO_NUM_TOKENS() + GS_NUM_TOKENS(); end
+def GS_STR_LIT_LIST() return 1; end
+
 def NUM_TOKENS_MAX()
   return GS_TOKENS();
 end
 
 def main()
-  var [15003]g;
+  var [16004]g;
+  var g_ = &g;
 
   # init globals
   init_alloc_cursor(&g);
+  init_strings(&g);
+
+  StrLitList_init(&g);
   set_token_index(&g, 0);
   assert(0, get_token_index(&g), 183);
 
   read_tokens(&g);
 
   var ast_ = parse(&g);
+
+  var fn_init_strings_;
+  if (0 < List_size(StrLitList_get_self(g_)))
+    fn_init_strings_ = make_fn_init_strings(&g);
+    List_add_list(&g, ast_, fn_init_strings_);
+  end
 
   Json_print(ast_);
 end

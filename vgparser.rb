@@ -5,6 +5,7 @@ require_relative "./common"
 
 $tokens = nil
 $pos = nil
+$strings = []
 
 def read_tokens(src)
   tokens = []
@@ -258,6 +259,22 @@ def _parse_expr_factor
       raise "unexpected token value (#{t})"
     end
 
+  when :str
+    $pos += 1
+    offset = $strings.map { |str| str.bytesize + 1 }.sum
+    $strings << t.value
+
+    # g_ + GO_STRINGS() + offset
+    [
+      :+,
+      [
+        :+,
+        "g_",
+        [:funcall, "GO_STRINGS"]
+      ],
+      offset
+    ]
+
   else
     raise ParseError, t
   end
@@ -471,6 +488,42 @@ end
 
 # --------------------------------
 
+# *(offset + i) = {byte.to_i};
+def gen_set_byte_stmt(i, byte)
+  [
+    :set,
+    [:deref, [:+, "offset_", i]],
+    byte.to_i
+  ]
+end
+
+# def init_strings(g_)
+#   var offset_ = g_ + GO_STRINGS();
+#   *(offset_ + 0) = 97;
+#   *(offset_ + 1) = 98;
+#   *(offset_ + 2) =  0;
+#   # ...
+# end
+def gen_init_strings_stmts
+  stmts = [
+    [:var, "offset_", [:+, "g_", [:funcall, "GO_STRINGS"]]]
+  ]
+
+  i = 0
+  $strings.each { |str|
+    str.each_byte { |byte|
+      stmts << gen_set_byte_stmt(i, byte)
+      i += 1
+    }
+    stmts << gen_set_byte_stmt(i, 0)
+    i += 1
+  }
+
+  [:func, "init_strings", ["g_"], stmts]
+end
+
+# --------------------------------
+
 in_file = ARGV[0]
 
 $tokens = read_tokens(File.read(in_file))
@@ -481,6 +534,10 @@ begin
 rescue ParseError => e
   dump_state()
   raise e
+end
+
+unless $strings.empty?
+  tree << gen_init_strings_stmts()
 end
 
 puts JSON.pretty_generate(tree)
