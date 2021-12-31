@@ -152,10 +152,14 @@ def print_str(str_)
   putchar(C_LF());
 end
 
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 1000; end
+
 def INPUT_MAX() return 60000; end
 
 def main()
-  var [1]g;
+  var [1001]g;
+  var g_ = &g;
   var [60000]input; # INPUT_MAX
   var pos = 0;
   var do_break = false;
@@ -167,6 +171,7 @@ def main()
 
   # init globals
   init_alloc_cursor(&g);
+  init_strings(&g);
 
   read_stdin_all(&input, INPUT_MAX());
 
@@ -218,7 +223,7 @@ def main()
       when (str_eq_when(  &s_temp)) print_kw(&s_temp);
       when (str_eq_else(  &s_temp)) print_kw(&s_temp);
       when (str_eq__cmt(  &s_temp)) print_kw(&s_temp);
-      when (str_eq_true(  &s_temp)) print_kw(&s_temp);
+      when (str_eq(&s_temp, "true")) print_kw(&s_temp);
       when (str_eq_false( &s_temp)) print_kw(&s_temp);
       when (str_eq_if(    &s_temp))
         print_kw(&s_case);

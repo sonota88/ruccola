@@ -637,7 +637,7 @@ def _parse_expr_factor(g_)
   when (Token_kind_eq(t_, TOKEN_KIND__KW()))
     if (
       __or(
-        str_eq_true(Token_get_val(t_)),
+        str_eq(Token_get_val(t_), "true"),
         str_eq_false(Token_get_val(t_))
       )
     )

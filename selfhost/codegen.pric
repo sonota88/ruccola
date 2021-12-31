@@ -649,7 +649,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
     str_ = Node_get_str(expr_);
 
     case
-    when (str_eq_true(str_))
+    when (str_eq(str_, "true"))
       aset(&cp_src, 0, 49); # 1
       aset(&cp_src, 1,  0);
       asm_cp(&cp_src, &s_reg_a);
@@ -1279,7 +1279,10 @@ def codegen(g_, ast_)
   putchar(C_LF());
 end
 
-def GO_LABEL_ID() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 1000; end
+
+def GO_LABEL_ID() return GO_STRINGS() + GS_STRINGS(); end
 def GS_LABEL_ID() return 1; end
 
 def get_label_id(g_)
@@ -1298,11 +1301,12 @@ def load_ast(g_)
 end
 
 def main()
-  var [2]g;
+  var [1002]g;
   var ast_;
 
   # init globals
   init_alloc_cursor(&g);
+  init_strings(&g);
 
   ast_ = load_ast(&g);
 
