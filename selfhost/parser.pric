@@ -127,15 +127,25 @@ end
 
 def consume_kw(g_, str_)
   var t_ = peek(g_, 0);
+
   if (__and(
         Token_kind_eq(t_, TOKEN_KIND__KW()),
         Token_val_eq(t_, str_)
   ))
     inc_token_index(g_);
   else
-    p_i(Token_get_kind(t_));
-    print_s(Token_get_val(t_));
-    print_s(str_);
+    print_i_e(TOKEN_KIND__KW());
+    putchar_e(47); # /
+    print_s_e(str_);
+    putchar_e(47); # /
+    putchar_e(C_LF());
+
+    print_i_e(Token_get_kind(t_));
+    putchar_e(47); # /
+    print_s_e(Token_get_val(t_));
+    putchar_e(47); # /
+    putchar_e(C_LF());
+
     panic(98); # consume_kw
   end
 end
