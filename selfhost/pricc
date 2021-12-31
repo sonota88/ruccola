@@ -21,6 +21,15 @@ get_envvar() {
   fi
 }
 
+is_fastvm() {
+  local val=$(get_envvar FASTVM 0)
+  if [ "$val" = "1" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 print_vm_cmd() {
   if [ "$(get_envvar FASTVM 0)" = "1" ]; then
     echo "${__DIR__}/../fastvm/exe/pricvm"
@@ -49,6 +58,10 @@ run() {
 
 __DIR__="$(print_this_dir)"
 
+PROJECT_DIR="$(
+  cd "${__DIR__}/.."
+  pwd
+)"
 TMP_DIR=${__DIR__}/tmp/
 PRICVM="$(print_vm_cmd)"
 PRINT_ASM=$(get_envvar "PRINT_ASM" 0)
@@ -67,6 +80,14 @@ asmfile=${TMP_DIR}/${bname}.vga.txt
   cd $__DIR__
   rake build-all
 )
+
+# build fast vm
+if (is_fastvm); then
+  (
+    cd ${PROJECT_DIR}/fastvm
+    rake build
+  )
+fi
 
 ruby ${__DIR__}/../check.rb gvar-width $file
 ruby ${__DIR__}/../preproc.rb $file > $src_temp
