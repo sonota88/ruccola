@@ -7,13 +7,13 @@ def main()
   var c;
   var do_break = false;
 
-  while (do_break == 0)
+  while (do_break == false)
     c = getchar();
 
     case
     when (c == EOF)
       do_break = true;
-    when (0 == 0)
+    else
       write(c, 1);
     end
   end

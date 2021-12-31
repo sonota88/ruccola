@@ -6,7 +6,7 @@
 def is_prime(primes_, n)
   var i;
   var prime;
-  var do_break = FALSE();
+  var do_break = false;
   var result = true;
 
   i = 0;
@@ -20,7 +20,7 @@ def is_prime(primes_, n)
       when (n < (prime * prime))
         do_break = true;
       when (__mod(n, prime) == 0)
-        result = FALSE();
+        result = false;
         do_break = true;
       end
     end
