@@ -11,3 +11,7 @@ label main
   cp bp sp
   pop bp
   ret
+
+  cp bp sp
+  pop bp
+  ret

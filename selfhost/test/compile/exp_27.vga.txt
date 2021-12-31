@@ -20,6 +20,10 @@ label ret_vram_lvar
   pop bp
   ret
 
+  cp bp sp
+  pop bp
+  ret
+
 label ret_lvar
   push bp
   cp sp bp
@@ -27,6 +31,10 @@ label ret_lvar
   # 関数の処理本体
   sub_sp 1
   cp [bp:-1] reg_a
+
+  cp bp sp
+  pop bp
+  ret
 
   cp bp sp
   pop bp

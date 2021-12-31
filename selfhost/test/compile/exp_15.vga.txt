@@ -12,6 +12,10 @@ label f1
   pop bp
   ret
 
+  cp bp sp
+  pop bp
+  ret
+
 label main
   push bp
   cp sp bp
