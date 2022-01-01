@@ -25,4 +25,19 @@ class Test110 < Minitest::Test
     assert_equal("A", output)
   end
 
+  # no return value
+  def test_020
+    src = <<~SRC
+      def main()
+        putchar(65); # A
+        return;
+        putchar(66); # B
+      end
+    SRC
+
+    output = run_vm(src)
+
+    assert_equal("A", output)
+  end
+
 end

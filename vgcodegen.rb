@@ -304,7 +304,9 @@ end
 def gen_return(fn_arg_names, lvar_names, stmt)
   _, expr = stmt
 
-  gen_expr(fn_arg_names, lvar_names, expr)
+  if stmt.size == 2
+    gen_expr(fn_arg_names, lvar_names, expr)
+  end
 
   puts "  cp bp sp"
   puts "  pop bp"
