@@ -47,6 +47,11 @@ def asm_prologue
   puts "  cp sp bp"
 end
 
+def asm_epilogue
+  puts "  cp bp sp"
+  puts "  pop bp"
+end
+
 # --------------------------------
 
 def gen_var(fn_arg_names, lvar_names, stmt)
@@ -315,8 +320,7 @@ def gen_return(fn_arg_names, lvar_names, stmt)
     gen_expr(fn_arg_names, lvar_names, expr)
   end
 
-  puts "  cp bp sp"
-  puts "  pop bp"
+  asm_epilogue
   puts "  ret"
 end
 
@@ -466,8 +470,7 @@ def gen_func_def(func_def)
   puts "  # <<-- #{fn_name} body"
 
   puts ""
-  puts "  cp bp sp"
-  puts "  pop bp"
+  asm_epilogue
   puts "  ret"
 end
 
@@ -490,8 +493,7 @@ def gen_builtin_getchar
 
   puts "  read reg_a"
 
-  puts "  cp bp sp"
-  puts "  pop bp"
+  asm_epilogue
   puts "  ret"
 end
 
@@ -502,8 +504,7 @@ def gen_builtin_write
   puts "  cp [bp:2] reg_a"
   puts "  write reg_a [bp:3]"
 
-  puts "  cp bp sp"
-  puts "  pop bp"
+  asm_epilogue
   puts "  ret"
 end
 
@@ -513,8 +514,7 @@ def gen_builtin_get_sp
 
   puts "  cp sp reg_a"
 
-  puts "  cp bp sp"
-  puts "  pop bp"
+  asm_epilogue
   puts "  ret"
 end
 
@@ -532,8 +532,7 @@ def gen_builtin_set_vram
 
   puts "  set_vram [bp:2] [bp:3]" # vram_addr value
 
-  puts "  cp bp sp"
-  puts "  pop bp"
+  asm_epilogue
   puts "  ret"
 end
 
@@ -543,8 +542,7 @@ def gen_builtin_get_vram
 
   puts "  get_vram [bp:2] reg_a"
 
-  puts "  cp bp sp"
-  puts "  pop bp"
+  asm_epilogue
   puts "  ret"
 end
 
