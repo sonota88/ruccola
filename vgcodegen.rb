@@ -42,6 +42,13 @@ end
 
 # --------------------------------
 
+def asm_prologue
+  puts "  push bp"
+  puts "  cp sp bp"
+end
+
+# --------------------------------
+
 def gen_var(fn_arg_names, lvar_names, stmt)
   puts "  sub_sp 1"
 
@@ -435,8 +442,7 @@ def gen_func_def(func_def)
 
   puts ""
   puts "label #{fn_name}"
-  puts "  push bp"
-  puts "  cp sp bp"
+  asm_prologue
 
   puts ""
   puts "  # -->> #{fn_name} body"
@@ -480,8 +486,7 @@ end
 
 def gen_builtin_getchar
   puts "label getchar"
-  puts "  push bp"
-  puts "  cp sp bp"
+  asm_prologue
 
   puts "  read reg_a"
 
@@ -492,8 +497,7 @@ end
 
 def gen_builtin_write
   puts "label write"
-  puts "  push bp"
-  puts "  cp sp bp"
+  asm_prologue
 
   puts "  cp [bp:2] reg_a"
   puts "  write reg_a [bp:3]"
@@ -505,8 +509,7 @@ end
 
 def gen_builtin_get_sp
   puts "label get_sp"
-  puts "  push bp"
-  puts "  cp sp bp"
+  asm_prologue
 
   puts "  cp sp reg_a"
 
@@ -525,8 +528,7 @@ end
 
 def gen_builtin_set_vram
   puts "label set_vram"
-  puts "  push bp"
-  puts "  cp sp bp"
+  asm_prologue
 
   puts "  set_vram [bp:2] [bp:3]" # vram_addr value
 
@@ -537,8 +539,7 @@ end
 
 def gen_builtin_get_vram
   puts "label get_vram"
-  puts "  push bp"
-  puts "  cp sp bp"
+  asm_prologue
 
   puts "  get_vram [bp:2] reg_a"
 
