@@ -19,7 +19,7 @@ class Test100 < Minitest::Test
       "while.pric"
     ]
 
-    diff_cmd = "ruby " + project_path("selfhost/test/diff.rb")
+    diff_cmd = "ruby " + project_path("test/diff.rb")
 
     files.each do |file|
       $stderr.puts "test #{file}:"
