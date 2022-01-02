@@ -671,7 +671,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
       Json_print(Names_to_plain(g_, fn_arg_names_));
       Json_print(Names_to_plain(g_, lvar_names_));
       Json_print_node(expr_);
-      panic(336); # gen_expr: not yet implemented
+      panic(681); # gen_expr: no such function argument or local variable
     end
 
   when (Node_kind_eq(expr_, NODE_KIND__LIST()))

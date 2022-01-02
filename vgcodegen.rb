@@ -224,7 +224,7 @@ def gen_expr(fn_arg_names, lvar_names, expr)
         disp = lvar_names.disp_lvar(expr)
         "[bp:#{disp}]"
       else
-        raise not_yet_impl("expr", expr)
+        raise "no such function argument or local variable (#{expr})"
       end
 
     puts "  cp #{push_arg} reg_a"
