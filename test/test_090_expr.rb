@@ -40,4 +40,30 @@ class Test090 < Minitest::Test
     assert_equal("B", output)
   end
 
+  # --------------------------------
+  # function call
+
+  def test_funcall_noargs
+    src = <<~SRC
+      def f()
+      end
+
+      def main()
+        f();
+      end
+    SRC
+
+    expected = <<-ASM
+  _cmt call~~f
+  call f
+  add_sp 0
+    ASM
+
+    actual = compile_to_asm(src)
+
+    assert_equal(
+      expected,
+      extract_asm_main_body(actual)
+    )
+  end
 end
