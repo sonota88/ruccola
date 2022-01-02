@@ -987,24 +987,24 @@ def parse(g_)
   return parse_top_stmts(g_);
 end
 
-def make_set_char_stmt(g_, ci, c)
+def make_set_byte_stmt(g_, bi, byte)
   var expr1_ = List_new(g_);
   var expr2_ = List_new(g_);
   var stmt_ = List_new(g_);
 
-  # offset_ + ci
+  # offset_ + bi
   List_add_str(g_, expr1_, str_lit_plus(g_));
   List_add_str(g_, expr1_, str_lit_offset_(g_));
-  List_add_int(g_, expr1_, ci);
+  List_add_int(g_, expr1_, bi);
 
-  # *(offset_ + ci)
+  # *(offset_ + bi)
   List_add_str(g_, expr2_, "deref");
   List_add_list(g_, expr2_, expr1_);
 
-  # *(offset_ + ci) = c
+  # *(offset_ + bi) = byte
   List_add_str(g_, stmt_, "set");
   List_add_list(g_, stmt_, expr2_);
-  List_add_int(g_, stmt_, c);
+  List_add_int(g_, stmt_, byte);
 
   return stmt_;
 end
@@ -1051,11 +1051,11 @@ def make_fn_init_strings(g_)
     str_ci = 0;
     while (str_ci < str_size(str_))
       c = char_at(str_, str_ci);
-      List_add_list(g_, stmts_, make_set_char_stmt(g_, ci, c));
+      List_add_list(g_, stmts_, make_set_byte_stmt(g_, ci, c));
       ci = ci + 1;
       str_ci = str_ci + 1;
     end
-    List_add_list(g_, stmts_, make_set_char_stmt(g_, ci, 0));
+    List_add_list(g_, stmts_, make_set_byte_stmt(g_, ci, 0));
     ci = ci + 1;
     i = i + 1;
   end

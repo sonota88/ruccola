@@ -488,11 +488,11 @@ end
 
 # --------------------------------
 
-# *(offset + i) = {byte.to_i};
-def gen_set_byte_stmt(i, byte)
+# *(offset + bi) = {byte.to_i};
+def make_set_byte_stmt(bi, byte)
   [
     :set,
-    [:deref, [:+, "offset_", i]],
+    [:deref, [:+, "offset_", bi]],
     byte.to_i
   ]
 end
@@ -512,10 +512,10 @@ def gen_init_strings_stmts
   i = 0
   $strings.each { |str|
     str.each_byte { |byte|
-      stmts << gen_set_byte_stmt(i, byte)
+      stmts << make_set_byte_stmt(i, byte)
       i += 1
     }
-    stmts << gen_set_byte_stmt(i, 0)
+    stmts << make_set_byte_stmt(i, 0)
     i += 1
   }
 
