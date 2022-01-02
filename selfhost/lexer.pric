@@ -171,14 +171,7 @@ def print_str(str_)
   putchar(C_LF());
 end
 
-def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-def GS_STRINGS() return 1000; end
-
-def INPUT_MAX() return 60000; end
-
-def main()
-  var [1001]g;
-  var g_ = &g;
+def lex(g_)
   var [60000]input; # INPUT_MAX
   var pos = 0;
   var do_break = false;
@@ -187,10 +180,6 @@ def main()
   var [5]s_when; str_set_when(&s_when);
   var s_temp_size = 40; var [40]s_temp;
   var c;
-
-  # init globals
-  init_alloc_cursor(&g);
-  init_strings(&g);
 
   read_stdin_all(&input, INPUT_MAX());
 
@@ -248,7 +237,7 @@ def main()
     else
       p_i(pos);
       p_c(c);
-      panic(239); # unexpected pattern
+      panic(239); # lex: unexpected pattern
     end
 
     c = char_at(&input, pos);
@@ -259,4 +248,22 @@ def main()
       do_break = true;
     end
   end
+end
+
+# --------------------------------
+
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 1000; end
+
+def INPUT_MAX() return 60000; end
+
+def main()
+  var [1001]g;
+  var g_ = &g;
+
+  # init globals
+  init_alloc_cursor(&g);
+  init_strings(&g);
+
+  lex(g_);
 end
