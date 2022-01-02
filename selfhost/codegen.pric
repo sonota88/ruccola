@@ -654,7 +654,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
       aset(&cp_src, 1,  0);
       asm_cp(&cp_src, &s_reg_a);
 
-    when (str_eq_false(str_))
+    when (str_eq(str_, "false"))
       aset(&cp_src, 0, 48); # 0
       aset(&cp_src, 1,  0);
       asm_cp(&cp_src, &s_reg_a);

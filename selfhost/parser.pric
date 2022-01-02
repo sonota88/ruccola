@@ -638,7 +638,7 @@ def _parse_expr_factor(g_)
     if (
       __or(
         str_eq(Token_get_val(t_), "true"),
-        str_eq_false(Token_get_val(t_))
+        str_eq(Token_get_val(t_), "false")
       )
     )
       expr_node_ = Node_new_str(g_, Token_get_val(t_));
