@@ -729,7 +729,10 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
 
   asm_vm_comment(&vm_comment);
   asm_call(fn_name_);
-  asm_add_sp(List_size(args_));
+
+  if (0 < List_size(args_))
+    asm_add_sp(List_size(args_));
+  end
 end
 
 def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)

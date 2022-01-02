@@ -56,7 +56,6 @@ class Test090 < Minitest::Test
     expected = <<-ASM
   _cmt call~~f
   call f
-  add_sp 0
     ASM
 
     actual = compile_to_asm(src)

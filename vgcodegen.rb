@@ -264,7 +264,7 @@ def _gen_funcall(fn_arg_names, lvar_names, funcall)
 
   gen_vm_comment("call  #{fn_name}")
   puts "  call #{fn_name}"
-  puts "  add_sp #{fn_args.size}"
+  puts "  add_sp #{fn_args.size}" unless fn_args.empty?
 end
 
 def gen_call(fn_arg_names, lvar_names, stmt)
