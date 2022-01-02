@@ -116,7 +116,7 @@ def is_kw(g_, str_)
   when (str_eq_case(  str_  )) return true;
   when (str_eq_when(  str_  )) return true;
   when (str_eq_else(  str_  )) return true;
-  when (str_eq__cmt(  str_  )) return true;
+  when (str_eq(str_, "_cmt" )) return true;
   when (str_eq(str_, "true" )) return true;
   when (str_eq(str_, "false")) return true;
   when (str_eq_if(    str_  )) return true;

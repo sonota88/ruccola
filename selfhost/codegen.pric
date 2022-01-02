@@ -7,6 +7,12 @@
 
 # --------------------------------
 
+def str_lit__cmt(g_)
+  return "_cmt";
+end
+
+# --------------------------------
+
 def asm_indent()
   putchar(C_SPC());
   putchar(C_SPC());
@@ -193,8 +199,7 @@ def asm_jump_g(label_)
   putchar(C_LF());
 end
 
-def asm_vm_comment(vm_comment_)
-  var [5] str__cmt; str_set__cmt(&str__cmt);
+def asm_vm_comment(g_, vm_comment_)
   var vm_comment_size = 40; var [40]vm_comment;
   var i;
   var c;
@@ -215,7 +220,7 @@ def asm_vm_comment(vm_comment_)
   end
 
   asm_indent();
-  print_s(&str__cmt);
+  print_s(str_lit__cmt(g_));
   putchar(C_SPC()); print_s(&vm_comment);
   putchar(C_LF());
 end
@@ -727,7 +732,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
     i = __sub(i, 1);
   end
 
-  asm_vm_comment(&vm_comment);
+  asm_vm_comment(g_, &vm_comment);
   asm_call(fn_name_);
 
   if (0 < List_size(args_))
@@ -931,8 +936,8 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   asm_label(&label_end);
 end
 
-def gen_vm_comment(stmt_)
-  asm_vm_comment(List_get_as_str(stmt_, 1));
+def gen_vm_comment(g_, stmt_)
+  asm_vm_comment(g_, List_get_as_str(stmt_, 1));
 end
 
 def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
@@ -941,8 +946,8 @@ def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
   case
   when (str_eq_set(head_str_))
     gen_set(g_, fn_arg_names_, lvar_names_, stmt_);
-  when (str_eq__cmt(head_str_))
-    gen_vm_comment(stmt_);
+  when (str_eq(head_str_, str_lit__cmt(g_)))
+    gen_vm_comment(g_, stmt_);
   when (str_eq_call(head_str_))
     gen_call(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq_return(head_str_))

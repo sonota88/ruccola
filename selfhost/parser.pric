@@ -9,6 +9,10 @@ def str_lit_GO_STRINGS(g_)
   return "GO_STRINGS";
 end
 
+def str_lit__cmt(g_)
+  return "_cmt";
+end
+
 def str_lit_funcall(g_)
   return "funcall";
 end
@@ -868,18 +872,17 @@ end
 
 def parse_vm_comment(g_)
   var t_;
-  var [5]s__cmt; str_set__cmt(&s__cmt);
   var stmt_;
 
   stmt_ = List_new(g_);
 
-  consume_kw(g_, &s__cmt);
+  consume_kw(g_, str_lit__cmt(g_));
   consume_sym_paren_l(g_); # (
 
   t_ = peek(g_, 0);
   inc_token_index(g_);
 
-  List_add_str(g_, stmt_, &s__cmt);
+  List_add_str(g_, stmt_, str_lit__cmt(g_));
   List_add_str(g_, stmt_, Token_get_val(t_));
 
   consume_sym_paren_r(g_); # )
@@ -894,7 +897,7 @@ def parse_stmt(g_)
   t_ = peek(g_, 0);
 
   case
-  when (str_eq__cmt(Token_get_val(t_)))
+  when (str_eq(Token_get_val(t_), str_lit__cmt(g_)))
     return parse_vm_comment(g_);
   when (str_eq_return(Token_get_val(t_)))
     return parse_return(g_);
