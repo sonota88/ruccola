@@ -106,6 +106,25 @@ def match_str(input_, pos_from)
   end
 end
 
+def is_kw(g_, str_)
+  case
+  when (str_eq_def(   str_  )) return true;
+  when (str_eq_end(   str_  )) return true;
+  when (str_eq_var(   str_  )) return true;
+  when (str_eq_return(str_  )) return true;
+  when (str_eq_while( str_  )) return true;
+  when (str_eq_case(  str_  )) return true;
+  when (str_eq_when(  str_  )) return true;
+  when (str_eq_else(  str_  )) return true;
+  when (str_eq__cmt(  str_  )) return true;
+  when (str_eq(str_, "true" )) return true;
+  when (str_eq(str_, "false")) return true;
+  when (str_eq_if(    str_  )) return true;
+  else
+    return false;
+  end
+end
+
 def print_kw(str_)
   putchar(107); # k
   putchar(119); # w
@@ -213,21 +232,13 @@ def main()
       size = match_ident(&input, pos);
       substr_with_check(&s_temp, &input, pos, pos + size, s_temp_size);
 
-      case
-      when (str_eq_def(   &s_temp)) print_kw(&s_temp);
-      when (str_eq_end(   &s_temp)) print_kw(&s_temp);
-      when (str_eq_var(   &s_temp)) print_kw(&s_temp);
-      when (str_eq_return(&s_temp)) print_kw(&s_temp);
-      when (str_eq_while( &s_temp)) print_kw(&s_temp);
-      when (str_eq_case(  &s_temp)) print_kw(&s_temp);
-      when (str_eq_when(  &s_temp)) print_kw(&s_temp);
-      when (str_eq_else(  &s_temp)) print_kw(&s_temp);
-      when (str_eq__cmt(  &s_temp)) print_kw(&s_temp);
-      when (str_eq(&s_temp, "true")) print_kw(&s_temp);
-      when (str_eq(&s_temp, "false")) print_kw(&s_temp);
-      when (str_eq_if(    &s_temp))
-        print_kw(&s_case);
-        print_kw(&s_when);
+      if (is_kw(g_, &s_temp))
+        if (str_eq_if(&s_temp))
+          print_kw(&s_case);
+          print_kw(&s_when);
+        else
+          print_kw(&s_temp);
+        end
       else
         print_ident(&s_temp);
       end
