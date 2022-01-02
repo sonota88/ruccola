@@ -1009,7 +1009,7 @@ def make_set_byte_stmt(g_, bi, byte)
   return stmt_;
 end
 
-def make_fn_init_strings(g_)
+def make_init_strings_fn(g_)
   var fn_ = List_new(g_);
   var args_ = List_new(g_);
   var stmts_ = List_new(g_);
@@ -1041,22 +1041,22 @@ def make_fn_init_strings(g_)
   # ----
 
   var i = 0;
-  var ci = 0;
+  var bi = 0;
   var str_ci;
   var str_;
-  var c;
+  var byte;
   var str_lit_list_ = StrLitList_get_self(g_);
   while (i < List_size(str_lit_list_))
     str_ = List_get_as_str(str_lit_list_, i);
     str_ci = 0;
     while (str_ci < str_size(str_))
-      c = char_at(str_, str_ci);
-      List_add_list(g_, stmts_, make_set_byte_stmt(g_, ci, c));
-      ci = ci + 1;
+      byte = char_at(str_, str_ci);
+      List_add_list(g_, stmts_, make_set_byte_stmt(g_, bi, byte));
+      bi = bi + 1;
       str_ci = str_ci + 1;
     end
-    List_add_list(g_, stmts_, make_set_byte_stmt(g_, ci, 0));
-    ci = ci + 1;
+    List_add_list(g_, stmts_, make_set_byte_stmt(g_, bi, 0));
+    bi = bi + 1;
     i = i + 1;
   end
 
@@ -1107,7 +1107,7 @@ def main()
 
   var fn_init_strings_;
   if (0 < List_size(StrLitList_get_self(g_)))
-    fn_init_strings_ = make_fn_init_strings(&g);
+    fn_init_strings_ = make_init_strings_fn(&g);
     List_add_list(&g, ast_, fn_init_strings_);
   end
 

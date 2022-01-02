@@ -504,19 +504,19 @@ end
 #   *(offset_ + 2) =  0;
 #   # ...
 # end
-def gen_init_strings_stmts
+def make_init_strings_fn
   stmts = [
     [:var, "offset_", [:+, "g_", [:funcall, "GO_STRINGS"]]]
   ]
 
-  i = 0
+  bi = 0
   $strings.each { |str|
     str.each_byte { |byte|
-      stmts << make_set_byte_stmt(i, byte)
-      i += 1
+      stmts << make_set_byte_stmt(bi, byte)
+      bi += 1
     }
-    stmts << make_set_byte_stmt(i, 0)
-    i += 1
+    stmts << make_set_byte_stmt(bi, 0)
+    bi += 1
   }
 
   [:func, "init_strings", ["g_"], stmts]
@@ -537,7 +537,7 @@ rescue ParseError => e
 end
 
 unless $strings.empty?
-  tree << gen_init_strings_stmts()
+  tree << make_init_strings_fn()
 end
 
 puts JSON.pretty_generate(tree)
