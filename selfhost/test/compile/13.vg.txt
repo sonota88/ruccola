@@ -1,6 +1,0 @@
-# -*- mode: ruby -*-
-
-def main()
-  var a = 1;
-  a = a + 2;
-end

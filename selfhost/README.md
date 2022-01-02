@@ -24,11 +24,6 @@ rake test
 第2世代: Pric版 v3 コンパイラ
 
 ```sh
-# テスト
-./test.sh all
-```
-
-```sh
 mkdir -p exe
 
 # 第2世代コンパイラでライフゲームをコンパイル

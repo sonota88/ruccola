@@ -1,7 +1,0 @@
-# -*- mode: ruby -*-
-
-def main()
-  var a;
-  var vi = 0;
-  a = get_vram(vi);
-end
