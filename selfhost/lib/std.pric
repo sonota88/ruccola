@@ -439,12 +439,10 @@ end
 
 def i_to_c(n)
   if (range_include(0, 9, n))
-    # ok
-  else
-    panic(389);
+    return 48 + n;
   end
 
-  return 48 + n;
+  panic(445); # i_to_c
 end
 
 def range_include(from, to, target)
