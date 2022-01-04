@@ -13,6 +13,10 @@ def str_lit__cmt(g_)
   return "_cmt";
 end
 
+def str_lit_case(g_)
+  return "case";
+end
+
 def str_lit_funcall(g_)
   return "funcall";
 end
@@ -851,14 +855,13 @@ end
 
 def parse_case(g_)
   var stmt_;
-  var [5]s_case; str_set_case(&s_case);
   var [4]s_end; str_set_end(&s_end);
   var when_clause_;
 
-  consume_kw(g_, &s_case);
+  consume_kw(g_, str_lit_case(g_));
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, &s_case);
+  List_add_str(g_, stmt_, str_lit_case(g_));
 
   while (__not(Token_val_eq(peek(g_, 0), &s_end)))
     when_clause_ = _parse_when_clause(g_);
@@ -903,7 +906,7 @@ def parse_stmt(g_)
     return parse_return(g_);
   when (str_eq_while(Token_get_val(t_)))
     return parse_while(g_);
-  when (str_eq_case(Token_get_val(t_)))
+  when (str_eq(Token_get_val(t_), str_lit_case(g_)))
     return parse_case(g_);
   else
     case

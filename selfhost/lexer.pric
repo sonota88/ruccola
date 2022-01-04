@@ -3,6 +3,14 @@
 #include lib/std.pric
 #include lib/words.pric
 
+# --------------------------------
+
+def str_lit_case(g_)
+  return "case";
+end
+
+# --------------------------------
+
 def is_ident_char(c)
   case
   when (range_include(48, 57, c)) # 0..9
@@ -113,7 +121,7 @@ def is_kw(g_, str_)
   when (str_eq_var(   str_  )) return true;
   when (str_eq_return(str_  )) return true;
   when (str_eq_while( str_  )) return true;
-  when (str_eq_case(  str_  )) return true;
+  when (str_eq(str_, str_lit_case(g_))) return true;
   when (str_eq_when(  str_  )) return true;
   when (str_eq_else(  str_  )) return true;
   when (str_eq(str_, "_cmt" )) return true;
@@ -176,7 +184,6 @@ def lex(g_)
   var pos = 0;
   var do_break = false;
   var size;
-  var [5]s_case; str_set_case(&s_case);
   var [5]s_when; str_set_when(&s_when);
   var s_temp_size = 40; var [40]s_temp;
   var c;
@@ -223,7 +230,7 @@ def lex(g_)
 
       if (is_kw(g_, &s_temp))
         if (str_eq_if(&s_temp))
-          print_kw(&s_case);
+          print_kw(str_lit_case(g_));
           print_kw(&s_when);
         else
           print_kw(&s_temp);
