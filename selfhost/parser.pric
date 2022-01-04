@@ -360,8 +360,6 @@ def parse_func(g_)
     case
     when (Token_val_eq(t_, &s_end))
       do_break = true;
-    when (char_at(Token_get_val(t_), 0) == 125) # }
-      do_break = true;
     else
 
       if (str_eq(Token_get_val(t_), &s_var))
@@ -935,8 +933,6 @@ def parse_stmts(g_)
     t_ = peek(g_, 0);
 
     case
-    when (char_at(Token_get_val(t_), 0) == 125) # }
-      do_break = true;
     when (str_eq_when(Token_get_val(t_)))
       do_break = true;
     when (str_eq_else(Token_get_val(t_)))
