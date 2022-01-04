@@ -347,7 +347,6 @@ end
 
 def str_eq(s1_, s2_)
   var do_break = false;
-  var result = true;
   var i = 0;
   var c1;
 
@@ -359,14 +358,13 @@ def str_eq(s1_, s2_)
         do_break = true;
       end
     else
-      result = false;
-      do_break = true;
+      return false;
     end
 
     i = i + 1;
   end
 
-  return result;
+  return true;
 end
 
 def char_at(str_, i)
