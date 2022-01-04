@@ -80,14 +80,14 @@ def match_symbol(input_, pos_from)
 end
 
 def match_comment(input_, pos_from)
-  if (char_at(input_, pos_from + 0) == 35) # #
-    return __sub(
-      char_index(input_, C_LF(), pos_from),
-      pos_from
-    );
-  else
+  if (char_at(input_, pos_from + 0) != 35) # #
     return 0;
   end
+
+  return __sub(
+    char_index(input_, C_LF(), pos_from),
+    pos_from
+  );
 end
 
 def match_int(input_, pos_from)
@@ -106,12 +106,12 @@ end
 def match_str(input_, pos_from)
   var pos;
 
-  if (char_at(input_, pos_from) == C_DQ())
-    pos = char_index(input_, C_DQ(), pos_from + 1);
-    return __sub(pos, pos_from + 1);
-  else
+  if (char_at(input_, pos_from) != C_DQ())
     return 0;
   end
+
+  pos = char_index(input_, C_DQ(), pos_from + 1);
+  return __sub(pos, pos_from + 1);
 end
 
 def is_kw(g_, str_)
