@@ -17,6 +17,10 @@ def str_lit_case(g_)
   return "case";
 end
 
+def str_lit_def(g_)
+  return "def";
+end
+
 def str_lit_funcall(g_)
   return "funcall";
 end
@@ -329,13 +333,12 @@ def parse_func(g_)
   var do_break = false;
   var [4]s_var; str_set_var(&s_var);
   var [5]s_func; str_set_func(&s_func);
-  var [4]s_def; str_set_def(&s_def);
   var [4]s_end; str_set_end(&s_end);
   var args_;
   var fn_name_;
   check_heap_stack_overlap(g_);
 
-  consume_kw(g_, &s_def);
+  consume_kw(g_, str_lit_def(g_));
 
   func_stmt_ = List_new(g_);
 
@@ -951,7 +954,7 @@ end
 def parse_top_stmt(g_)
   var t_ = peek(g_, 0);
 
-  if (str_eq_def(Token_get_val(t_)))
+  if (str_eq(Token_get_val(t_), str_lit_def(g_)))
     return parse_func(g_);
   else
     panic(770); # parse_top_stmt
