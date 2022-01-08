@@ -88,6 +88,46 @@ end
 
 # --------------------------------
 
+def CONS_CELL__CAR() return 0; end
+def CONS_CELL__CAR_WIDTH() return 1; end
+
+def CONS_CELL__CDR() return 1; end
+def CONS_CELL__CDR_WIDTH() return 1; end
+
+def CONS_CELL__TYPE_SIZE()
+  return (
+      CONS_CELL__CAR_WIDTH()
+    + CONS_CELL__CDR_WIDTH()
+  );
+end
+
+def ConsCell_set_car(self_, car)
+  *(self_ + CONS_CELL__CAR()) = car;
+end
+
+def ConsCell_get_car(self_)
+  return *(self_ + CONS_CELL__CAR());
+end
+
+def ConsCell_set_cdr(self_, cdr)
+  *(self_ + CONS_CELL__CDR()) = cdr;
+end
+
+def ConsCell_get_cdr(self_)
+  return *(self_ + CONS_CELL__CDR());
+end
+
+def ConsCell_new(g_, car, cdr)
+  var self_ = allocate(g_, CONS_CELL__TYPE_SIZE());
+
+  ConsCell_set_car(self_, car);
+  ConsCell_set_cdr(self_, cdr);
+
+  return self_;
+end
+
+# --------------------------------
+
 def LIST__SIZE() return 0; end
 def LIST__SIZE_WIDTH() return 1; end
 
