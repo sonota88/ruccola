@@ -128,41 +128,71 @@ end
 
 # --------------------------------
 
-def LIST__SIZE() return 0; end
-def LIST__SIZE_WIDTH() return 1; end
+def LIST__CELL() return 0; end
+def LIST__CELL_WIDTH() return 1; end
 
-def LIST__ITEMS() return 1; end
-def LIST__ITEMS_WIDTH() return 250; end
+def LIST__SIZE() return 1; end
+def LIST__SIZE_WIDTH() return 1; end
 
 def LIST__TYPE_SIZE()
   return (
-    LIST__SIZE_WIDTH()
-  + LIST__ITEMS_WIDTH()
+    LIST__CELL_WIDTH()
+  + LIST__SIZE_WIDTH()
   );
+end
+
+def LIST_NULL() return 0; end
+
+def List_set_cell(self_, cell_)
+  *(self_ + LIST__CELL()) = cell_;
+end
+
+def List_get_cell(self_)
+  return *(self_ + LIST__CELL());
+end
+
+def List_set_size(self_, size)
+  *(self_ + LIST__SIZE()) = size;
+end
+
+def List_get_size(self_)
+  return *(self_ + LIST__SIZE());
 end
 
 def List_new(g_)
   var self_ = allocate(g_, LIST__TYPE_SIZE());
 
-  *(self_ + LIST__SIZE()) = 0;
+  List_set_cell(self_, LIST_NULL());
+  List_set_size(self_, 0);
 
   return self_;
 end
 
 def List_size(self_)
-  var size = *(self_ + LIST__SIZE());
-  return size;
+  return List_get_size(self_);
 end
 
 def List_add(g_, self_, node_)
-  var size = List_size(self_);
+  var cell_ = List_get_cell(self_);
+  var new_cell_ = ConsCell_new(g_, node_, LIST_NULL());
 
-  if (__le(LIST__ITEMS_WIDTH(), size))
-    panic(114); # List_add: capacity over
+  var size = List_get_size(self_);
+  List_set_size(self_, size + 1);
+
+  if (cell_ == LIST_NULL())
+    List_set_cell(self_, new_cell_);
+    return;
   end
 
-  *(self_ + LIST__ITEMS() + size) = node_;
-  *(self_ + LIST__SIZE()) = size + 1;
+  var work_ = cell_;
+  var prev_ = cell_;
+
+  while (work_ != LIST_NULL())
+    prev_ = work_;
+    work_ = ConsCell_get_cdr(work_);
+  end
+
+  ConsCell_set_cdr(prev_, new_cell_);
 end
 
 def List_add_all(g_, self_, list_)
@@ -190,7 +220,20 @@ def List_add_list(g_, self_, list_)
 end
 
 def List_get(self_, i)
-  var node_ = *(self_ + LIST__ITEMS() + i);
+  var _i = 0;
+  var work_ = List_get_cell(self_);
+  var do_break = false;
+
+  while (__not(do_break))
+    if (_i == i)
+      do_break = true;
+    else
+      _i = _i + 1;
+      work_ = ConsCell_get_cdr(work_);
+    end
+  end
+
+  var node_ = ConsCell_get_car(work_);
   return node_;
 end
 
@@ -212,10 +255,15 @@ end
 def List_rest(g_, list_, n)
   var newlist_ = List_new(g_);
   var i = 0;
+  var work_ = List_get_cell(list_);
 
-  while ((n + i) < List_size(list_))
-    List_add(g_, newlist_, List_get(list_, n + i));
+  while (work_ != LIST_NULL())
+    if (__le(n, i))
+      List_add(g_, newlist_, ConsCell_get_car(work_));
+    end
+
     i = i + 1;
+    work_ = ConsCell_get_cdr(work_);
   end
 
   return newlist_;
