@@ -981,8 +981,8 @@ def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
   if (List_size(stmt_) == 3)
     set_stmt_ = List_new(g_);
     List_add_str(g_, set_stmt_, &s_set);
-    List_add(set_stmt_, List_get(stmt_, 1));
-    List_add(set_stmt_, List_get(stmt_, 2));
+    List_add(g_, set_stmt_, List_get(stmt_, 1));
+    List_add(g_, set_stmt_, List_get(stmt_, 2));
 
     gen_set(g_, fn_arg_names_, lvar_names_, set_stmt_);
   end

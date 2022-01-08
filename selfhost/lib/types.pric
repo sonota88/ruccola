@@ -114,7 +114,7 @@ def List_size(self_)
   return size;
 end
 
-def List_add(self_, node_)
+def List_add(g_, self_, node_)
   var size = List_size(self_);
 
   if (__le(LIST__ITEMS_WIDTH(), size))
@@ -129,24 +129,24 @@ def List_add_all(g_, self_, list_)
   var i = 0;
 
   while (i < List_size(list_))
-    List_add(self_, List_get(list_, i));
+    List_add(g_, self_, List_get(list_, i));
     i = i + 1;
   end
 end
 
 def List_add_int(g_, self_, n)
   var node_ = Node_new_int(g_, n);
-  List_add(self_, node_);
+  List_add(g_, self_, node_);
 end
 
 def List_add_str(g_, self_, str_)
   var node_ = Node_new_str(g_, str_);
-  List_add(self_, node_);
+  List_add(g_, self_, node_);
 end
 
 def List_add_list(g_, self_, list_)
   var node_ = Node_new_list(g_, list_);
-  List_add(self_, node_);
+  List_add(g_, self_, node_);
 end
 
 def List_get(self_, i)
@@ -174,7 +174,7 @@ def List_rest(g_, list_, n)
   var i = 0;
 
   while ((n + i) < List_size(list_))
-    List_add(newlist_, List_get(list_, n + i));
+    List_add(g_, newlist_, List_get(list_, n + i));
     i = i + 1;
   end
 
