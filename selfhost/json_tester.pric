@@ -16,7 +16,7 @@ def test_02(g_)
   var nl_ = List_new(g_);
   var int_node_ = Node_new_int(g_, 1);
 
-  List_add(nl_, int_node_);
+  List_add(g_, nl_, int_node_);
 
   Json_print(nl_);
 end
@@ -33,7 +33,7 @@ def test_03(g_)
 
   var str_node_ = Node_new_str(g_, &str);
 
-  List_add(nl_, str_node_);
+  List_add(g_, nl_, str_node_);
 
   Json_print(nl_);
 end
@@ -47,7 +47,7 @@ def test_04(g_)
   nl_ = List_new(g_);
 
   int_node_ = Node_new_int(g_, -123);
-  List_add(nl_, int_node_);
+  List_add(g_, nl_, int_node_);
 
   aset(&str, 0, 102); # 0x66 f
   aset(&str, 1, 100); # 0x63 d
@@ -55,7 +55,7 @@ def test_04(g_)
   aset(&str, 3,  97); # 0x61 a
   aset(&str, 4,   0);
   str_node_ = Node_new_str(g_, &str);
-  List_add(nl_, str_node_);
+  List_add(g_, nl_, str_node_);
 
   Json_print(nl_);
 end
@@ -70,7 +70,7 @@ def test_05(g_)
   nl_inner_ = List_new(g_);
   list_node_ = Node_new_list(g_, nl_inner_);
 
-  List_add(nl_, list_node_);
+  List_add(g_, nl_, list_node_);
 
   Json_print(nl_);
 end
@@ -106,7 +106,7 @@ def test_06(g_)
   List_add_str(g_, nl_inner_, &str_b);
 
   list_node_ = Node_new_list(g_, nl_inner_);
-  List_add(nl_, list_node_);
+  List_add(g_, nl_, list_node_);
 
   # ----
 

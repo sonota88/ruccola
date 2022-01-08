@@ -11,7 +11,7 @@ class Memory
   property stack : Array(Int32)
   property vram : Array(Int32)
 
-  STACK_SIZE = 2_700_000
+  STACK_SIZE = 1_000_000
 
   def initialize
     @main = [] of Insn
