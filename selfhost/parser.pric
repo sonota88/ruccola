@@ -41,6 +41,10 @@ def str_lit_plus(g_)
   return "+";
 end
 
+def str_lit_when(g_)
+  return "when";
+end
+
 # --------------------------------
 
 def get_line_size(input_, pos_from)
@@ -833,14 +837,13 @@ def _parse_when_clause(g_)
   var when_clause_;
   var cond_expr_node_;
   var stmts_;
-  var [5]s_when; str_set_when(&s_when);
   var t_;
 
   t_ = peek(g_, 0);
 
   case
-  when (str_eq_when(Token_get_val(t_)))
-    consume_kw(g_, &s_when);
+  when (str_eq(Token_get_val(t_), str_lit_when(g_)))
+    consume_kw(g_, str_lit_when(g_));
 
     consume_sym_paren_l(g_); # (
     cond_expr_node_ = parse_expr(g_);
@@ -943,7 +946,7 @@ def parse_stmts(g_)
     t_ = peek(g_, 0);
 
     case
-    when (str_eq_when(Token_get_val(t_)))
+    when (str_eq(Token_get_val(t_), str_lit_when(g_)))
       do_break = true;
     when (str_eq(Token_get_val(t_), str_lit_else(g_)))
       do_break = true;

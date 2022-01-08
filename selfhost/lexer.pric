@@ -13,6 +13,10 @@ def str_lit_if(g_)
   return "if";
 end
 
+def str_lit_when(g_)
+  return "when";
+end
+
 # --------------------------------
 
 def is_ident_char(c)
@@ -126,7 +130,7 @@ def is_kw(g_, str_)
   when (str_eq_return(str_  )) return true;
   when (str_eq_while( str_  )) return true;
   when (str_eq(str_, str_lit_case(g_))) return true;
-  when (str_eq_when(  str_  )) return true;
+  when (str_eq(str_, str_lit_when(g_))) return true;
   when (str_eq(str_, "else" )) return true;
   when (str_eq(str_, "_cmt" )) return true;
   when (str_eq(str_, "true" )) return true;
@@ -188,7 +192,6 @@ def lex(g_)
   var pos = 0;
   var do_break = false;
   var size;
-  var [5]s_when; str_set_when(&s_when);
   var s_temp_size = 40; var [40]s_temp;
   var c;
 
@@ -235,7 +238,7 @@ def lex(g_)
       if (is_kw(g_, &s_temp))
         if (str_eq(&s_temp, str_lit_if(g_)))
           print_kw(str_lit_case(g_));
-          print_kw(&s_when);
+          print_kw(str_lit_when(g_));
         else
           print_kw(&s_temp);
         end
