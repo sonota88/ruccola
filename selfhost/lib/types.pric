@@ -125,7 +125,7 @@ def List_add(self_, node_)
   *(self_ + LIST__SIZE()) = size + 1;
 end
 
-def List_add_all(self_, list_)
+def List_add_all(g_, self_, list_)
   var i = 0;
 
   while (i < List_size(list_))
