@@ -109,12 +109,12 @@ def unparse_int(dest_, arg_n)
       break;
     end
 
-      div = __div(n, 10);
-      mod = __mod(n, 10);
-      aset(&buf, digit, mod);
+    div = __div(n, 10);
+    mod = __mod(n, 10);
+    aset(&buf, digit, mod);
 
-      n = div;
-      digit = digit + 1;
+    n = div;
+    digit = digit + 1;
   end
 
   i = digit;
@@ -154,8 +154,8 @@ def read_stdin_all(dest_, limit)
       break;
     end
 
-      aset(dest_, i, c);
-      i = i + 1;
+    aset(dest_, i, c);
+    i = i + 1;
   end
 end
 
@@ -319,9 +319,9 @@ def substr(dest_, src_, from, to)
       break;
     end
 
-      aset(dest_, dest_i, char_at(src_, i));
-      i = i + 1;
-      dest_i = dest_i + 1;
+    aset(dest_, dest_i, char_at(src_, i));
+    i = i + 1;
+    dest_i = dest_i + 1;
   end
 
   aset(dest_, dest_i, 0);
@@ -382,8 +382,8 @@ def char_index(str_, target_c, pos_from)
       break;
     end
 
-      pos = pos + 1;
-      c = char_at(str_, pos);
+    pos = pos + 1;
+    c = char_at(str_, pos);
   end
 
   return idx;
@@ -425,7 +425,7 @@ def non_digit_index(str_, from)
       break;
     end
 
-      pos = pos + 1;
+    pos = pos + 1;
   end
 
   return pos;
