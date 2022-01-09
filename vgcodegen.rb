@@ -3,6 +3,7 @@ require "json"
 require_relative "common"
 
 $label_id = 0
+$while_stack = []
 
 class Names
   def initialize
@@ -329,6 +330,7 @@ def gen_while(fn_arg_names, lvar_names, stmt)
 
   $label_id += 1
   label_id = $label_id
+  $while_stack.push label_id
 
   label_begin = "while_#{label_id}"
   label_end = "end_while_#{label_id}"
@@ -357,6 +359,14 @@ def gen_while(fn_arg_names, lvar_names, stmt)
 
   puts "label #{label_end}"
   puts ""
+
+  $while_stack.pop
+end
+
+def gen_break
+  label_id = $while_stack.last
+  label_end = "end_while_#{label_id}"
+  puts "  jump #{label_end}"
 end
 
 def gen_case(fn_arg_names, lvar_names, stmt)
@@ -421,6 +431,8 @@ def gen_stmt(fn_arg_names, lvar_names, stmt)
     gen_return(fn_arg_names, lvar_names, stmt)
   when "while"
     gen_while(fn_arg_names, lvar_names, stmt)
+  when "break"
+    gen_break()
   when "case"
     gen_case(fn_arg_names, lvar_names, stmt)
   when "_cmt"

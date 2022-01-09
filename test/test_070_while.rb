@@ -22,4 +22,18 @@ class Test070 < Minitest::Test
     run_vm(src)
   end
 
+  def test_diff_asm
+    src = <<~SRC
+      def main()
+        while (true)
+          while (true)
+            break;
+          end
+          break;
+        end
+      end
+    SRC
+
+    diff_asm(src, "break")
+  end
 end

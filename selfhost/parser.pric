@@ -13,6 +13,10 @@ def str_lit__cmt(g_)
   return "_cmt";
 end
 
+def str_lit_break(g_)
+  return "break";
+end
+
 def str_lit_case(g_)
   return "case";
 end
@@ -835,6 +839,18 @@ def parse_while(g_)
   return stmt_;
 end
 
+def parse_break(g_)
+  var stmt_;
+
+  consume_kw(g_, str_lit_break(g_));
+  consume_sym_semicolon(g_); # ;
+
+  stmt_ = List_new(g_);
+  List_add_str(g_, stmt_, str_lit_break(g_));
+
+  return stmt_;
+end
+
 def _parse_when_clause(g_)
   var when_clause_;
   var cond_expr_node_;
@@ -918,6 +934,8 @@ def parse_stmt(g_)
     return parse_return(g_);
   when (str_eq_while(Token_get_val(t_)))
     return parse_while(g_);
+  when (str_eq(Token_get_val(t_), str_lit_break(g_)))
+    return parse_break(g_);
   when (str_eq(Token_get_val(t_), str_lit_case(g_)))
     return parse_case(g_);
   else

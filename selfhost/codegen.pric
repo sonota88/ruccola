@@ -351,6 +351,39 @@ end
 
 # --------------------------------
 
+def WhileStack_init(g_)
+  *(g_ + GO_WHILE_CURSOR()) = 0;
+end
+
+def WhileStack_push(g_, label_id)
+  var cur = *(g_ + GO_WHILE_CURSOR());
+
+  *(g_ + GO_WHILE_STACK() + cur) = label_id;
+
+  if (__le(GS_WHILE_STACK(), cur + 1))
+    panic(359); # out of range
+  else
+    *(g_ + GO_WHILE_CURSOR()) = cur + 1;
+  end
+end
+
+def WhileStack_pop(g_)
+  var cur = *(g_ + GO_WHILE_CURSOR());
+
+  if (0 < cur)
+    *(g_ + GO_WHILE_CURSOR()) = cur + -1;
+  else
+    panic(371); # out of range
+  end
+end
+
+def WhileStack_top(g_)
+  var cur = *(g_ + GO_WHILE_CURSOR()) + -1;
+  return *(g_ + GO_WHILE_STACK() + cur);
+end
+
+# --------------------------------
+
 def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var list_ = Node_get_list(expr_);
@@ -826,6 +859,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
 
   inc_label_id(g_);
   label_id = get_label_id(g_);
+  WhileStack_push(g_, label_id);
 
   str_set_while(&label_begin);
   append_label_id(&label_begin, label_id, label_begin_size);
@@ -856,6 +890,20 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   asm_jump(&label_begin);
 
   asm_label(&label_end);
+
+  WhileStack_pop(g_);
+end
+
+def gen_break(g_)
+  var label_id = WhileStack_top(g_);
+
+  var label_end_size = 15; var [15]label_end; # end_while_xxxx
+  str_cp_with_check(&label_end, "end_while", label_end_size);
+  append_label_id(&label_end, label_id, label_end_size);
+
+  asm_jump(&label_end);
+
+  putchar(C_LF());
 end
 
 def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
@@ -954,6 +1002,8 @@ def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
     gen_return(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq_while(head_str_))
     gen_while(g_, fn_arg_names_, lvar_names_, stmt_);
+  when (str_eq(head_str_, "break"))
+    gen_break(g_);
   when (str_eq(head_str_, "case"))
     gen_case(g_, fn_arg_names_, lvar_names_, stmt_);
   else
@@ -1295,6 +1345,12 @@ def GS_STRINGS() return 1000; end
 def GO_LABEL_ID() return GO_STRINGS() + GS_STRINGS(); end
 def GS_LABEL_ID() return 1; end
 
+def GO_WHILE_CURSOR() return GO_LABEL_ID() + GS_LABEL_ID(); end
+def GS_WHILE_CURSOR() return 1; end
+
+def GO_WHILE_STACK() return GO_WHILE_CURSOR() + GS_WHILE_CURSOR(); end
+def GS_WHILE_STACK() return 10; end
+
 def get_label_id(g_)
   return *(g_ + GO_LABEL_ID());
 end
@@ -1304,19 +1360,20 @@ def inc_label_id(g_)
 end
 
 def load_ast(g_)
-  var input_size_max = 230000; var [230000]input;
+  var input_size_max = 240000; var [240000]input;
 
   read_stdin_all(&input, input_size_max);
   return Json_parse(g_, &input);
 end
 
 def main()
-  var [1002]g;
+  var [1013]g;
   var ast_;
 
   # init globals
   init_alloc_cursor(&g);
   init_strings(&g);
+  WhileStack_init(&g);
 
   ast_ = load_ast(&g);
 
