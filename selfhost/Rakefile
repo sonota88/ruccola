@@ -13,18 +13,11 @@ LIB_WORDS = "lib/words.pric"
 LIB_TYPES = "lib/types.pric"
 LIB_JSON  = "lib/json.pric"
 
-JSON_TESTER_EXE = "exe/json_tester.exe.txt"
 LEXER_EXE       = "exe/lexer.exe.txt"
 PARSER_EXE      = "exe/parser.exe.txt"
 CODEGEN_EXE     = "exe/codegen.exe.txt"
 
 dep_map = {
-  "json_tester" => [
-    LIB_STD,
-    LIB_TYPES,
-    LIB_JSON,
-    "json_tester.pric"
-  ],
   "lexer" => [
     LIB_STD,
     LIB_WORDS,
@@ -60,7 +53,6 @@ dep_map.each_key do |name|
 end
 
 task :"build-all" => [
-  JSON_TESTER_EXE,
   LEXER_EXE,
   PARSER_EXE,
   CODEGEN_EXE
