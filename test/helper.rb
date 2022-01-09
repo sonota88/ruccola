@@ -137,3 +137,23 @@ def run_vm(src, stdin: "")
   file_write(FILE_STDIN, stdin)
   _system(%( ruby #{PROJECT_DIR}/vgvm.rb #{FILE_EXE} ))
 end
+
+def diff_asm(src, name)
+  diff_cmd = "ruby " + project_path("test/diff.rb")
+
+  $stderr.puts "test #{name}:"
+
+  file = temp_path("match_asm.rcl")
+  file_write(file, src)
+
+  pricc_rb(  file, FILE_ASM_RB  , print_asm: true)
+  pricc_pric(file, FILE_ASM_PRIC, print_asm: true)
+
+  output, status = _system_v2( %( #{diff_cmd} asm #{FILE_ASM_RB} #{FILE_ASM_PRIC} ) )
+  if status.success?
+    pass
+  else
+    puts output
+    flunk
+  end
+end
