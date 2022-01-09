@@ -25,6 +25,10 @@ def str_lit_else(g_)
   return "else";
 end
 
+def str_lit_end(g_)
+  return "end";
+end
+
 def str_lit_funcall(g_)
   return "funcall";
 end
@@ -341,7 +345,6 @@ def parse_func(g_)
   var do_break = false;
   var [4]s_var; str_set_var(&s_var);
   var [5]s_func; str_set_func(&s_func);
-  var [4]s_end; str_set_end(&s_end);
   var args_;
   var fn_name_;
   check_heap_stack_overlap(g_);
@@ -369,7 +372,7 @@ def parse_func(g_)
   while (__not(do_break))
     t_ = peek(g_, 0);
     case
-    when (Token_val_eq(t_, &s_end))
+    when (Token_val_eq(t_, str_lit_end(g_)))
       do_break = true;
     else
 
@@ -383,7 +386,7 @@ def parse_func(g_)
     end
   end
 
-  consume_kw(g_, &s_end);
+  consume_kw(g_, str_lit_end(g_));
 
   List_add_list(g_, func_stmt_, stmts_);
 
@@ -810,7 +813,6 @@ end
 
 def parse_while(g_)
   var [6]s_while; str_set_while(&s_while);
-  var [4]s_end; str_set_end(&s_end);
   var stmt_;
   var expr_node_;
   var stmts_;
@@ -823,7 +825,7 @@ def parse_while(g_)
 
   stmts_ = parse_stmts(g_);
 
-  consume_kw(g_, &s_end);
+  consume_kw(g_, str_lit_end(g_));
 
   stmt_ = List_new(g_);
   List_add_str(g_, stmt_, &s_while);
@@ -866,7 +868,6 @@ end
 
 def parse_case(g_)
   var stmt_;
-  var [4]s_end; str_set_end(&s_end);
   var when_clause_;
 
   consume_kw(g_, str_lit_case(g_));
@@ -874,12 +875,12 @@ def parse_case(g_)
   stmt_ = List_new(g_);
   List_add_str(g_, stmt_, str_lit_case(g_));
 
-  while (__not(Token_val_eq(peek(g_, 0), &s_end)))
+  while (__not(Token_val_eq(peek(g_, 0), str_lit_end(g_))))
     when_clause_ = _parse_when_clause(g_);
     List_add_list(g_, stmt_, when_clause_);
   end
 
-  consume_kw(g_, &s_end);
+  consume_kw(g_, str_lit_end(g_));
 
   return stmt_;
 end
@@ -950,7 +951,7 @@ def parse_stmts(g_)
       do_break = true;
     when (str_eq(Token_get_val(t_), str_lit_else(g_)))
       do_break = true;
-    when (str_eq_end(Token_get_val(t_)))
+    when (str_eq(Token_get_val(t_), str_lit_end(g_)))
       do_break = true;
     else
       stmt_ = parse_stmt(g_);

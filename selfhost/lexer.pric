@@ -125,7 +125,7 @@ end
 def is_kw(g_, str_)
   case
   when (str_eq(str_, "def"  )) return true;
-  when (str_eq_end(   str_  )) return true;
+  when (str_eq(str_, "end"  )) return true;
   when (str_eq_var(   str_  )) return true;
   when (str_eq_return(str_  )) return true;
   when (str_eq_while( str_  )) return true;
