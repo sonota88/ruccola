@@ -94,7 +94,6 @@ def unparse_int(dest_, arg_n)
   var mod;
   var [8]buf;
   var digit = 0;
-  var do_break = false;
   var i;
   var dest_offset = 0;
 
@@ -104,18 +103,18 @@ def unparse_int(dest_, arg_n)
     dest_offset = 1;
   end
 
-  while (__not(do_break))
+  while (true)
     if (n < 10)
       aset(&buf, digit, n);
-      do_break = true;
-    else
+      break;
+    end
+
       div = __div(n, 10);
       mod = __mod(n, 10);
       aset(&buf, digit, mod);
 
       n = div;
       digit = digit + 1;
-    end
   end
 
   i = digit;
@@ -143,9 +142,8 @@ end
 def read_stdin_all(dest_, limit)
   var i = 0;
   var c;
-  var do_break = false;
 
-  while (__not(do_break))
+  while (true)
     if (i == limit)
       panic(146); # read_stdin_all: too large input
     end
@@ -153,11 +151,11 @@ def read_stdin_all(dest_, limit)
     c = getchar();
     if (c == -1)
       aset(dest_, i, 0);
-      do_break = true;
-    else
+      break;
+    end
+
       aset(dest_, i, c);
       i = i + 1;
-    end
   end
 end
 
@@ -312,19 +310,18 @@ end
 def substr(dest_, src_, from, to)
   var i = from;
   var dest_i = 0;
-  var do_break = false;
 
-  while (__not(do_break))
+  while (true)
     if (__or(
       i == to,
       char_at(src_, i) == 0
     ))
-      do_break = true;
-    else
+      break;
+    end
+
       aset(dest_, dest_i, char_at(src_, i));
       i = i + 1;
       dest_i = dest_i + 1;
-    end
   end
 
   aset(dest_, dest_i, 0);
@@ -346,16 +343,15 @@ def substr_with_check(dest_, src_, from, to, dest_size)
 end
 
 def str_eq(s1_, s2_)
-  var do_break = false;
   var i = 0;
   var c1;
 
-  while (__not(do_break))
+  while (true)
     c1 = char_at(s1_, i);
 
     if (c1 == char_at(s2_, i))
       if (c1 == 0)
-        do_break = true;
+        break;
       end
     else
       return false;
@@ -373,22 +369,21 @@ end
 
 def char_index(str_, target_c, pos_from)
   var pos = pos_from;
-  var do_break = false;
   var c;
   var idx = -1;
 
   c = char_at(str_, pos);
-  while (__not(do_break))
+  while (true)
     case
     when (c == target_c)
       idx = pos;
-      do_break = true;
+      break;
     when (c == 0)
-      do_break = true;
-    else
+      break;
+    end
+
       pos = pos + 1;
       c = char_at(str_, pos);
-    end
   end
 
   return idx;
@@ -421,17 +416,16 @@ def is_digit_char(c)
 end
 
 def non_digit_index(str_, from)
-  var do_break = false;
   var c;
   var pos = from;
 
-  while (__not(do_break))
+  while (true)
     c = char_at(str_, pos);
     if (is_digit_char(c) != true)
-      do_break = true;
-    else
-      pos = pos + 1;
+      break;
     end
+
+      pos = pos + 1;
   end
 
   return pos;
