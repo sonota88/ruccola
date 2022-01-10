@@ -1054,8 +1054,6 @@ def gen_func(g_, func_)
   var lvar_width_;
   var fn_arg_names_;
 
-  assert(4, List_size(func_), 243);
-
   fn_name_ = Node_get_str(List_get(func_, 1));
 
   fn_arg_names_ =
@@ -1092,8 +1090,6 @@ def gen_func(g_, func_)
 
     i = i + 1;
   end
-
-  # Json_print(Names_to_plain(g_, lvar_names_));
 
   asm_fn_epilogue();
 
