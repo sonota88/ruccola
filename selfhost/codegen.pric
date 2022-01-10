@@ -408,7 +408,7 @@ def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
 
     asm_lea(&s_reg_a, &s_src);
   else
-    panic(526);
+    panic(526); # _gen_expr_addr
   end
 end
 
@@ -626,7 +626,7 @@ def _gen_expr_unary(g_, fn_arg_names_, lvar_names_, expr_)
     return _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_);
   else
     p_s(operator_);
-    panic(670);
+    panic(670); # _gen_expr_unary
   end
 end
 
@@ -727,7 +727,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
       when (List_size(list_) == 3)
         _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_);
       else
-        panic(742);
+        panic(742); # gen_expr
       end
     end
 
@@ -805,7 +805,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
     else
       Json_print(stmt_);
       p_s(&dest);
-      panic(823);
+      panic(823); # gen_set
     end
 
   when (Node_get_kind(dest_node_) == NODE_KIND__LIST())
@@ -1103,7 +1103,7 @@ def gen_top_stmt(g_, top_stmt_)
   when (str_eq_func(s_head_))
     gen_func(g_, top_stmt_);
   else
-    panic(194);
+    panic(194); # gen_top_stmt
   end
 end
 
