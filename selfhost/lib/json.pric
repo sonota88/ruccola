@@ -103,7 +103,6 @@ def Json_parse_list(g_, rest_, pos_start, size_)
   var pos_end;
   var s_temp_size = 40; var [40]s_temp;
   var n;
-  var do_break = false;
   var child_list_;
 
   assert(
@@ -115,13 +114,13 @@ def Json_parse_list(g_, rest_, pos_start, size_)
 
   list_ = List_new(g_);
 
-  while (__not(do_break))
+  while (true)
     c = char_at(rest_, pos);
 
     case
     when (c == 93) # ]
       pos = pos + 1;
-      do_break = true;
+      break;
 
     when (c == 91) # [
       child_list_ = Json_parse_list(g_, rest_, pos, &size);
@@ -152,7 +151,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
     end
 
     if (char_at(rest_, pos) == 0)
-      do_break = true;
+      break;
     end
   end
 
