@@ -726,7 +726,6 @@ end
 
 def parse_set(g_)
   var stmt_;
-  var [4]s_set; str_set_set(&s_set);
   var t_;
   var lhs_node_;
   var expr_node_;
@@ -747,7 +746,7 @@ def parse_set(g_)
   consume_sym_semicolon(g_); # ;
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, &s_set);
+  List_add_str(g_, stmt_, "set");
   List_add(g_, stmt_, lhs_node_);
   List_add(g_, stmt_, expr_node_);
 

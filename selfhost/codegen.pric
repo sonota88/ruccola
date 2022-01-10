@@ -11,6 +11,10 @@ def str_lit__cmt(g_)
   return "_cmt";
 end
 
+def str_lit_set(g_)
+  return "set";
+end
+
 # --------------------------------
 
 def asm_indent()
@@ -992,7 +996,7 @@ def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
   var head_str_ = List_get_as_str(stmt_, 0);
 
   case
-  when (str_eq_set(head_str_))
+  when (str_eq(head_str_, str_lit_set(g_)))
     gen_set(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq(head_str_, str_lit__cmt(g_)))
     gen_vm_comment(g_, stmt_);
@@ -1024,13 +1028,12 @@ end
 
 def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
   var set_stmt_;
-  var [4]s_set; str_set_set(&s_set);
 
   asm_sub_sp(1);
 
   if (List_size(stmt_) == 3)
     set_stmt_ = List_new(g_);
-    List_add_str(g_, set_stmt_, &s_set);
+    List_add_str(g_, set_stmt_, str_lit_set(g_));
     List_add(g_, set_stmt_, List_get(stmt_, 1));
     List_add(g_, set_stmt_, List_get(stmt_, 2));
 
