@@ -624,7 +624,7 @@ def _gen_expr_unary(g_, fn_arg_names_, lvar_names_, expr_)
   operator_ = List_get_as_str(list_, 0);
 
   case
-  when (str_eq_addr(operator_))
+  when (str_eq(operator_, "addr"))
     return _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_);
   when (str_eq_deref(operator_))
     return _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_);
