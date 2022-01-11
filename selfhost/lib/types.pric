@@ -228,8 +228,8 @@ def List_get(self_, i)
       break;
     end
 
-      _i = _i + 1;
-      work_ = ConsCell_get_cdr(work_);
+    _i = _i + 1;
+    work_ = ConsCell_get_cdr(work_);
   end
 
   var node_ = ConsCell_get_car(work_);
@@ -501,12 +501,12 @@ def Names_disp_lvar(self_, target_name_)
       break;
     end
 
-      s_name_ = Names_get_str(self_, i);
-      width = Names_get_width(self_, i);
-      disp = __sub(disp, width);
-      if (str_eq(s_name_, target_name_))
-        break;
-      end
+    s_name_ = Names_get_str(self_, i);
+    width = Names_get_width(self_, i);
+    disp = __sub(disp, width);
+    if (str_eq(s_name_, target_name_))
+      break;
+    end
 
     i = i + 1;
   end
