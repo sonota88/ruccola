@@ -23,6 +23,10 @@ def str_lit_set(g_)
   return "set";
 end
 
+def str_lit_sp(g_)
+  return "sp";
+end
+
 # --------------------------------
 
 def asm_indent()
@@ -308,16 +312,12 @@ def asm_write(c, fd)
 end
 
 def asm_fn_prologue(g_)
-  var [3]s_sp; str_set_sp(&s_sp);
-
   asm_push(str_lit_bp(g_));
-  asm_cp(&s_sp, str_lit_bp(g_));
+  asm_cp(str_lit_sp(g_), str_lit_bp(g_));
 end
 
 def asm_fn_epilogue(g_)
-  var [3]s_sp; str_set_sp(&s_sp);
-
-  asm_cp(str_lit_bp(g_), &s_sp);
+  asm_cp(str_lit_bp(g_), str_lit_sp(g_));
   asm_pop(str_lit_bp(g_));
 end
 
@@ -1197,7 +1197,6 @@ def gen_builtin_getchar(g_)
 end
 
 def gen_builtin_get_sp(g_)
-  var [3]s_sp; str_set_sp(&s_sp);
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [7]s_get_sp;
 
@@ -1213,7 +1212,7 @@ def gen_builtin_get_sp(g_)
 
   asm_fn_prologue(g_);
 
-  asm_cp(&s_sp, &s_reg_a);
+  asm_cp(str_lit_sp(g_), &s_reg_a);
 
   asm_fn_epilogue(g_);
   asm_ret();
