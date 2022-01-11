@@ -11,6 +11,10 @@ def str_lit__cmt(g_)
   return "_cmt";
 end
 
+def str_lit_deref(g_)
+  return "deref";
+end
+
 def str_lit_set(g_)
   return "set";
 end
@@ -626,7 +630,7 @@ def _gen_expr_unary(g_, fn_arg_names_, lvar_names_, expr_)
   case
   when (str_eq(operator_, "addr"))
     return _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_);
-  when (str_eq_deref(operator_))
+  when (str_eq(operator_, str_lit_deref(g_)))
     return _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_);
   else
     p_s(operator_);
@@ -815,7 +819,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
   when (Node_get_kind(dest_node_) == NODE_KIND__LIST())
     list_ = Node_get_list(dest_node_);
 
-    if (str_eq_deref(List_get_as_str(list_, 0)))
+    if (str_eq(List_get_as_str(list_, 0), str_lit_deref(g_)))
       asm_push(&s_reg_a);
 
       gen_expr(g_, fn_arg_names_, lvar_names_, List_get(list_, 1));

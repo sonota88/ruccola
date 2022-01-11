@@ -533,7 +533,6 @@ end
 def parse_expr_deref(g_)
   var list_;
   var expr_node_;
-  var [6]s_deref; str_set_deref(&s_deref);
 
   consume_sym_one_char(g_, 42); # *
   consume_sym_paren_l(g_);      # (
@@ -541,7 +540,7 @@ def parse_expr_deref(g_)
   consume_sym_paren_r(g_);      # )
 
   list_ = List_new(g_);
-  List_add_str(g_, list_, &s_deref);
+  List_add_str(g_, list_, "deref");
   List_add(g_, list_, expr_node_);
 
   return Node_new_list(g_, list_);
