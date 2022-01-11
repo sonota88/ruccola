@@ -462,7 +462,6 @@ end
 
 def Names_index(self_, target_name_)
   var i;
-  var result = -1;
   var size = Names_size(self_);
   var s_name_;
 
@@ -471,15 +470,14 @@ def Names_index(self_, target_name_)
     s_name_ = Names_get_str(self_, i);
     case
     when (__le(size, i))
-      break;
+      return -1;
     when (str_eq(s_name_, target_name_))
-      result = i;
-      break;
+      return i;
     end
     i = i + 1;
   end
 
-  return result;
+  panic(480); # Names_index: must not happen
 end
 
 def Names_includes(self_, target_name_)
