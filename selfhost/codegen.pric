@@ -11,6 +11,10 @@ def str_lit__cmt(g_)
   return "_cmt";
 end
 
+def str_lit_bp(g_)
+  return "bp";
+end
+
 def str_lit_deref(g_)
   return "deref";
 end
@@ -303,20 +307,18 @@ def asm_write(c, fd)
   putchar(C_LF());
 end
 
-def asm_fn_prologue()
-  var [3]s_bp; str_set_bp(&s_bp);
+def asm_fn_prologue(g_)
   var [3]s_sp; str_set_sp(&s_sp);
 
-  asm_push(&s_bp);
-  asm_cp(&s_sp, &s_bp);
+  asm_push(str_lit_bp(g_));
+  asm_cp(&s_sp, str_lit_bp(g_));
 end
 
-def asm_fn_epilogue()
-  var [3]s_bp; str_set_bp(&s_bp);
+def asm_fn_epilogue(g_)
   var [3]s_sp; str_set_sp(&s_sp);
 
-  asm_cp(&s_bp, &s_sp);
-  asm_pop(&s_bp);
+  asm_cp(str_lit_bp(g_), &s_sp);
+  asm_pop(str_lit_bp(g_));
 end
 
 # --------------------------------
@@ -842,7 +844,7 @@ def gen_return(g_, fn_arg_names_, lvar_names_, stmt_)
     gen_expr(g_, fn_arg_names_, lvar_names_, expr_);
   end
 
-  asm_fn_epilogue();
+  asm_fn_epilogue(g_);
   asm_ret();
 end
 
@@ -1073,7 +1075,7 @@ def gen_func(g_, func_)
 
   asm_label(fn_name_);
 
-  asm_fn_prologue();
+  asm_fn_prologue(g_);
 
   lvar_names_ = Names_new(g_);
 
@@ -1098,7 +1100,7 @@ def gen_func(g_, func_)
     i = i + 1;
   end
 
-  asm_fn_epilogue();
+  asm_fn_epilogue(g_);
 
   asm_ret();
 end
@@ -1128,7 +1130,7 @@ end
 
 # --------------------------------
 
-def gen_builtin_write()
+def gen_builtin_write(g_)
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [6]s_write;
   var s_fn_arg1_size = 7; var [7]s_fn_arg1;
@@ -1145,7 +1147,7 @@ def gen_builtin_write()
   render_indirection_bp(&s_fn_arg2, 3, s_fn_arg2_size);
 
   asm_label(&s_write);
-  asm_fn_prologue();
+  asm_fn_prologue(g_);
 
   asm_cp(&s_fn_arg1, &s_reg_a);
 
@@ -1155,11 +1157,11 @@ def gen_builtin_write()
   putchar(C_SPC()); print_s(&s_fn_arg2);
   putchar(C_LF());
 
-  asm_fn_epilogue();
+  asm_fn_epilogue(g_);
   asm_ret();
 end
 
-def gen_builtin_getchar()
+def gen_builtin_getchar(g_)
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [8]s_getchar;
   var [5]s_read;
@@ -1183,18 +1185,18 @@ def gen_builtin_getchar()
   render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
 
   asm_label(&s_getchar);
-  asm_fn_prologue();
+  asm_fn_prologue(g_);
 
   asm_indent();
   print_s(&s_read);
   putchar(C_SPC()); print_s(&s_reg_a);
   putchar(C_LF());
 
-  asm_fn_epilogue();
+  asm_fn_epilogue(g_);
   asm_ret();
 end
 
-def gen_builtin_get_sp()
+def gen_builtin_get_sp(g_)
   var [3]s_sp; str_set_sp(&s_sp);
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [7]s_get_sp;
@@ -1209,11 +1211,11 @@ def gen_builtin_get_sp()
 
   asm_label(&s_get_sp);
 
-  asm_fn_prologue();
+  asm_fn_prologue(g_);
 
   asm_cp(&s_sp, &s_reg_a);
 
-  asm_fn_epilogue();
+  asm_fn_epilogue(g_);
   asm_ret();
 end
 
@@ -1240,7 +1242,7 @@ def gen_builtin_panic()
   asm_exit(1);
 end
 
-def gen_builtin_set_vram()
+def gen_builtin_set_vram(g_)
   var [9]s_set_vram;
   var s_vram_addr_size = 7; var [7]s_vram_addr;
   var s_val_size = 7; var [7]s_val;
@@ -1260,15 +1262,15 @@ def gen_builtin_set_vram()
   render_indirection_bp(&s_val, 3, s_val_size);
 
   asm_label(&s_set_vram);
-  asm_fn_prologue();
+  asm_fn_prologue(g_);
 
   asm_set_vram(&s_vram_addr, &s_val);
 
-  asm_fn_epilogue();
+  asm_fn_epilogue(g_);
   asm_ret();
 end
 
-def gen_builtin_get_vram()
+def gen_builtin_get_vram(g_)
   var s_vram_addr_size = 7; var [7]s_vram_addr;
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
   var [9]s_get_vram;
@@ -1286,11 +1288,11 @@ def gen_builtin_get_vram()
   render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
 
   asm_label(&s_get_vram);
-  asm_fn_prologue();
+  asm_fn_prologue(g_);
 
   asm_get_vram(&s_vram_addr, &s_reg_a);
 
-  asm_fn_epilogue();
+  asm_fn_epilogue(g_);
   asm_ret();
 end
 
@@ -1322,12 +1324,12 @@ def codegen(g_, ast_)
   putchar(115); # s
   putchar(C_LF());
 
-  gen_builtin_write();
-  gen_builtin_getchar();
-  gen_builtin_get_sp();
+  gen_builtin_write(g_);
+  gen_builtin_getchar(g_);
+  gen_builtin_get_sp(g_);
   gen_builtin_panic();
-  gen_builtin_set_vram();
-  gen_builtin_get_vram();
+  gen_builtin_set_vram(g_);
+  gen_builtin_get_vram(g_);
 
   putchar( 35); # #
   putchar( 60); # <

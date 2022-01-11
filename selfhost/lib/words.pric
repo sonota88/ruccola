@@ -1,11 +1,5 @@
 # -*- mode: ruby -*-
 
-def str_set_bp(str_)
-  aset(str_, 0,  98); # b
-  aset(str_, 1, 112); # p
-  aset(str_, 2,   0);
-end
-
 def str_set_call(str_)
   aset(str_, 0,  99); # c
   aset(str_, 1,  97); # a
