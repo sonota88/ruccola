@@ -220,14 +220,18 @@ def binary_op?(t)
   %(+ * == != <).include?(t.value)
 end
 
+def _parse_expr_factor_int
+  t = peek()
+  $pos += 1
+  t.value.to_i
+end
+
 def _parse_expr_factor
   t = peek()
 
   case t.kind
   when :int
-    $pos += 1
-    t.value.to_i
-
+    _parse_expr_factor_int()
   when :ident
     if peek(1).value == "("
       fn_name, *args = parse_funcall()

@@ -596,9 +596,19 @@ def _make_str_expr(g_, offset)
   return expr3_;
 end
 
-def _parse_expr_factor(g_)
+def _parse_expr_factor_int(g_)
   var t_;
   var n;
+
+  t_ = peek(g_, 0);
+  inc_token_index(g_);
+
+  n = parse_int(Token_get_val(t_));
+  return Node_new_int(g_, n);
+end
+
+def _parse_expr_factor(g_)
+  var t_;
   var expr_node_;
   var funcall_;
   var funcall_list_;
@@ -612,11 +622,7 @@ def _parse_expr_factor(g_)
 
   case
   when (Token_kind_eq(t_, TOKEN_KIND__INT()))
-    inc_token_index(g_);
-
-    n = parse_int(Token_get_val(t_));
-    expr_node_ = Node_new_int(g_, n);
-
+    return _parse_expr_factor_int(g_);
   when (Token_kind_eq(t_, TOKEN_KIND__IDENT()))
 
     if (char_at(Token_get_val(peek(g_, 1)), 0) == 40) # (
