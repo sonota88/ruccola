@@ -197,9 +197,16 @@ def lex(g_)
 
   read_stdin_all(&input, INPUT_MAX());
 
-  c = char_at(&input, pos);
-
   while (true)
+    c = char_at(&input, pos);
+
+    if (__or(
+          c == 0,
+          __le(INPUT_MAX(), pos)
+        ))
+      break;
+    end
+
     case
     when (__or(c == C_SPC(), c == C_LF()))
       pos = pos + 1;
@@ -252,14 +259,6 @@ def lex(g_)
       p_i(pos);
       p_c(c);
       panic(239); # lex: unexpected pattern
-    end
-
-    c = char_at(&input, pos);
-    if (__or(
-          c == 0,
-          __le(INPUT_MAX(), pos)
-        ))
-      break;
     end
   end
 end
