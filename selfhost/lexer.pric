@@ -191,7 +191,6 @@ end
 def lex(g_)
   var [60000]input; # INPUT_MAX
   var pos = 0;
-  var do_break = false;
   var size;
   var s_temp_size = 40; var [40]s_temp;
   var c;
@@ -200,7 +199,7 @@ def lex(g_)
 
   c = char_at(&input, pos);
 
-  while (__not(do_break))
+  while (true)
     case
     when (__or(c == C_SPC(), c == C_LF()))
       pos = pos + 1;
@@ -260,7 +259,7 @@ def lex(g_)
           c == 0,
           __le(INPUT_MAX(), pos)
         ))
-      do_break = true;
+      break;
     end
   end
 end
