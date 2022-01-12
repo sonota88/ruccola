@@ -775,12 +775,11 @@ end
 
 def parse_call(g_)
   var stmt_;
-  var [5]s_call; str_set_call(&s_call);
   var funcall_;
 
   stmt_ = List_new(g_);
 
-  List_add_str(g_, stmt_, &s_call);
+  List_add_str(g_, stmt_, "call");
 
   funcall_ = parse_funcall(g_);
   List_add_all(g_, stmt_, funcall_);

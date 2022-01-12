@@ -15,6 +15,10 @@ def str_lit_bp(g_)
   return "bp";
 end
 
+def str_lit_call(g_)
+  return "call";
+end
+
 def str_lit_deref(g_)
   return "deref";
 end
@@ -64,13 +68,9 @@ def asm_label(label_)
   putchar(C_LF());
 end
 
-def asm_call(label_)
-  var [5]s_temp;
-
-  str_set_call(&s_temp);
-
+def asm_call(g_, label_)
   asm_indent();
-  print_s(&s_temp);
+  print_s(str_lit_call(g_));
   putchar(C_SPC()); print_s(label_);
   putchar(C_LF());
 end
@@ -758,7 +758,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   fn_name_ = List_get_as_str(stmt_, 1);
   args_ = List_rest(g_, stmt_, 2);
 
-  str_set_call(&vm_comment);
+  str_cp_with_check(&vm_comment, str_lit_call(g_), vm_comment_size);
   aset(&vm_comment, 4, C_SPC());
   aset(&vm_comment, 5, C_SPC());
   aset(&vm_comment, 6, 0);
@@ -776,7 +776,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   end
 
   asm_vm_comment(g_, &vm_comment);
-  asm_call(fn_name_);
+  asm_call(g_, fn_name_);
 
   if (0 < List_size(args_))
     asm_add_sp(List_size(args_));
@@ -1006,7 +1006,7 @@ def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
     gen_set(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq(head_str_, str_lit__cmt(g_)))
     gen_vm_comment(g_, stmt_);
-  when (str_eq_call(head_str_))
+  when (str_eq(head_str_, str_lit_call(g_)))
     gen_call(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq_return(head_str_))
     gen_return(g_, fn_arg_names_, lvar_names_, stmt_);
@@ -1305,7 +1305,7 @@ def codegen(g_, ast_)
   aset(&s_temp, 2, 105); # i
   aset(&s_temp, 3, 110); # n
   aset(&s_temp, 4,   0);
-  asm_call(&s_temp);
+  asm_call(g_, &s_temp);
 
   asm_exit(0);
 
