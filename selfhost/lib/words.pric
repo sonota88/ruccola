@@ -59,19 +59,6 @@ def str_eq_return(str_)
   return str_eq(str_, &pattern);
 end
 
-def str_set_var(dest_)
-  aset(dest_, 0, 118); # v
-  aset(dest_, 1,  97); # a
-  aset(dest_, 2, 114); # r
-  aset(dest_, 3,   0);
-end
-
-def str_eq_var(str_)
-  var [4]pattern;
-  str_set_var(&pattern);
-  return str_eq(str_, &pattern);
-end
-
 def str_set_var_array(dest_)
   aset(dest_, 0, 118); # v
   aset(dest_, 1,  97); # a

@@ -49,6 +49,10 @@ def str_lit_plus(g_)
   return "+";
 end
 
+def str_lit_var(g_)
+  return "var";
+end
+
 def str_lit_when(g_)
   return "when";
 end
@@ -347,7 +351,6 @@ def parse_func(g_)
   var stmts_;
   var stmt_;
   var do_break = false;
-  var [4]s_var; str_set_var(&s_var);
   var [5]s_func; str_set_func(&s_func);
   var args_;
   var fn_name_;
@@ -380,7 +383,7 @@ def parse_func(g_)
       do_break = true;
     else
 
-      if (str_eq(Token_get_val(t_), &s_var))
+      if (str_eq(Token_get_val(t_), str_lit_var(g_)))
         stmt_ = parse_var(g_);
       else
         stmt_ = parse_stmt(g_);
@@ -399,15 +402,14 @@ end
 
 def _parse_var_declare(g_)
   var stmt_;
-  var [4]s_var; str_set_var(&s_var);
   var t_;
   var var_name_;
   check_heap_stack_overlap(g_);
 
   stmt_ = List_new(g_);
 
-  consume_kw(g_, &s_var);
-  List_add_str(g_, stmt_, &s_var);
+  consume_kw(g_, str_lit_var(g_));
+  List_add_str(g_, stmt_, str_lit_var(g_));
 
   t_ = peek(g_, 0);
   inc_token_index(g_);
@@ -421,7 +423,6 @@ end
 
 def _parse_var_init(g_)
   var stmt_;
-  var [4]s_var; str_set_var(&s_var);
   var t_;
   var var_name_;
   var expr_node_;
@@ -429,8 +430,8 @@ def _parse_var_init(g_)
 
   stmt_ = List_new(g_);
 
-  consume_kw(g_, &s_var);
-  List_add_str(g_, stmt_, &s_var);
+  consume_kw(g_, str_lit_var(g_));
+  List_add_str(g_, stmt_, str_lit_var(g_));
 
   t_ = peek(g_, 0);
   inc_token_index(g_);
@@ -452,10 +453,9 @@ def _parse_var_array(g_)
   var width;
   var var_name_;
   var stmt_;
-  var [4]s_var; str_set_var(&s_var);
   var [10]s_var_array; str_set_var_array(&s_var_array);
 
-  consume_kw(g_, &s_var);
+  consume_kw(g_, str_lit_var(g_));
 
   consume_sym_one_char(g_, 91); # [
 

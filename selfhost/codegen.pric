@@ -1084,7 +1084,7 @@ def gen_func(g_, func_)
     stmt_ = List_get_as_list(stmts_, i);
 
     case
-    when (str_eq_var(List_get_as_str(stmt_, 0)))
+    when (str_eq(List_get_as_str(stmt_, 0), "var"))
       lvar_name_ = List_get_as_str(stmt_, 1);
       Names_add(g_, lvar_names_, lvar_name_, 1);
       gen_var(g_, fn_arg_names_, lvar_names_, stmt_);
