@@ -601,12 +601,38 @@ def _parse_expr_factor_int(g_)
   return Node_new_int(g_, n);
 end
 
-def _parse_expr_factor(g_)
+def _parse_expr_factor_ident(g_)
   var t_;
-  var expr_node_;
   var funcall_;
   var funcall_list_;
   var [8]s_funcall; str_set_funcall(&s_funcall);
+  var i;
+
+  t_ = peek(g_, 0);
+
+  if (char_at(Token_get_val(peek(g_, 1)), 0) == 40) # (
+    funcall_ = parse_funcall(g_);
+
+    funcall_list_ = List_new(g_);
+    List_add_str(g_, funcall_list_, &s_funcall);
+
+    i = 0;
+    while (i < List_size(funcall_))
+      List_add(g_, funcall_list_, List_get(funcall_, i));
+      i = i + 1;
+    end
+
+    return Node_new_list(g_, funcall_list_);
+  else
+    inc_token_index(g_);
+
+    return Node_new_str(g_, Token_get_val(t_));
+  end
+end
+
+def _parse_expr_factor(g_)
+  var t_;
+  var expr_node_;
   var i;
   var str_offset;
   var expr_list_;
@@ -618,26 +644,7 @@ def _parse_expr_factor(g_)
   when (Token_kind_eq(t_, TOKEN_KIND__INT()))
     return _parse_expr_factor_int(g_);
   when (Token_kind_eq(t_, TOKEN_KIND__IDENT()))
-
-    if (char_at(Token_get_val(peek(g_, 1)), 0) == 40) # (
-      funcall_ = parse_funcall(g_);
-
-      funcall_list_ = List_new(g_);
-      List_add_str(g_, funcall_list_, &s_funcall);
-
-      i = 0;
-      while (i < List_size(funcall_))
-        List_add(g_, funcall_list_, List_get(funcall_, i));
-        i = i + 1;
-      end
-
-      expr_node_ = Node_new_list(g_, funcall_list_);
-    else
-      inc_token_index(g_);
-
-      expr_node_ = Node_new_str(g_, Token_get_val(t_));
-    end
-
+    return _parse_expr_factor_ident(g_);
   when (Token_kind_eq(t_, TOKEN_KIND__SYM()))
 
     case

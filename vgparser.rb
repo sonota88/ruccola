@@ -226,6 +226,18 @@ def _parse_expr_factor_int
   t.value.to_i
 end
 
+def _parse_expr_factor_ident
+  t = peek()
+
+  if peek(1).value == "("
+    fn_name, *args = parse_funcall()
+    [:funcall, fn_name, *args]
+  else
+    $pos += 1
+    t.value
+  end
+end
+
 def _parse_expr_factor
   t = peek()
 
@@ -233,14 +245,7 @@ def _parse_expr_factor
   when :int
     _parse_expr_factor_int()
   when :ident
-    if peek(1).value == "("
-      fn_name, *args = parse_funcall()
-      [:funcall, fn_name, *args]
-    else
-      $pos += 1
-      t.value
-    end
-
+    _parse_expr_factor_ident()
   when :sym
     case t.value
     when "("
