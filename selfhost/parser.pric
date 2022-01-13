@@ -297,12 +297,12 @@ def parse_args(g_)
   while (__not(do_break))
     t_ = peek(g_, 0);
 
-    if (char_at(Token_get_val(t_), 0) == C_COMMA())
+    if (char_at(Token_get_val(t_), 0) != C_COMMA())
+      do_break = true;
+    else
       consume_sym(g_, &s_comma);
       arg_node_ = _parse_arg(g_);
       List_add(g_, args_, arg_node_);
-    else
-      do_break = true;
     end
   end
 
@@ -333,12 +333,12 @@ def parse_exprs(g_)
   while (__not(do_break))
     t_ = peek(g_, 0);
 
-    if (char_at(Token_get_val(t_), 0) == C_COMMA())
+    if (char_at(Token_get_val(t_), 0) != C_COMMA())
+      do_break = true;
+    else
       consume_sym(g_, &s_comma);
       expr_node_ = parse_expr(g_);
       List_add(g_, exprs_, expr_node_);
-    else
-      do_break = true;
     end
   end
 
