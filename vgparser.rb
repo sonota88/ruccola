@@ -227,12 +227,11 @@ def _parse_expr_factor_int
 end
 
 def _parse_expr_factor_ident
-  t = peek()
-
   if peek(1).value == "("
     fn_name, *args = parse_funcall()
     [:funcall, fn_name, *args]
   else
+    t = peek()
     $pos += 1
     t.value
   end

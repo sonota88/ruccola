@@ -374,8 +374,7 @@ def parse_func(g_)
 
   while (true)
     t_ = peek(g_, 0);
-    case
-    when (Token_val_eq(t_, str_lit_end(g_)))
+    if (Token_val_eq(t_, str_lit_end(g_)))
       break;
     end
 
@@ -608,8 +607,6 @@ def _parse_expr_factor_ident(g_)
   var [8]s_funcall; str_set_funcall(&s_funcall);
   var i;
 
-  t_ = peek(g_, 0);
-
   if (char_at(Token_get_val(peek(g_, 1)), 0) == 40) # (
     funcall_ = parse_funcall(g_);
 
@@ -624,6 +621,7 @@ def _parse_expr_factor_ident(g_)
 
     return Node_new_list(g_, funcall_list_);
   else
+    t_ = peek(g_, 0);
     inc_token_index(g_);
 
     return Node_new_str(g_, Token_get_val(t_));
@@ -704,22 +702,18 @@ def parse_expr(g_)
   var list_;
   var expr_node_;
   var factor_node_;
-  var s_op_size = 4; var [4]s_op;
+  var s_op_;
 
   expr_node_ = _parse_expr_factor(g_);
 
   while (is_binop(peek(g_, 0)))
-    str_cp_with_check(
-      &s_op,
-      Token_get_val(peek(g_, 0)),
-      s_op_size
-    );
+    s_op_ = Token_get_val(peek(g_, 0));
     inc_token_index(g_);
 
     factor_node_ = _parse_expr_factor(g_);
 
     list_ = List_new(g_);
-    List_add_str(g_, list_, &s_op);
+    List_add_str(g_, list_, s_op_);
     List_add(g_, list_, expr_node_);
     List_add(g_, list_, factor_node_);
 
