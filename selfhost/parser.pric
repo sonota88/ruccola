@@ -83,7 +83,6 @@ def set_token(g_, ti, t_)
 end
 
 def read_tokens(g_)
-  var do_break = false;
   var line_size = 80; var [80]line;
   var size;
   var pos = 0;
@@ -97,11 +96,12 @@ def read_tokens(g_)
 
   read_stdin_all(&input, input_size_max);
 
-  while (__not(do_break))
+  while (true)
     size = get_line_size(&input, pos);
     if (size == 0)
-      do_break = true;
-    else
+      break;
+    end
+
       substr_with_check(&line, &input, pos, pos + size, line_size);
       chomp(&line);
 
@@ -114,7 +114,6 @@ def read_tokens(g_)
       ti = ti + 1;
 
       pos = pos + size;
-    end
   end
 
   set_num_tokens(g_, ti); # ti == number of tokens
@@ -277,7 +276,6 @@ def parse_args(g_)
   var args_;
   var t_;
   var arg_node_;
-  var do_break = false;
   var [2]s_comma;
 
   aset(&s_comma, 0, C_COMMA());
@@ -294,16 +292,16 @@ def parse_args(g_)
   arg_node_ = _parse_arg(g_);
   List_add(g_, args_, arg_node_);
 
-  while (__not(do_break))
+  while (true)
     t_ = peek(g_, 0);
 
     if (char_at(Token_get_val(t_), 0) != C_COMMA())
-      do_break = true;
-    else
+      break;
+    end
+
       consume_sym(g_, &s_comma);
       arg_node_ = _parse_arg(g_);
       List_add(g_, args_, arg_node_);
-    end
   end
 
   return args_;
@@ -313,7 +311,6 @@ def parse_exprs(g_)
   var exprs_;
   var t_;
   var expr_node_;
-  var do_break = false;
   var [2]s_comma;
 
   aset(&s_comma, 0, C_COMMA());
@@ -330,16 +327,16 @@ def parse_exprs(g_)
   expr_node_ = parse_expr(g_);
   List_add(g_, exprs_, expr_node_);
 
-  while (__not(do_break))
+  while (true)
     t_ = peek(g_, 0);
 
     if (char_at(Token_get_val(t_), 0) != C_COMMA())
-      do_break = true;
-    else
+      break;
+    end
+
       consume_sym(g_, &s_comma);
       expr_node_ = parse_expr(g_);
       List_add(g_, exprs_, expr_node_);
-    end
   end
 
   return exprs_;
@@ -350,7 +347,6 @@ def parse_func(g_)
   var t_;
   var stmts_;
   var stmt_;
-  var do_break = false;
   var [5]s_func; str_set_func(&s_func);
   var args_;
   var fn_name_;
@@ -376,12 +372,12 @@ def parse_func(g_)
 
   stmts_ = List_new(g_);
 
-  while (__not(do_break))
+  while (true)
     t_ = peek(g_, 0);
     case
     when (Token_val_eq(t_, str_lit_end(g_)))
-      do_break = true;
-    else
+      break;
+    end
 
       if (str_eq(Token_get_val(t_), str_lit_var(g_)))
         stmt_ = parse_var(g_);
@@ -389,8 +385,6 @@ def parse_func(g_)
         stmt_ = parse_stmt(g_);
       end
       List_add_list(g_, stmts_, stmt_);
-
-    end
   end
 
   consume_kw(g_, str_lit_end(g_));
@@ -958,25 +952,24 @@ end
 def parse_stmts(g_)
   var stmt_;
   var stmts_;
-  var do_break = false;
   var t_;
 
   stmts_ = List_new(g_);
 
-  while (__not(do_break))
+  while (true)
     t_ = peek(g_, 0);
 
     case
     when (str_eq(Token_get_val(t_), str_lit_when(g_)))
-      do_break = true;
+      break;
     when (str_eq(Token_get_val(t_), str_lit_else(g_)))
-      do_break = true;
+      break;
     when (str_eq(Token_get_val(t_), str_lit_end(g_)))
-      do_break = true;
-    else
+      break;
+    end
+
       stmt_ = parse_stmt(g_);
       List_add_list(g_, stmts_, stmt_);
-    end
   end
 
   return stmts_;
