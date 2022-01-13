@@ -102,18 +102,18 @@ def read_tokens(g_)
       break;
     end
 
-      substr_with_check(&line, &input, pos, pos + size, line_size);
-      chomp(&line);
+    substr_with_check(&line, &input, pos, pos + size, line_size);
+    chomp(&line);
 
-      sep_i = char_index(&line, 58, 0); # :
-      substr(&kind_str, &line, 0, sep_i);
-      substr_with_check(&value_str, &line, sep_i + 1, str_size(&line), value_str_size);
+    sep_i = char_index(&line, 58, 0); # :
+    substr(&kind_str, &line, 0, sep_i);
+    substr_with_check(&value_str, &line, sep_i + 1, str_size(&line), value_str_size);
 
-      t_ = Token_new(g_, &kind_str, &value_str);
-      set_token(g_, ti, t_);
-      ti = ti + 1;
+    t_ = Token_new(g_, &kind_str, &value_str);
+    set_token(g_, ti, t_);
+    ti = ti + 1;
 
-      pos = pos + size;
+    pos = pos + size;
   end
 
   set_num_tokens(g_, ti); # ti == number of tokens
@@ -299,9 +299,9 @@ def parse_args(g_)
       break;
     end
 
-      consume_sym(g_, &s_comma);
-      arg_node_ = _parse_arg(g_);
-      List_add(g_, args_, arg_node_);
+    consume_sym(g_, &s_comma);
+    arg_node_ = _parse_arg(g_);
+    List_add(g_, args_, arg_node_);
   end
 
   return args_;
@@ -334,9 +334,9 @@ def parse_exprs(g_)
       break;
     end
 
-      consume_sym(g_, &s_comma);
-      expr_node_ = parse_expr(g_);
-      List_add(g_, exprs_, expr_node_);
+    consume_sym(g_, &s_comma);
+    expr_node_ = parse_expr(g_);
+    List_add(g_, exprs_, expr_node_);
   end
 
   return exprs_;
@@ -379,12 +379,12 @@ def parse_func(g_)
       break;
     end
 
-      if (str_eq(Token_get_val(t_), str_lit_var(g_)))
-        stmt_ = parse_var(g_);
-      else
-        stmt_ = parse_stmt(g_);
-      end
-      List_add_list(g_, stmts_, stmt_);
+    if (str_eq(Token_get_val(t_), str_lit_var(g_)))
+      stmt_ = parse_var(g_);
+    else
+      stmt_ = parse_stmt(g_);
+    end
+    List_add_list(g_, stmts_, stmt_);
   end
 
   consume_kw(g_, str_lit_end(g_));
@@ -968,8 +968,8 @@ def parse_stmts(g_)
       break;
     end
 
-      stmt_ = parse_stmt(g_);
-      List_add_list(g_, stmts_, stmt_);
+    stmt_ = parse_stmt(g_);
+    List_add_list(g_, stmts_, stmt_);
   end
 
   return stmts_;
