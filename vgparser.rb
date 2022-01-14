@@ -253,6 +253,18 @@ def _parse_expr_factor_sym
   end
 end
 
+def _parse_expr_factor_kw
+  t = peek()
+
+  case t.value
+  when "true", "false"
+    $pos += 1
+    t.value
+  else
+    raise "unexpected token value (#{t})"
+  end
+end
+
 def _parse_expr_factor
   t = peek()
 
@@ -264,14 +276,7 @@ def _parse_expr_factor
   when :sym
     _parse_expr_factor_sym()
   when :kw
-    case t.value
-    when "true", "false"
-      $pos += 1
-      t.value
-    else
-      raise "unexpected token value (#{t})"
-    end
-
+    _parse_expr_factor_kw()
   when :str
     $pos += 1
     offset = $strings.map { |str| str.bytesize + 1 }.sum

@@ -661,6 +661,26 @@ def _parse_expr_factor_sym(g_)
   end
 end
 
+def _parse_expr_factor_kw(g_)
+  var t_;
+  var expr_node_;
+
+  t_ = peek(g_, 0);
+
+  if (
+    __or(
+      str_eq(Token_get_val(t_), "true"),
+      str_eq(Token_get_val(t_), "false")
+    )
+  )
+    expr_node_ = Node_new_str(g_, Token_get_val(t_));
+    inc_token_index(g_);
+    return expr_node_;
+  else
+    panic(563); # unexpected token
+  end
+end
+
 def _parse_expr_factor(g_)
   var t_;
   var expr_node_;
@@ -677,18 +697,7 @@ def _parse_expr_factor(g_)
   when (Token_kind_eq(t_, TOKEN_KIND__SYM()))
     return _parse_expr_factor_sym(g_);
   when (Token_kind_eq(t_, TOKEN_KIND__KW()))
-    if (
-      __or(
-        str_eq(Token_get_val(t_), "true"),
-        str_eq(Token_get_val(t_), "false")
-      )
-    )
-      expr_node_ = Node_new_str(g_, Token_get_val(t_));
-      inc_token_index(g_);
-    else
-      panic(563); # unexpected token
-    end
-
+    return _parse_expr_factor_kw(g_);
   when (Token_kind_eq(t_, TOKEN_KIND__STR()))
     inc_token_index(g_);
 
