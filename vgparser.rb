@@ -288,16 +288,11 @@ def _parse_expr_factor
   t = peek()
 
   case t.kind
-  when :int
-    _parse_expr_factor_int()
-  when :ident
-    _parse_expr_factor_ident()
-  when :sym
-    _parse_expr_factor_sym()
-  when :kw
-    _parse_expr_factor_kw()
-  when :str
-    _parse_expr_factor_str()
+  when :int   then _parse_expr_factor_int()
+  when :ident then _parse_expr_factor_ident()
+  when :sym   then _parse_expr_factor_sym()
+  when :kw    then _parse_expr_factor_kw()
+  when :str   then _parse_expr_factor_str()
   else
     raise ParseError, t
   end

@@ -699,27 +699,26 @@ end
 
 def _parse_expr_factor(g_)
   var t_;
-  var expr_node_;
+  var tkind;
 
   t_ = peek(g_, 0);
+  tkind = Token_get_kind(t_);
 
   case
-  when (Token_kind_eq(t_, TOKEN_KIND__INT()))
+  when (tkind == TOKEN_KIND__INT())
     return _parse_expr_factor_int(g_);
-  when (Token_kind_eq(t_, TOKEN_KIND__IDENT()))
+  when (tkind == TOKEN_KIND__IDENT())
     return _parse_expr_factor_ident(g_);
-  when (Token_kind_eq(t_, TOKEN_KIND__SYM()))
+  when (tkind == TOKEN_KIND__SYM())
     return _parse_expr_factor_sym(g_);
-  when (Token_kind_eq(t_, TOKEN_KIND__KW()))
+  when (tkind == TOKEN_KIND__KW())
     return _parse_expr_factor_kw(g_);
-  when (Token_kind_eq(t_, TOKEN_KIND__STR()))
+  when (tkind == TOKEN_KIND__STR())
     return _parse_expr_factor_str(g_);
   else
     Json_print(Token_to_plain(g_, t_));
     panic(645); # not yet impl
   end
-
-  return expr_node_;
 end
 
 def parse_expr(g_)
