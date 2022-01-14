@@ -49,6 +49,10 @@ def str_lit_plus(g_)
   return "+";
 end
 
+def str_lit_return(g_)
+  return "return";
+end
+
 def str_lit_var(g_)
   return "var";
 end
@@ -793,12 +797,11 @@ end
 def parse_return(g_)
   var expr_;
   var stmt_;
-  var [7]s_return; str_set_return(&s_return);
 
-  consume_kw(g_, &s_return);
+  consume_kw(g_, str_lit_return(g_));
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, &s_return);
+  List_add_str(g_, stmt_, str_lit_return(g_));
 
   if (str_eq(Token_get_val(peek(g_, 0)), ";"))
     consume_sym_semicolon(g_); # ;
@@ -927,7 +930,7 @@ def parse_stmt(g_)
   case
   when (str_eq(Token_get_val(t_), str_lit__cmt(g_)))
     return parse_vm_comment(g_);
-  when (str_eq_return(Token_get_val(t_)))
+  when (str_eq(Token_get_val(t_), str_lit_return(g_)))
     return parse_return(g_);
   when (str_eq_while(Token_get_val(t_)))
     return parse_while(g_);

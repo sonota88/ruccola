@@ -1008,7 +1008,7 @@ def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
     gen_vm_comment(g_, stmt_);
   when (str_eq(head_str_, str_lit_call(g_)))
     gen_call(g_, fn_arg_names_, lvar_names_, stmt_);
-  when (str_eq_return(head_str_))
+  when (str_eq(head_str_, "return"))
     gen_return(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq_while(head_str_))
     gen_while(g_, fn_arg_names_, lvar_names_, stmt_);
