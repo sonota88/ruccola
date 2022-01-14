@@ -61,6 +61,10 @@ def str_lit_when(g_)
   return "when";
 end
 
+def str_lit_while(g_)
+  return "while";
+end
+
 # --------------------------------
 
 def get_line_size(input_, pos_from)
@@ -816,12 +820,11 @@ def parse_return(g_)
 end
 
 def parse_while(g_)
-  var [6]s_while; str_set_while(&s_while);
   var stmt_;
   var expr_node_;
   var stmts_;
 
-  consume_kw(g_, &s_while);
+  consume_kw(g_, str_lit_while(g_));
 
   consume_sym_paren_l(g_); # (
   expr_node_ = parse_expr(g_);
@@ -832,7 +835,7 @@ def parse_while(g_)
   consume_kw(g_, str_lit_end(g_));
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, &s_while);
+  List_add_str(g_, stmt_, str_lit_while(g_));
   List_add(g_, stmt_, expr_node_);
   List_add_list(g_, stmt_, stmts_);
 
@@ -932,7 +935,7 @@ def parse_stmt(g_)
     return parse_vm_comment(g_);
   when (str_eq(Token_get_val(t_), str_lit_return(g_)))
     return parse_return(g_);
-  when (str_eq_while(Token_get_val(t_)))
+  when (str_eq(Token_get_val(t_), str_lit_while(g_)))
     return parse_while(g_);
   when (str_eq(Token_get_val(t_), str_lit_break(g_)))
     return parse_break(g_);
