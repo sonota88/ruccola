@@ -237,6 +237,22 @@ def _parse_expr_factor_ident
   end
 end
 
+def _parse_expr_factor_sym
+  case peek().value
+  when "("
+    consume "("
+    expr = parse_expr()
+    consume ")"
+    expr
+  when "&"
+    parse_expr_addr()
+  when "*"
+    parse_deref()
+  else
+    raise "unexpected token (#{peek()})"
+  end
+end
+
 def _parse_expr_factor
   t = peek()
 
@@ -246,18 +262,7 @@ def _parse_expr_factor
   when :ident
     _parse_expr_factor_ident()
   when :sym
-    case t.value
-    when "("
-      consume "("
-      expr = parse_expr()
-      consume ")"
-      expr
-    when "&"
-      parse_expr_addr()
-    when "*"
-      parse_deref()
-    end
-
+    _parse_expr_factor_sym()
   when :kw
     case t.value
     when "true", "false"
