@@ -681,11 +681,25 @@ def _parse_expr_factor_kw(g_)
   end
 end
 
+def _parse_expr_factor_str(g_)
+  var t_;
+  var str_offset;
+  var expr_list_;
+
+  t_ = peek(g_, 0);
+  inc_token_index(g_);
+
+  str_offset = StrLitList_get_offset(g_);
+
+  List_add_str(g_, StrLitList_get_self(g_), Token_get_val(t_));
+
+  expr_list_ = _make_str_expr(g_, str_offset);
+  return Node_new_list(g_, expr_list_);
+end
+
 def _parse_expr_factor(g_)
   var t_;
   var expr_node_;
-  var str_offset;
-  var expr_list_;
 
   t_ = peek(g_, 0);
 
@@ -699,21 +713,7 @@ def _parse_expr_factor(g_)
   when (Token_kind_eq(t_, TOKEN_KIND__KW()))
     return _parse_expr_factor_kw(g_);
   when (Token_kind_eq(t_, TOKEN_KIND__STR()))
-    inc_token_index(g_);
-
-    str_offset = StrLitList_get_offset(g_);
-
-    # # debug
-    # print_i_e(str_offset);
-    # putchar_e(C_SPC());
-    # print_s_e(Token_get_val(t_));
-    # putchar_e(C_LF());
-
-    List_add_str(g_, StrLitList_get_self(g_), Token_get_val(t_));
-
-    expr_list_ = _make_str_expr(g_, str_offset);
-    expr_node_ = Node_new_list(g_, expr_list_);
-
+    return _parse_expr_factor_str(g_);
   else
     Json_print(Token_to_plain(g_, t_));
     panic(645); # not yet impl

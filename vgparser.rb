@@ -265,6 +265,25 @@ def _parse_expr_factor_kw
   end
 end
 
+def _parse_expr_factor_str
+  t = peek()
+
+  $pos += 1
+  offset = $strings.map { |str| str.bytesize + 1 }.sum
+  $strings << t.value
+
+  # g_ + GO_STRINGS() + offset
+  [
+    :+,
+    [
+      :+,
+      "g_",
+      [:funcall, "GO_STRINGS"]
+    ],
+    offset
+  ]
+end
+
 def _parse_expr_factor
   t = peek()
 
@@ -278,21 +297,7 @@ def _parse_expr_factor
   when :kw
     _parse_expr_factor_kw()
   when :str
-    $pos += 1
-    offset = $strings.map { |str| str.bytesize + 1 }.sum
-    $strings << t.value
-
-    # g_ + GO_STRINGS() + offset
-    [
-      :+,
-      [
-        :+,
-        "g_",
-        [:funcall, "GO_STRINGS"]
-      ],
-      offset
-    ]
-
+    _parse_expr_factor_str()
   else
     raise ParseError, t
   end
