@@ -937,32 +937,15 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   var [6]s_reg_b; str_set_reg_b(&s_reg_b);
   var when_index = -1;
 
-  aset(&s_0, 0, 48); # 0
-  aset(&s_0, 1,  0);
+  str_cp(&s_0, "0");
 
   inc_label_id(g_);
   label_id = get_label_id(g_);
 
-  aset(&label_end, 0, 101); # e
-  aset(&label_end, 1, 110); # n
-  aset(&label_end, 2, 100); # d
-  aset(&label_end, 3,  95); # _
-  aset(&label_end, 4,  99); # c
-  aset(&label_end, 5,  97); # a
-  aset(&label_end, 6, 115); # s
-  aset(&label_end, 7, 101); # e
-  aset(&label_end, 8,   0);
+  str_cp_with_check(&label_end, "end_case", label_size);
   append_label_id(&label_end, label_id, label_size);
 
-  aset(&label_end_when_head, 0, 101); # e
-  aset(&label_end_when_head, 1, 110); # n
-  aset(&label_end_when_head, 2, 100); # d
-  aset(&label_end_when_head, 3,  95); # _
-  aset(&label_end_when_head, 4, 119); # w
-  aset(&label_end_when_head, 5, 104); # h
-  aset(&label_end_when_head, 6, 101); # e
-  aset(&label_end_when_head, 7, 110); # n
-  aset(&label_end_when_head, 8,   0);
+  str_cp_with_check(&label_end_when_head, "end_when", label_size);
   append_label_id(&label_end_when_head, label_id, label_size);
 
   when_clauses_ = List_rest(g_, stmt_, 1);
