@@ -13,7 +13,6 @@ class Test100 < Minitest::Test
       "blank_main.pric",
       "add.pric",
       "addr_deref.pric",
-      "array.pric",
       "less_than.pric",
       "return.pric",
       "if.pric",

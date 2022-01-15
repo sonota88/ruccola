@@ -35,4 +35,25 @@ class Test030 < Minitest::Test
     )
   end
 
+  def test_diff_asm
+    src = <<~SRC
+      def main()
+        var a;
+        var [2]b;
+        var c;
+
+        a         = 65; # A
+        *(&b)     = 66; # B
+        *(&b + 1) = 67; # C
+        c         = 68; # D
+
+        putchar(a);
+        putchar(*(&b));
+        putchar(*(&b + 1));
+        putchar(c);
+      end
+    SRC
+
+    diff_asm(src, "array")
+  end
 end
