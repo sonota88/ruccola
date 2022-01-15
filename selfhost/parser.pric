@@ -249,6 +249,11 @@ def StrLitList_get_self(g_)
   return *(g_ + GO_STR_LIT_LIST());
 end
 
+def StrLitList_add(g_, str_)
+  var self_ = StrLitList_get_self(g_);
+  List_add_str(g_, self_, str_);
+end
+
 def StrLitList_get_str(g_, i)
   var self_ = StrLitList_get_self(g_);
   return List_get_as_str(self_, i);
@@ -696,7 +701,7 @@ def _parse_expr_factor_str(g_)
 
   str_offset = StrLitList_get_offset(g_);
 
-  List_add_str(g_, StrLitList_get_self(g_), Token_get_val(t_));
+  StrLitList_add(g_, Token_get_val(t_));
 
   expr_list_ = _make_str_expr(g_, str_offset);
   return Node_new_list(g_, expr_list_);
