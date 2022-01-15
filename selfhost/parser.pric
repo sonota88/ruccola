@@ -249,6 +249,11 @@ def StrLitList_get_self(g_)
   return *(g_ + GO_STR_LIT_LIST());
 end
 
+def StrLitList_get_str(g_, i)
+  var self_ = StrLitList_get_self(g_);
+  return List_get_as_str(self_, i);
+end
+
 def StrLitList_get_offset(g_)
   var self_ = StrLitList_get_self(g_);
   var offset = 0;
@@ -257,7 +262,7 @@ def StrLitList_get_offset(g_)
 
   i = 0;
   while (i < List_size(self_))
-    s_temp_ = List_get_as_str(self_, i);
+    s_temp_ = StrLitList_get_str(g_, i);
     offset = offset + str_size(s_temp_) + 1;
     i = i + 1;
   end
@@ -1098,7 +1103,7 @@ def make_init_strings_fn(g_)
   var byte;
   var str_lit_list_ = StrLitList_get_self(g_);
   while (i < List_size(str_lit_list_))
-    str_ = List_get_as_str(str_lit_list_, i);
+    str_ = StrLitList_get_str(g_, i);
     str_bi = 0;
     while (str_bi < str_size(str_))
       byte = char_at(str_, str_bi);
