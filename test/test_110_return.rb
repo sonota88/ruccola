@@ -40,4 +40,22 @@ class Test110 < Minitest::Test
     assert_equal("A", output)
   end
 
+  def test_diff_asm
+    src = <<~SRC
+      def f1()
+        return 1;
+      end
+
+      def f2()
+        return;
+      end
+
+      def main()
+        f1();
+        f2();
+      end
+    SRC
+
+    diff_asm(src, "return")
+  end
 end

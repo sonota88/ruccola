@@ -14,7 +14,6 @@ class Test100 < Minitest::Test
       "add.pric",
       "addr_deref.pric",
       "less_than.pric",
-      "return.pric",
       "if.pric",
       "while.pric"
     ]
