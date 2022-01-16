@@ -686,7 +686,6 @@ end
 def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
   var cp_src_size = 20; var [20]cp_src;
   var [6]s_reg_a; str_set_reg_a(&s_reg_a);
-  var [8]s_funcall; str_set_funcall(&s_funcall);
   var expr;
   var str_;
   var list_;
@@ -731,7 +730,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
 
     if (str_eq(
           List_get_as_str(list_, 0),
-          &s_funcall
+          "funcall"
         ))
       gen_call(g_, fn_arg_names_, lvar_names_, list_);
     else

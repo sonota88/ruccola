@@ -651,14 +651,13 @@ def _parse_expr_factor_ident(g_)
   var t_;
   var funcall_;
   var funcall_list_;
-  var [8]s_funcall; str_set_funcall(&s_funcall);
   var i;
 
   if (char_at(Token_get_val(peek(g_, 1)), 0) == 40) # (
     funcall_ = parse_funcall(g_);
 
     funcall_list_ = List_new(g_);
-    List_add_str(g_, funcall_list_, &s_funcall);
+    List_add_str(g_, funcall_list_, "funcall");
 
     i = 0;
     while (i < List_size(funcall_))
