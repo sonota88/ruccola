@@ -933,11 +933,9 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   var [19]label_end_when_head;
   var [19]label_temp;
 
-  var [2]s_0;
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
+  var s_0_ = "0";
+  var s_reg_b_ = "reg_b";
   var when_index = -1;
-
-  str_cp(&s_0, "0");
 
   inc_label_id(g_);
   label_id = get_label_id(g_);
@@ -958,7 +956,7 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
     stmts_ = List_rest(g_, when_clause_, 1);
 
     gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
-    asm_cp(&s_0, &s_reg_b);
+    asm_cp(s_0_, s_reg_b_);
     asm_compare();
 
     # {label_end_when_head}_{when_index}
