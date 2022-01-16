@@ -1094,7 +1094,7 @@ def gen_top_stmt(g_, top_stmt_)
   var s_head_ = List_get_as_str(top_stmt_, 0);
 
   case
-  when (str_eq_func(s_head_))
+  when (str_eq(s_head_, "func"))
     gen_func(g_, top_stmt_);
   else
     panic(194); # gen_top_stmt

@@ -395,7 +395,6 @@ def parse_func(g_)
   var t_;
   var stmts_;
   var stmt_;
-  var [5]s_func; str_set_func(&s_func);
   var args_;
   var fn_name_;
   check_heap_stack_overlap(g_);
@@ -404,7 +403,7 @@ def parse_func(g_)
 
   func_stmt_ = List_new(g_);
 
-  List_add_str(g_, func_stmt_, &s_func);
+  List_add_str(g_, func_stmt_, "func");
 
   t_ = peek(g_, 0);
   inc_token_index(g_);
