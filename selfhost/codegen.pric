@@ -855,7 +855,6 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   var [6]s_reg_b; str_set_reg_b(&s_reg_b);
 
   var [2]s_0;
-  var [2]s_1;
 
   var label_begin_size = 11; var [11]label_begin; # while_xxxx
   var label_end_size = 15; var [15]label_end; # end_while_xxxx
@@ -866,9 +865,6 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
 
   aset(&s_0, 0, 48); # 0
   aset(&s_0, 1,  0);
-
-  aset(&s_1, 0, 49); # 1
-  aset(&s_1, 1,  0);
 
   inc_label_id(g_);
   label_id = get_label_id(g_);
