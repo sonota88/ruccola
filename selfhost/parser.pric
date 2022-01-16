@@ -249,20 +249,60 @@ def StrLitList_get_self(g_)
   return *(g_ + GO_STR_LIT_LIST());
 end
 
-def StrLitList_get_offset(g_)
+def StrLitList_add(g_, str_, offset)
+  var s_o_ = List_new(g_);
+  List_add_str(g_, s_o_, str_);
+  List_add_int(g_, s_o_, offset);
+
+  List_add_list(g_, StrLitList_get_self(g_), s_o_);
+end
+
+def StrLitList_get_str(g_, i)
   var self_ = StrLitList_get_self(g_);
-  var offset = 0;
+  var s_o_ = List_get_as_list(self_, i);
+
+  return List_get_as_str(s_o_, 0);
+end
+
+def StrLitList_get_offset(g_, i)
+  var self_ = StrLitList_get_self(g_);
+  var s_o_ = List_get_as_list(self_, i);
+
+  return List_get_as_int(s_o_, 1);
+end
+
+def StrLitList_index(g_, str_)
+  var self_ = StrLitList_get_self(g_);
   var s_temp_;
   var i;
 
   i = 0;
   while (i < List_size(self_))
-    s_temp_ = List_get_as_str(self_, i);
-    offset = offset + str_size(s_temp_) + 1;
+    s_temp_ = StrLitList_get_str(g_, i);
+    if (str_eq(s_temp_, str_))
+      return i;
+    end
     i = i + 1;
   end
 
-  return offset;
+  return -1;
+end
+
+def StrLitList_get_new_offset(g_)
+  var self_ = StrLitList_get_self(g_);
+  var last_str_;
+  var last_offset;
+  var size;
+
+  size = List_size(self_);
+  if (size == 0)
+    return 0;
+  end
+
+  var last_i = __sub(size, 1);
+  last_str_   = StrLitList_get_str(   g_, last_i);
+  last_offset = StrLitList_get_offset(g_, last_i);
+  return last_offset + str_size(last_str_) + 1;
 end
 
 # --------------------------------
@@ -689,9 +729,16 @@ def _parse_expr_factor_str(g_)
   t_ = peek(g_, 0);
   inc_token_index(g_);
 
-  str_offset = StrLitList_get_offset(g_);
+  var str_ = Token_get_val(t_);
 
-  List_add_str(g_, StrLitList_get_self(g_), Token_get_val(t_));
+  var i = StrLitList_index(g_, str_);
+
+  if (__le(0, i))
+    str_offset = StrLitList_get_offset(g_, i);
+  else
+    str_offset = StrLitList_get_new_offset(g_);
+    StrLitList_add(g_, str_, str_offset);
+  end
 
   expr_list_ = _make_str_expr(g_, str_offset);
   return Node_new_list(g_, expr_list_);
@@ -1098,7 +1145,7 @@ def make_init_strings_fn(g_)
   var byte;
   var str_lit_list_ = StrLitList_get_self(g_);
   while (i < List_size(str_lit_list_))
-    str_ = List_get_as_str(str_lit_list_, i);
+    str_ = StrLitList_get_str(g_, i);
     str_bi = 0;
     while (str_bi < str_size(str_))
       byte = char_at(str_, str_bi);

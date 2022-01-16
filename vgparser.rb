@@ -269,8 +269,14 @@ def _parse_expr_factor_str
   t = peek()
 
   $pos += 1
-  offset = $strings.map { |str| str.bytesize + 1 }.sum
-  $strings << t.value
+
+  offset = nil
+  if $strings.any? { |s, _| s == t.value }
+    _, offset = $strings.find { |s, _| s == t.value }
+  else
+    offset = $strings.map { |s, _| s.bytesize + 1 }.sum
+    $strings << [t.value, offset]
+  end
 
   # g_ + GO_STRINGS() + offset
   [
@@ -536,7 +542,7 @@ def make_init_strings_fn
   ]
 
   bi = 0
-  $strings.each { |str|
+  $strings.each { |str, _|
     str.each_byte { |byte|
       stmts << make_set_byte_stmt(bi, byte)
       bi += 1
