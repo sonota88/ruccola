@@ -854,17 +854,12 @@ end
 def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   var [6]s_reg_b; str_set_reg_b(&s_reg_b);
 
-  var [2]s_0;
-
   var label_begin_size = 11; var [11]label_begin; # while_xxxx
   var label_end_size = 15; var [15]label_end; # end_while_xxxx
 
   var label_id;
   var cond_expr_node_ = List_get(stmt_, 1);
   var stmts_ = List_get_as_list(stmt_, 2);
-
-  aset(&s_0, 0, 48); # 0
-  aset(&s_0, 1,  0);
 
   inc_label_id(g_);
   label_id = get_label_id(g_);
@@ -873,24 +868,14 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   str_cp_with_check(&label_begin, str_lit_while(g_), label_begin_size);
   append_label_id(&label_begin, label_id, label_begin_size);
 
-  aset(&label_end, 0, 101); # e
-  aset(&label_end, 1, 110); # n
-  aset(&label_end, 2, 100); # d
-  aset(&label_end, 3,  95); # _
-  aset(&label_end, 4, 119); # w
-  aset(&label_end, 5, 104); # h
-  aset(&label_end, 6, 105); # i
-  aset(&label_end, 7, 108); # l
-  aset(&label_end, 8, 101); # e
-  aset(&label_end, 9,   0);
+  str_cp_with_check(&label_end, "end_while", label_end_size);
   append_label_id(&label_end, label_id, label_end_size);
 
   asm_label(&label_begin);
 
   gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
 
-  asm_cp(&s_0, &s_reg_b);
-
+  asm_cp("0", &s_reg_b);
   asm_compare();
 
   asm_jump_eq(&label_end);
