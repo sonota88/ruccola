@@ -14,8 +14,7 @@ class Test100 < Minitest::Test
       "add.pric",
       "addr_deref.pric",
       "less_than.pric",
-      "if.pric",
-      "while.pric"
+      "if.pric"
     ]
 
     files.each do |file|
