@@ -9,7 +9,6 @@ task :default => :"build-all"
 # --------------------------------
 
 LIB_STD   = "lib/std.pric"
-LIB_WORDS = "lib/words.pric"
 LIB_TYPES = "lib/types.pric"
 LIB_JSON  = "lib/json.pric"
 
@@ -20,19 +19,16 @@ CODEGEN_EXE     = "exe/codegen.exe.txt"
 dep_map = {
   "lexer" => [
     LIB_STD,
-    LIB_WORDS,
     "lexer.pric"
   ],
   "parser" => [
     LIB_STD,
-    LIB_WORDS,
     LIB_TYPES,
     LIB_JSON,
     "parser.pric"
   ],
   "codegen" => [
     LIB_STD,
-    LIB_WORDS,
     LIB_TYPES,
     LIB_JSON,
     "codegen.pric"
