@@ -493,7 +493,6 @@ def _parse_var_array(g_)
   var width;
   var var_name_;
   var stmt_;
-  var [10]s_var_array; str_set_var_array(&s_var_array);
 
   consume_kw(g_, str_lit_var(g_));
 
@@ -511,7 +510,7 @@ def _parse_var_array(g_)
   consume_sym_semicolon(g_);
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, &s_var_array);
+  List_add_str(g_, stmt_, "var_array");
   List_add_str(g_, stmt_, var_name_);
   List_add_int(g_, stmt_, width);
 

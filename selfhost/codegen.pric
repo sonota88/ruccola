@@ -1015,6 +1015,7 @@ def gen_func(g_, func_)
   var lvar_name_;
   var lvar_width_;
   var fn_arg_names_;
+  var s_var_array_ = "var_array";
 
   fn_name_ = Node_get_str(List_get(func_, 1));
 
@@ -1041,7 +1042,7 @@ def gen_func(g_, func_)
       lvar_name_ = List_get_as_str(stmt_, 1);
       Names_add(g_, lvar_names_, lvar_name_, 1);
       gen_var(g_, fn_arg_names_, lvar_names_, stmt_);
-    when (str_eq_var_array(List_get_as_str(stmt_, 0)))
+    when (str_eq(List_get_as_str(stmt_, 0), s_var_array_))
       lvar_name_ = List_get_as_str(stmt_, 1);
       lvar_width_ = List_get_as_int(stmt_, 2);
       Names_add(g_, lvar_names_, lvar_name_, lvar_width_);
