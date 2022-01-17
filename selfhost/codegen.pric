@@ -443,9 +443,7 @@ def _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_)
 end
 
 def _gen_expr_add(g_)
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
-
-  asm_pop(&s_reg_b);
+  asm_pop("reg_b");
   asm_pop("reg_a");
 
   asm_indent();
@@ -459,9 +457,7 @@ def _gen_expr_add(g_)
 end
 
 def _gen_expr_mult(g_)
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
-
-  asm_pop(&s_reg_b);
+  asm_pop("reg_b");
   asm_pop("reg_a");
 
   asm_indent();
@@ -477,7 +473,6 @@ end
 
 def _gen_expr_eq(g_)
   var s_reg_a_ = "reg_a";
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
   var [2]s_0;
   var [2]s_1;
   var label_end_size = 12; var [12]label_end; # end_eq_xxxx ... 11 chars + 1
@@ -509,7 +504,7 @@ def _gen_expr_eq(g_)
   aset(&label_then, 4,   0);
   append_label_id(&label_then, label_id, label_then_size);
 
-  asm_pop(&s_reg_b);
+  asm_pop("reg_b");
   asm_pop(s_reg_a_);
 
   asm_compare();
@@ -526,7 +521,6 @@ end
 
 def _gen_expr_neq(g_)
   var s_reg_a_ = "reg_a";
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
   var [2]s_0;
   var [2]s_1;
   var label_end_size = 13; var [13]label_end; # end_neq_xxxx ... 12 chars + 1
@@ -559,7 +553,7 @@ def _gen_expr_neq(g_)
   aset(&label_then, 4,   0);
   append_label_id(&label_then, label_id, label_then_size);
 
-  asm_pop(&s_reg_b);
+  asm_pop("reg_b");
   asm_pop(s_reg_a_);
 
   asm_compare();
@@ -576,7 +570,6 @@ end
 
 def _gen_expr_lt(g_)
   var s_reg_a_ = "reg_a";
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
   var [2]s_0;
   var [2]s_1;
   var label_end_size = 12; var [12]label_end; # end_lt_xxxx ... 11 chars + 1
@@ -608,7 +601,7 @@ def _gen_expr_lt(g_)
   aset(&label_then, 4,   0);
   append_label_id(&label_then, label_id, label_then_size);
 
-  asm_pop(&s_reg_b);
+  asm_pop("reg_b");
   asm_pop(s_reg_a_);
 
   asm_compare();
@@ -788,7 +781,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
   var dest_node_;
   var [8]dest_str_;
   var s_reg_a_ = "reg_a";
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
+  var s_reg_b_ = "reg_b";
   var expr_node_;
   var list_;
   var s_reg_a_ind_size = 8; var [8]s_reg_a_ind; # [reg_a]
@@ -826,8 +819,8 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
 
       gen_expr(g_, fn_arg_names_, lvar_names_, List_get(list_, 1));
 
-      asm_pop(&s_reg_b);
-      asm_cp(&s_reg_b, &s_reg_a_ind);
+      asm_pop(s_reg_b_);
+      asm_cp(s_reg_b_, &s_reg_a_ind);
     else
       panic(859); # gen_set
     end
@@ -849,8 +842,6 @@ def gen_return(g_, fn_arg_names_, lvar_names_, stmt_)
 end
 
 def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
-  var [6]s_reg_b; str_set_reg_b(&s_reg_b);
-
   var label_begin_size = 11; var [11]label_begin; # while_xxxx
   var label_end_size = 15; var [15]label_end; # end_while_xxxx
 
@@ -872,7 +863,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
 
   gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
 
-  asm_cp("0", &s_reg_b);
+  asm_cp("0", "reg_b");
   asm_compare();
 
   asm_jump_eq(&label_end);
