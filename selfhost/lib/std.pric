@@ -370,23 +370,21 @@ end
 def char_index(str_, target_c, pos_from)
   var pos = pos_from;
   var c;
-  var idx = -1;
 
-  c = char_at(str_, pos);
   while (true)
+    c = char_at(str_, pos);
+
     case
     when (c == target_c)
-      idx = pos;
-      break;
+      return pos;
     when (c == 0)
-      break;
+      return -1;
     end
 
     pos = pos + 1;
-    c = char_at(str_, pos);
   end
 
-  return idx;
+  panic(387); # char_index: must not happen
 end
 
 def parse_int(s_)
