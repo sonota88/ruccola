@@ -27,7 +27,7 @@ def tokenize(src)
     when %r{\A(#.*)$}
       str = $1
       pos += str.size
-    when /\A"(.*)"/
+    when /\A"(.*?)"/
       str = $1
       tokens << Token.new(:str, str, lineno)
       pos += str.size + 2
