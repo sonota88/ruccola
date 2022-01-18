@@ -94,12 +94,12 @@ def build(infile, outfile)
   _system %( ruby #{PROJECT_DIR}/vgasm.rb     #{FILE_ASM   } > #{outfile    } )
 end
 
-def pricc_rb(infile, outfile, print_asm: false)
+def rclc_rb(infile, outfile, print_asm: false)
   temp_src = project_path("tmp/test_with_utils.pric")
   file_write(temp_src, File.read(infile) + SRC_UTILS)
 
   cmd = [
-    project_path("pricc"),
+    project_path("rclc"),
     temp_src,
     "> #{outfile}"
   ].join(" ")
@@ -111,12 +111,12 @@ def pricc_rb(infile, outfile, print_asm: false)
   end
 end
 
-def pricc_pric(infile, outfile, print_asm: false)
+def rclc_pric(infile, outfile, print_asm: false)
   temp_src = project_path("tmp/test_with_utils.pric")
   file_write(temp_src, File.read(infile) + SRC_UTILS)
 
   cmd = [
-    project_path("selfhost/pricc"),
+    project_path("selfhost/rclc"),
     temp_src,
     "> #{outfile}"
   ].join(" ")
@@ -146,8 +146,8 @@ def diff_asm(src, name)
   file = temp_path("match_asm.rcl")
   file_write(file, src)
 
-  pricc_rb(  file, FILE_ASM_RB  , print_asm: true)
-  pricc_pric(file, FILE_ASM_PRIC, print_asm: true)
+  rclc_rb(  file, FILE_ASM_RB  , print_asm: true)
+  rclc_pric(file, FILE_ASM_PRIC, print_asm: true)
 
   output, status = _system_v2( %( #{diff_cmd} asm #{FILE_ASM_RB} #{FILE_ASM_PRIC} ) )
   if status.success?

@@ -24,8 +24,8 @@ test_selfhost() {
 
   echo "compile ${name}:"
 
-  ../pricc ${name}.pric > ${TEMP_DIR}/${name}_gen1.exe.txt
-  ./pricc  ${name}.pric > ${TEMP_DIR}/${name}_gen2.exe.txt
+  ../rclc ${name}.pric > ${TEMP_DIR}/${name}_gen1.exe.txt
+  ./rclc  ${name}.pric > ${TEMP_DIR}/${name}_gen2.exe.txt
 
   local timestamp=$(date "+%Y%m%d_%H%M%S")
 

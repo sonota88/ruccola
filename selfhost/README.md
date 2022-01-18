@@ -14,7 +14,7 @@ rake test
 
 ```sh
 # コンパイル
-../pricc ../examples/fibonacci.rcl > fibonacci.exe.txt
+../rclc ../examples/fibonacci.rcl > fibonacci.exe.txt
 
 # 実行ファイルを VM で実行
 ../pricvm fibonacci.exe.txt
@@ -29,7 +29,7 @@ rake test
 mkdir -p exe
 
 # 第2世代コンパイラでライフゲームをコンパイル
-./pricc ../examples/game_of_life.rcl > exe/game_of_life.exe.txt
+./rclc ../examples/game_of_life.rcl > exe/game_of_life.exe.txt
 
 # VM で実行
 VERBOSE=1 SKIP=1000 ../pricvm exe/game_of_life.exe.txt
