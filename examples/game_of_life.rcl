@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 
-# VERBOSE=1 SKIP=1000 ./pricrun examples/game_of_life.rcl
+# VERBOSE=1 SKIP=1000 ./rclrun examples/game_of_life.rcl
 
 def to_vi(w, x, y, offset)
   return

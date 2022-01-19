@@ -20,7 +20,7 @@ rake test
 ../pricvm fibonacci.exe.txt
 
 # コンパイル＋実行
-../pricrun ../examples/fibonacci.rcl
+../rclrun ../examples/fibonacci.rcl
 ```
 
 第2世代: Pric版 v3 コンパイラ
@@ -35,7 +35,7 @@ mkdir -p exe
 VERBOSE=1 SKIP=1000 ../pricvm exe/game_of_life.exe.txt
 
 # コンパイル＋実行
-VERBOSE=1 SKIP=1000 ./pricrun ../examples/game_of_life.rcl
+VERBOSE=1 SKIP=1000 ./rclrun ../examples/game_of_life.rcl
 ```
 
 ```sh
