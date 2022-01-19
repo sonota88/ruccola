@@ -584,16 +584,6 @@ def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
   var arg_l_ = List_get(expr_els_, 1);
   var arg_r_ = List_get(expr_els_, 2);
   var s_reg_a_ = "reg_a";
-  var [3]s_eq;
-  var [3]s_neq;
-
-  aset(&s_eq, 0, 61); # =
-  aset(&s_eq, 1, 61); # =
-  aset(&s_eq, 2,  0);
-
-  aset(&s_neq, 0, 33); # !
-  aset(&s_neq, 1, 61); # =
-  aset(&s_neq, 2,  0);
 
   gen_expr(g_, fn_arg_names_, lvar_names_, arg_l_);
   asm_push(s_reg_a_);
@@ -606,9 +596,9 @@ def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
     _gen_expr_add(g_);
   when (char_at(op_str_, 0) == 42) # *
     _gen_expr_mult(g_);
-  when (str_eq(op_str_, &s_eq)) # ==
+  when (str_eq(op_str_, "=="))
     _gen_expr_eq(g_);
-  when (str_eq(op_str_, &s_neq)) # neq
+  when (str_eq(op_str_, "!="))
     _gen_expr_neq(g_);
   when (char_at(op_str_, 0) == 60) # <
     _gen_expr_lt(g_);
