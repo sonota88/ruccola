@@ -1,5 +1,5 @@
-FASTVM_EXE = "exe/pricvm"
-FASTVM_SRC = "pricvm.cr"
+FASTVM_EXE = "exe/rclvm"
+FASTVM_SRC = "rclvm.cr"
 
 file FASTVM_EXE => [FASTVM_SRC] do
   sh "./run.sh build-release"

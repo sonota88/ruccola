@@ -43,7 +43,7 @@ dep_map.each_key do |name|
     exe_file_temp = exe_file + ".tmp"
 
     sh %( rm -f #{exe_file_temp} ), verbose: false
-    sh %( PRINT_ASM=0 ../pricc #{name}.pric > #{exe_file_temp} ), verbose: false
+    sh %( PRINT_ASM=0 ../rclc #{name}.pric > #{exe_file_temp} ), verbose: false
     sh %( mv #{exe_file_temp} #{exe_file} ), verbose: false
   end
 end

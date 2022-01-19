@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 
-# STDIN=examples/cat.rcl ./pricrun examples/cat.rcl
+# STDIN=examples/cat.rcl ./rclrun examples/cat.rcl
 
 def main()
   var EOF = -1;
