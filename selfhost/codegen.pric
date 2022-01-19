@@ -603,7 +603,7 @@ def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
   when (char_at(op_str_, 0) == 60) # <
     _gen_expr_lt(g_);
   else
-    panic(284); # _gen_expr_binary: not yet impl
+    panic(606); # _gen_expr_binary: unsupported
   end
 end
 
