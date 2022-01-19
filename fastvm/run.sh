@@ -10,8 +10,8 @@ docker_build() {
 }
 
 build() {
-  ./docker_run.sh crystal build pricvm.cr \
-    -o ./exe/pricvm $CR_OPTS
+  ./docker_run.sh crystal build rclvm.cr \
+    -o ./exe/rclvm $CR_OPTS
   status=$?
   if [ $status -ne 0 ]; then
     exit $status

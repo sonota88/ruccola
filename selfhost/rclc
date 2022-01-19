@@ -32,9 +32,9 @@ is_fastvm() {
 
 print_vm_cmd() {
   if [ "$(get_envvar FASTVM 0)" = "1" ]; then
-    echo "${__DIR__}/../fastvm/exe/pricvm"
+    echo "${__DIR__}/../fastvm/exe/rclvm"
   else
-    echo "${__DIR__}/../pricvm"
+    echo "${__DIR__}/../rclvm"
   fi
 }
 
@@ -49,7 +49,7 @@ run() {
   #   printf "${name} ... "
 
   STDIN=$infile DEBUG=0 VERBOSE=0 \
-    $PRICVM ${__DIR__}/exe/${name}.exe.txt > $outfile
+    $RCLVM ${__DIR__}/exe/${name}.exe.txt > $outfile
 
   #   printf "done\n"
   #   printf "\n"
@@ -63,7 +63,7 @@ PROJECT_DIR="$(
   pwd
 )"
 TMP_DIR=${__DIR__}/tmp/
-PRICVM="$(print_vm_cmd)"
+RCLVM="$(print_vm_cmd)"
 PRINT_ASM=$(get_envvar "PRINT_ASM" 0)
 
 mkdir -p ${TMP_DIR}

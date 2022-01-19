@@ -17,7 +17,7 @@ rake test
 ../rclc ../examples/fibonacci.rcl > fibonacci.exe.txt
 
 # 実行ファイルを VM で実行
-../pricvm fibonacci.exe.txt
+../rclvm fibonacci.exe.txt
 
 # コンパイル＋実行
 ../rclrun ../examples/fibonacci.rcl
@@ -32,7 +32,7 @@ mkdir -p exe
 ./rclc ../examples/game_of_life.rcl > exe/game_of_life.exe.txt
 
 # VM で実行
-VERBOSE=1 SKIP=1000 ../pricvm exe/game_of_life.exe.txt
+VERBOSE=1 SKIP=1000 ../rclvm exe/game_of_life.exe.txt
 
 # コンパイル＋実行
 VERBOSE=1 SKIP=1000 ./rclrun ../examples/game_of_life.rcl

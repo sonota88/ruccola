@@ -21,4 +21,4 @@ bname=run
 exefile=${TMP_DIR}/${bname}.vge.txt
 
 ${__DIR__}/rclc $file > $exefile
-${__DIR__}/../pricvm $exefile
+${__DIR__}/../rclvm $exefile
