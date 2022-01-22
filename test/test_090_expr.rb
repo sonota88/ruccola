@@ -8,6 +8,36 @@ class Test090 < Minitest::Test
 
   # --------------------------------
 
+  def test_less_than
+    src = <<~SRC
+      def main()
+        if (1 < 2)
+          putchar(111); # o
+        else
+          putchar(46); # .
+        end
+
+        if (1 < 1)
+          putchar(111); # o
+        else
+          putchar(46); # .
+        end
+
+        if (2 < 1)
+          putchar(111); # o
+        else
+          putchar(46); # .
+        end
+      end
+    SRC
+
+    output = run_vm(src)
+
+    assert_equal("o..", output)
+  end
+
+  # --------------------------------
+
   def test_true
     src = <<~SRC
       def main()
