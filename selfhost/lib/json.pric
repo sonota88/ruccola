@@ -145,13 +145,13 @@ def Json_parse_list(g_, rest_, pos_start, size_)
       List_add_str(g_, list_, &s_temp);
       pos = pos + str_size(&s_temp) + 2;
 
+    when (c == 0)
+      p_c(c);
+      panic(150); # Json_parse_list: must not happen
+
     else
       p_c(c);
       panic(142);
-    end
-
-    if (char_at(rest_, pos) == 0)
-      break;
     end
   end
 
