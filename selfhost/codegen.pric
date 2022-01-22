@@ -402,22 +402,10 @@ def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
   var arg_ = List_get_as_str(list_, 1);
   var disp;
   var s_src_size = 15; var [15]s_src; # [bp:-xxxxxxxx]
-  var [8]s_disp;
 
   if (Names_includes(lvar_names_, arg_))
     disp = Names_disp_lvar(lvar_names_, arg_);
-    unparse_int(&s_disp, disp);
-
-    aset(&s_src, 0,  91); # [
-    aset(&s_src, 1,  98); # b
-    aset(&s_src, 2, 112); # p
-    aset(&s_src, 3,  58); # :
-    aset(&s_src, 4,   0);
-
-    append_str_with_check(&s_src, &s_disp, s_src_size);
-
-    append_char_with_check(&s_src, 93, s_src_size); # ]
-
+    render_indirection_bp(&s_src, disp, s_src_size);
     asm_lea("reg_a", &s_src);
   else
     panic(526); # _gen_expr_addr
