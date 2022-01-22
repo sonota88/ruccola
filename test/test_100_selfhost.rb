@@ -10,8 +10,6 @@ class Test100 < Minitest::Test
 
   def test_selfhost
     files = [
-      "blank_main.pric",
-      "add.pric",
       "addr_deref.pric",
       "less_than.pric",
       "if.pric"
