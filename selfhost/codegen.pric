@@ -434,12 +434,7 @@ def _gen_expr_add(g_)
   asm_pop("reg_a");
 
   asm_indent();
-  putchar( 97); # a
-  putchar(100); # d
-  putchar(100); # d
-  putchar( 95); # _
-  putchar( 97); # a
-  putchar( 98); # b
+  print_s("add_ab");
   putchar(C_LF());
 end
 
