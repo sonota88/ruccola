@@ -984,20 +984,19 @@ def parse_vm_comment(g_)
 end
 
 def parse_stmt(g_)
-  var t_;
-
-  t_ = peek(g_, 0);
+  var t_ = peek(g_, 0);
+  var val_ = Token_get_val(t_);
 
   case
-  when (str_eq(Token_get_val(t_), str_lit__cmt(g_)))
+  when (str_eq(val_, str_lit__cmt(g_)))
     return parse_vm_comment(g_);
-  when (str_eq(Token_get_val(t_), str_lit_return(g_)))
+  when (str_eq(val_, str_lit_return(g_)))
     return parse_return(g_);
-  when (str_eq(Token_get_val(t_), str_lit_while(g_)))
+  when (str_eq(val_, str_lit_while(g_)))
     return parse_while(g_);
-  when (str_eq(Token_get_val(t_), str_lit_break(g_)))
+  when (str_eq(val_, str_lit_break(g_)))
     return parse_break(g_);
-  when (str_eq(Token_get_val(t_), str_lit_case(g_)))
+  when (str_eq(val_, str_lit_case(g_)))
     return parse_case(g_);
   else
     case
