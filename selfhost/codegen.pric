@@ -41,17 +41,9 @@ def asm_indent()
   putchar(C_SPC());
 end
 
-def asm_exit(exit_status)
-  var [5]s_temp;
-
-  aset(&s_temp, 0, 101); # e
-  aset(&s_temp, 1, 120); # x
-  aset(&s_temp, 2, 105); # i
-  aset(&s_temp, 3, 116); # t
-  aset(&s_temp, 4,   0);
-
+def asm_exit(g_, exit_status)
   asm_indent();
-  print_s(&s_temp);
+  print_s("exit");
   putchar(C_SPC()); print_i(exit_status);
   putchar(C_LF());
 end
@@ -1084,7 +1076,7 @@ def gen_builtin_get_sp(g_)
   asm_ret();
 end
 
-def gen_builtin_panic()
+def gen_builtin_panic(g_)
   var [7]s__panic;
 
   aset(&s__panic, 0,  95); # _
@@ -1104,7 +1096,7 @@ def gen_builtin_panic()
   asm_write(67, 2); # C
   asm_write(C_LF(), 2);
 
-  asm_exit(1);
+  asm_exit(g_, 1);
 end
 
 def gen_builtin_set_vram(g_)
@@ -1164,7 +1156,7 @@ end
 
 def codegen(g_, ast_)
   asm_call(g_, "main");
-  asm_exit(0);
+  asm_exit(g_, 0);
 
   gen_top_stmts(g_, ast_);
 
@@ -1174,7 +1166,7 @@ def codegen(g_, ast_)
   gen_builtin_write(g_);
   gen_builtin_getchar(g_);
   gen_builtin_get_sp(g_);
-  gen_builtin_panic();
+  gen_builtin_panic(g_);
   gen_builtin_set_vram(g_);
   gen_builtin_get_vram(g_);
 
