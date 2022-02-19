@@ -6,29 +6,26 @@
 def is_prime(primes_, n)
   var i;
   var prime;
-  var do_break = false;
-  var result = true;
 
   i = 0;
-  while (__not(do_break))
+  while (true)
     if (__le(List_size(primes_), i))
-      do_break = true;
+      return true;
     else
       prime = List_get_as_int(primes_, i);
 
       case
       when (n < (prime * prime))
-        do_break = true;
+        return true;
       when (__mod(n, prime) == 0)
-        result = false;
-        do_break = true;
+        return false;
       end
     end
 
     i = i + 1;
   end
 
-  return result;
+  return true;
 end
 
 def main()
