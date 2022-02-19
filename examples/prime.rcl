@@ -8,10 +8,7 @@ def is_prime(primes_, n)
   var prime;
 
   i = 0;
-  while (true)
-    if (__le(List_size(primes_), i))
-      return true;
-    else
+  while (i < List_size(primes_))
       prime = List_get_as_int(primes_, i);
 
       case
@@ -20,7 +17,6 @@ def is_prime(primes_, n)
       when (__mod(n, prime) == 0)
         return false;
       end
-    end
 
     i = i + 1;
   end
