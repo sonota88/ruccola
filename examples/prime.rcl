@@ -9,14 +9,14 @@ def is_prime(primes_, n)
 
   i = 0;
   while (i < List_size(primes_))
-      prime = List_get_as_int(primes_, i);
+    prime = List_get_as_int(primes_, i);
 
-      case
-      when (n < (prime * prime))
-        return true;
-      when (__mod(n, prime) == 0)
-        return false;
-      end
+    case
+    when (n < (prime * prime))
+      return true;
+    when (__mod(n, prime) == 0)
+      return false;
+    end
 
     i = i + 1;
   end
