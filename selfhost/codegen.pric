@@ -61,16 +61,9 @@ def asm_call(g_, label_)
   putchar(C_LF());
 end
 
-def asm_ret()
-  var [4]s_temp;
-
-  aset(&s_temp, 0, 114); # r
-  aset(&s_temp, 1, 101); # e
-  aset(&s_temp, 2, 116); # t
-  aset(&s_temp, 3,   0);
-
+def asm_ret(g_)
   asm_indent();
-  print_s(&s_temp);
+  print_s("ret");
   putchar(C_LF());
 end
 
@@ -732,7 +725,7 @@ def gen_return(g_, fn_arg_names_, lvar_names_, stmt_)
   end
 
   asm_fn_epilogue(g_);
-  asm_ret();
+  asm_ret(g_);
 end
 
 def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
@@ -953,7 +946,7 @@ def gen_func(g_, func_)
 
   asm_fn_epilogue(g_);
 
-  asm_ret();
+  asm_ret(g_);
 end
 
 def gen_top_stmt(g_, top_stmt_)
@@ -1009,7 +1002,7 @@ def gen_builtin_write(g_)
   putchar(C_LF());
 
   asm_fn_epilogue(g_);
-  asm_ret();
+  asm_ret(g_);
 end
 
 def gen_builtin_getchar(g_)
@@ -1043,7 +1036,7 @@ def gen_builtin_getchar(g_)
   putchar(C_LF());
 
   asm_fn_epilogue(g_);
-  asm_ret();
+  asm_ret(g_);
 end
 
 def gen_builtin_get_sp(g_)
@@ -1064,7 +1057,7 @@ def gen_builtin_get_sp(g_)
   asm_cp(str_lit_sp(g_), "reg_a");
 
   asm_fn_epilogue(g_);
-  asm_ret();
+  asm_ret(g_);
 end
 
 def gen_builtin_panic(g_)
@@ -1115,7 +1108,7 @@ def gen_builtin_set_vram(g_)
   asm_set_vram(&s_vram_addr, &s_val);
 
   asm_fn_epilogue(g_);
-  asm_ret();
+  asm_ret(g_);
 end
 
 def gen_builtin_get_vram(g_)
@@ -1140,7 +1133,7 @@ def gen_builtin_get_vram(g_)
   asm_get_vram(&s_vram_addr, "reg_a");
 
   asm_fn_epilogue(g_);
-  asm_ret();
+  asm_ret(g_);
 end
 
 # --------------------------------
