@@ -103,15 +103,9 @@ def asm_add_sp(g_, n)
   putchar(C_LF());
 end
 
-def asm_compare()
+def asm_compare(g_)
   asm_indent();
-  putchar( 99); # c
-  putchar(111); # o
-  putchar(109); # m
-  putchar(112); # p
-  putchar( 97); # a
-  putchar(114); # r
-  putchar(101); # e
+  print_s("compare");
   putchar(C_LF());
 end
 
@@ -400,7 +394,7 @@ def _gen_expr_eq(g_)
   asm_pop(g_, "reg_b");
   asm_pop(g_, s_reg_a_);
 
-  asm_compare();
+  asm_compare(g_);
   asm_jump_eq(&label_then);
 
   asm_cp(g_, "0", s_reg_a_);
@@ -430,7 +424,7 @@ def _gen_expr_neq(g_)
   asm_pop(g_, "reg_b");
   asm_pop(g_, s_reg_a_);
 
-  asm_compare();
+  asm_compare(g_);
   asm_jump_eq(&label_then);
 
   asm_cp(g_, "1", s_reg_a_);
@@ -460,7 +454,7 @@ def _gen_expr_lt(g_)
   asm_pop(g_, "reg_b");
   asm_pop(g_, s_reg_a_);
 
-  asm_compare();
+  asm_compare(g_);
   asm_jump_g(&label_then);
 
   asm_cp(g_, "0", s_reg_a_);
@@ -710,7 +704,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
 
   asm_cp(g_, "0", "reg_b");
-  asm_compare();
+  asm_compare(g_);
 
   asm_jump_eq(&label_end);
 
@@ -771,7 +765,7 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
 
     gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
     asm_cp(g_, s_0_, s_reg_b_);
-    asm_compare();
+    asm_compare(g_);
 
     # {label_end_when_head}_{when_index}
     str_cp(&label_temp, &label_end_when_head);
