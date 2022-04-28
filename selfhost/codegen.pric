@@ -1138,7 +1138,7 @@ def inc_label_id(g_)
 end
 
 def load_ast(g_)
-  var input_size_max = 240000; var [240000]input;
+  var input_size_max = 250000; var [250000]input;
 
   read_stdin_all(&input, input_size_max);
   return Json_parse(g_, &input);
