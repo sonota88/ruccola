@@ -109,13 +109,9 @@ def asm_compare(g_)
   putchar(C_LF());
 end
 
-def asm_jump(label_)
+def asm_jump(g_, label_)
   asm_indent();
-  putchar(106); # j
-  putchar(117); # u
-  putchar(109); # m
-  putchar(112); # p
-
+  print_s("jump");
   putchar(C_SPC()); print_s(label_);
   putchar(C_LF());
 end
@@ -398,7 +394,7 @@ def _gen_expr_eq(g_)
   asm_jump_eq(&label_then);
 
   asm_cp(g_, "0", s_reg_a_);
-  asm_jump(&label_end);
+  asm_jump(g_, &label_end);
 
   asm_label(g_, &label_then);
   asm_cp(g_, "1", s_reg_a_);
@@ -428,7 +424,7 @@ def _gen_expr_neq(g_)
   asm_jump_eq(&label_then);
 
   asm_cp(g_, "1", s_reg_a_);
-  asm_jump(&label_end);
+  asm_jump(g_, &label_end);
 
   asm_label(g_, &label_then);
   asm_cp(g_, "0", s_reg_a_);
@@ -458,7 +454,7 @@ def _gen_expr_lt(g_)
   asm_jump_g(&label_then);
 
   asm_cp(g_, "0", s_reg_a_);
-  asm_jump(&label_end);
+  asm_jump(g_, &label_end);
 
   asm_label(g_, &label_then);
   asm_cp(g_, "1", s_reg_a_);
@@ -709,7 +705,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   asm_jump_eq(&label_end);
 
   gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_);
-  asm_jump(&label_begin);
+  asm_jump(g_, &label_begin);
 
   asm_label(g_, &label_end);
 
@@ -723,7 +719,7 @@ def gen_break(g_)
   str_cp_with_check(&label_end, "end_while", label_end_size);
   append_label_id(&label_end, label_id, label_end_size);
 
-  asm_jump(&label_end);
+  asm_jump(g_, &label_end);
 
   putchar(C_LF());
 end
@@ -774,7 +770,7 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
 
     gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_);
 
-    asm_jump(&label_end);
+    asm_jump(g_, &label_end);
 
     # {label_end_when_head}_{when_index}
     str_cp(&label_temp, &label_end_when_head);
