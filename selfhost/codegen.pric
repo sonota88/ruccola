@@ -123,15 +123,9 @@ def asm_jump_eq(g_, label_)
   putchar(C_LF());
 end
 
-def asm_jump_g(label_)
+def asm_jump_g(g_, label_)
   asm_indent();
-  putchar(106); # j
-  putchar(117); # u
-  putchar(109); # m
-  putchar(112); # p
-  putchar( 95); # _
-  putchar(103); # g
-
+  print_s("jump_g");
   putchar(C_SPC()); print_s(label_);
   putchar(C_LF());
 end
@@ -444,7 +438,7 @@ def _gen_expr_lt(g_)
   asm_pop(g_, s_reg_a_);
 
   asm_compare(g_);
-  asm_jump_g(&label_then);
+  asm_jump_g(g_, &label_then);
 
   asm_cp(g_, "0", s_reg_a_);
   asm_jump(g_, &label_end);
