@@ -156,41 +156,17 @@ def asm_vm_comment(g_, vm_comment_)
   putchar(C_LF());
 end
 
-def asm_get_vram(vram_addr_, dest_)
-  var [9]s_temp;
-
-  aset(&s_temp, 0, 103); # g
-  aset(&s_temp, 1, 101); # e
-  aset(&s_temp, 2, 116); # t
-  aset(&s_temp, 3,  95); # _
-  aset(&s_temp, 4, 118); # v
-  aset(&s_temp, 5, 114); # r
-  aset(&s_temp, 6,  97); # a
-  aset(&s_temp, 7, 109); # m
-  aset(&s_temp, 8,   0);
-
+def asm_get_vram(g_, vram_addr_, dest_)
   asm_indent();
-  print_s(&s_temp);
+  print_s("get_vram");
   putchar(C_SPC()); print_s(vram_addr_);
   putchar(C_SPC()); print_s(dest_);
   putchar(C_LF());
 end
 
-def asm_set_vram(vram_addr_, val_)
-  var [9]s_temp;
-
-  aset(&s_temp, 0, 115); # s
-  aset(&s_temp, 1, 101); # e
-  aset(&s_temp, 2, 116); # t
-  aset(&s_temp, 3,  95); # _
-  aset(&s_temp, 4, 118); # v
-  aset(&s_temp, 5, 114); # r
-  aset(&s_temp, 6,  97); # a
-  aset(&s_temp, 7, 109); # m
-  aset(&s_temp, 8,   0);
-
+def asm_set_vram(g_, vram_addr_, val_)
   asm_indent();
-  print_s(&s_temp);
+  print_s("set_vram");
   putchar(C_SPC()); print_s(vram_addr_);
   putchar(C_SPC()); print_s(val_);
   putchar(C_LF());
@@ -1041,7 +1017,7 @@ def gen_builtin_set_vram(g_)
   asm_label(g_, &s_set_vram);
   asm_fn_prologue(g_);
 
-  asm_set_vram(&s_vram_addr, &s_val);
+  asm_set_vram(g_, &s_vram_addr, &s_val);
 
   asm_fn_epilogue(g_);
   asm_ret(g_);
@@ -1066,7 +1042,7 @@ def gen_builtin_get_vram(g_)
   asm_label(g_, &s_get_vram);
   asm_fn_prologue(g_);
 
-  asm_get_vram(&s_vram_addr, "reg_a");
+  asm_get_vram(g_, &s_vram_addr, "reg_a");
 
   asm_fn_epilogue(g_);
   asm_ret(g_);
