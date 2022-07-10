@@ -931,17 +931,7 @@ def gen_builtin_get_sp(g_)
 end
 
 def gen_builtin_panic(g_)
-  var [7]s__panic;
-
-  aset(&s__panic, 0,  95); # _
-  aset(&s__panic, 1, 112); # p
-  aset(&s__panic, 2,  97); # a
-  aset(&s__panic, 3, 110); # n
-  aset(&s__panic, 4, 105); # i
-  aset(&s__panic, 5,  99); # c
-  aset(&s__panic, 6,   0);
-
-  asm_label(g_, &s__panic);
+  asm_label(g_, "_panic");
 
   asm_write(g_, 80, 2); # P
   asm_write(g_, 65, 2); # A
