@@ -903,32 +903,15 @@ def gen_builtin_write(g_)
 end
 
 def gen_builtin_getchar(g_)
-  var [8]s_getchar;
-  var [5]s_read;
   var s_fn_arg1_size = 7; var [7]s_fn_arg1;
-
-  aset(&s_getchar, 0, 103); # g
-  aset(&s_getchar, 1, 101); # e
-  aset(&s_getchar, 2, 116); # t
-  aset(&s_getchar, 3,  99); # c
-  aset(&s_getchar, 4, 104); # h
-  aset(&s_getchar, 5,  97); # a
-  aset(&s_getchar, 6, 114); # r
-  aset(&s_getchar, 7,   0);
-
-  aset(&s_read, 0, 114); # r
-  aset(&s_read, 1, 101); # e
-  aset(&s_read, 2,  97); # a
-  aset(&s_read, 3, 100); # d
-  aset(&s_read, 4,   0);
 
   render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
 
-  asm_label(g_, &s_getchar);
+  asm_label(g_, "getchar");
   asm_fn_prologue(g_);
 
   asm_indent();
-  print_s(&s_read);
+  print_s("read");
   putchar(C_SPC()); print_s("reg_a");
   putchar(C_LF());
 
