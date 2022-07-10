@@ -880,27 +880,20 @@ end
 
 def gen_builtin_write(g_)
   var s_reg_a_ = "reg_a";
-  var [6]s_write;
+  var s_write_ = "write";
   var s_fn_arg1_size = 7; var [7]s_fn_arg1;
   var s_fn_arg2_size = 7; var [7]s_fn_arg2;
-
-  aset(&s_write, 0, 119); # w
-  aset(&s_write, 1, 114); # r
-  aset(&s_write, 2, 105); # i
-  aset(&s_write, 3, 116); # t
-  aset(&s_write, 4, 101); # e
-  aset(&s_write, 5,   0);
 
   render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
   render_indirection_bp(&s_fn_arg2, 3, s_fn_arg2_size);
 
-  asm_label(g_, &s_write);
+  asm_label(g_, s_write_);
   asm_fn_prologue(g_);
 
   asm_cp(g_, &s_fn_arg1, s_reg_a_);
 
   asm_indent();
-  print_s(&s_write);
+  print_s(s_write_);
   putchar(C_SPC()); print_s(s_reg_a_);
   putchar(C_SPC()); print_s(&s_fn_arg2);
   putchar(C_LF());
