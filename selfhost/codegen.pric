@@ -944,25 +944,13 @@ def gen_builtin_panic(g_)
 end
 
 def gen_builtin_set_vram(g_)
-  var [9]s_set_vram;
   var s_vram_addr_size = 7; var [7]s_vram_addr;
   var s_val_size = 7; var [7]s_val;
 
-  aset(&s_set_vram, 0, 115); # s
-  aset(&s_set_vram, 1, 101); # e
-  aset(&s_set_vram, 2, 116); # t
-  aset(&s_set_vram, 3,  95); # _
-  aset(&s_set_vram, 4, 118); # v
-  aset(&s_set_vram, 5, 114); # r
-  aset(&s_set_vram, 6,  97); # a
-  aset(&s_set_vram, 7, 109); # m
-  aset(&s_set_vram, 8,   0);
-
   render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
-
   render_indirection_bp(&s_val, 3, s_val_size);
 
-  asm_label(g_, &s_set_vram);
+  asm_label(g_, "set_vram");
   asm_fn_prologue(g_);
 
   asm_set_vram(g_, &s_vram_addr, &s_val);
