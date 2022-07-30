@@ -59,4 +59,35 @@ class Test060 < Minitest::Test
     assert_equal("A", output)
   end
 
+  def test_if_then
+    src = <<~SRC
+      def main()
+        if (1)
+          putchar(65); # A
+        else
+          putchar(66); # B
+        end
+      end
+    SRC
+
+    output = run_vm(src)
+
+    assert_equal("A", output)
+  end
+
+  def test_if_else
+    src = <<~SRC
+      def main()
+        if (0)
+          putchar(65); # A
+        else
+          putchar(66); # B
+        end
+      end
+    SRC
+
+    output = run_vm(src)
+
+    assert_equal("B", output)
+  end
 end

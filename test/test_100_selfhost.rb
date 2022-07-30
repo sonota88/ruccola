@@ -10,8 +10,7 @@ class Test100 < Minitest::Test
 
   def test_selfhost
     files = [
-      "addr_deref.pric",
-      "if.pric"
+      "addr_deref.pric"
     ]
 
     files.each do |file|
