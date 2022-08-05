@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 
-#include ../selfhost/lib/std.pric
+#include ../selfhost/lib/std.rcl
 
 def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
 def GS_STRINGS() return 20; end

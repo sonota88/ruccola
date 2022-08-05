@@ -8,7 +8,7 @@ task :default => :"build-all"
 
 # --------------------------------
 
-LIB_STD   = "lib/std.pric"
+LIB_STD   = "lib/std.rcl"
 LIB_TYPES = "lib/types.pric"
 LIB_JSON  = "lib/json.pric"
 
