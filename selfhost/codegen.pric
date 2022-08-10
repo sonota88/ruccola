@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 
 #include lib/std.rcl
-#include lib/types.pric
+#include lib/types.rcl
 #include lib/json.pric
 
 # --------------------------------

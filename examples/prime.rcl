@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 
 #include ../selfhost/lib/std.rcl
-#include ../selfhost/lib/types.pric
+#include ../selfhost/lib/types.rcl
 
 def is_prime(primes_, n)
   var i;

@@ -8,7 +8,7 @@ class Test130 < Minitest::Test
       project_path("selfhost/lib/std.rcl")
     )
     @types_src = File.read(
-      project_path("selfhost/lib/types.pric")
+      project_path("selfhost/lib/types.rcl")
     )
   end
 
