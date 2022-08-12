@@ -10,7 +10,7 @@ task :default => :"build-all"
 
 LIB_STD   = "lib/std.rcl"
 LIB_TYPES = "lib/types.rcl"
-LIB_JSON  = "lib/json.pric"
+LIB_JSON  = "lib/json.rcl"
 
 LEXER_EXE       = "exe/lexer.exe.txt"
 PARSER_EXE      = "exe/parser.exe.txt"

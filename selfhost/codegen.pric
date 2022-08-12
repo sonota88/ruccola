@@ -2,7 +2,7 @@
 
 #include lib/std.rcl
 #include lib/types.rcl
-#include lib/json.pric
+#include lib/json.rcl
 
 # --------------------------------
 
