@@ -19,19 +19,19 @@ CODEGEN_EXE     = "exe/codegen.exe.txt"
 dep_map = {
   "lexer" => [
     LIB_STD,
-    "lexer.pric"
+    "lexer.rcl"
   ],
   "parser" => [
     LIB_STD,
     LIB_TYPES,
     LIB_JSON,
-    "parser.pric"
+    "parser.rcl"
   ],
   "codegen" => [
     LIB_STD,
     LIB_TYPES,
     LIB_JSON,
-    "codegen.pric"
+    "codegen.rcl"
   ]
 }
 
@@ -43,7 +43,7 @@ dep_map.each_key do |name|
     exe_file_temp = exe_file + ".tmp"
 
     sh %( rm -f #{exe_file_temp} ), verbose: false
-    sh %( PRINT_ASM=0 ../rclc #{name}.pric > #{exe_file_temp} ), verbose: false
+    sh %( PRINT_ASM=0 ../rclc #{name}.rcl > #{exe_file_temp} ), verbose: false
     sh %( mv #{exe_file_temp} #{exe_file} ), verbose: false
   end
 end
