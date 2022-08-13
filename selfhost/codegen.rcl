@@ -622,9 +622,10 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
 end
 
 def gen_return(g_, fn_arg_names_, lvar_names_, stmt_)
-  var expr_ = List_get(stmt_, 1);
+  var expr_;
 
   if (List_size(stmt_) == 2)
+    expr_ = List_get(stmt_, 1);
     gen_expr(g_, fn_arg_names_, lvar_names_, expr_);
   end
 

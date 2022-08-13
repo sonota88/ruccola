@@ -315,9 +315,8 @@ def gen_set(fn_arg_names, lvar_names, stmt)
 end
 
 def gen_return(fn_arg_names, lvar_names, stmt)
-  _, expr = stmt
-
   if stmt.size == 2
+    _, expr = stmt
     gen_expr(fn_arg_names, lvar_names, expr)
   end
 
