@@ -59,15 +59,15 @@ def extract_asm_main_body(asm)
   lines.join("")
 end
 
-FILE_STDIN    = temp_path("stdin")
-FILE_SRC      = temp_path("test.vg.txt")
-FILE_TOKENS   = temp_path("test.tokens.txt")
-FILE_TREE     = temp_path("test.vgt.json")
-FILE_ASM      = temp_path("test.vga.txt")
-FILE_EXE      = temp_path("test.vge.txt")
-FILE_ASM_RB   = temp_path("test_rb.vga.txt")
+FILE_STDIN   = temp_path("stdin")
+FILE_SRC     = temp_path("test.vg.txt")
+FILE_TOKENS  = temp_path("test.tokens.txt")
+FILE_TREE    = temp_path("test.vgt.json")
+FILE_ASM     = temp_path("test.vga.txt")
+FILE_EXE     = temp_path("test.vge.txt")
+FILE_ASM_RB  = temp_path("test_rb.vga.txt")
 FILE_ASM_RCL = temp_path("test_rcl.vga.txt")
-FILE_OUTPUT   = temp_path("output.txt")
+FILE_OUTPUT  = temp_path("output.txt")
 
 SRC_UTILS = <<SRC
 
@@ -146,7 +146,7 @@ def diff_asm(src, name)
   file = temp_path("match_asm.rcl")
   file_write(file, src)
 
-  rclc_rb(  file, FILE_ASM_RB  , print_asm: true)
+  rclc_rb( file, FILE_ASM_RB , print_asm: true)
   rclc_rcl(file, FILE_ASM_RCL, print_asm: true)
 
   output, status = _system_v2( %( #{diff_cmd} asm #{FILE_ASM_RB} #{FILE_ASM_RCL} ) )
