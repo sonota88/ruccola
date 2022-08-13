@@ -66,7 +66,7 @@ FILE_TREE     = temp_path("test.vgt.json")
 FILE_ASM      = temp_path("test.vga.txt")
 FILE_EXE      = temp_path("test.vge.txt")
 FILE_ASM_RB   = temp_path("test_rb.vga.txt")
-FILE_ASM_PRIC = temp_path("test_pric.vga.txt")
+FILE_ASM_RCL = temp_path("test_rcl.vga.txt")
 FILE_OUTPUT   = temp_path("output.txt")
 
 SRC_UTILS = <<SRC
@@ -85,7 +85,7 @@ def compile_to_asm(src)
 end
 
 def build(infile, outfile)
-  temp_src = temp_path("test_with_utils.pric")
+  temp_src = temp_path("test_with_utils.rcl")
   file_write(temp_src, File.read(infile) + SRC_UTILS)
 
   _system %( ruby #{PROJECT_DIR}/vglexer.rb   #{temp_src   } > #{FILE_TOKENS} )
@@ -95,7 +95,7 @@ def build(infile, outfile)
 end
 
 def rclc_rb(infile, outfile, print_asm: false)
-  temp_src = project_path("tmp/test_with_utils.pric")
+  temp_src = project_path("tmp/test_with_utils.rcl")
   file_write(temp_src, File.read(infile) + SRC_UTILS)
 
   cmd = [
@@ -111,8 +111,8 @@ def rclc_rb(infile, outfile, print_asm: false)
   end
 end
 
-def rclc_pric(infile, outfile, print_asm: false)
-  temp_src = project_path("tmp/test_with_utils.pric")
+def rclc_rcl(infile, outfile, print_asm: false)
+  temp_src = project_path("tmp/test_with_utils.rcl")
   file_write(temp_src, File.read(infile) + SRC_UTILS)
 
   cmd = [
@@ -147,9 +147,9 @@ def diff_asm(src, name)
   file_write(file, src)
 
   rclc_rb(  file, FILE_ASM_RB  , print_asm: true)
-  rclc_pric(file, FILE_ASM_PRIC, print_asm: true)
+  rclc_rcl(file, FILE_ASM_RCL, print_asm: true)
 
-  output, status = _system_v2( %( #{diff_cmd} asm #{FILE_ASM_RB} #{FILE_ASM_PRIC} ) )
+  output, status = _system_v2( %( #{diff_cmd} asm #{FILE_ASM_RB} #{FILE_ASM_RCL} ) )
   if status.success?
     pass
   else

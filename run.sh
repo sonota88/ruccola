@@ -19,7 +19,7 @@ file="$1"
 # bname=$(basename $file .vg.txt)
 bname=run
 
-src_temp=tmp/${bname}.pric.rb
+src_temp=tmp/${bname}.rcl.rb
 
 ruby ${__DIR__}/preproc.rb $file > $src_temp
 

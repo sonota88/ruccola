@@ -29,7 +29,7 @@ test_selfhost() {
 
   local timestamp=$(date "+%Y%m%d_%H%M%S")
 
-  diff_file=/tmp/pric_test_selfhost_${timestamp}_${name}.diff
+  diff_file=/tmp/rcl_test_selfhost_${timestamp}_${name}.diff
 
   diff -u \
     ${TEMP_DIR}/${name}_gen1.exe.txt \

@@ -29,9 +29,9 @@ PRINT_ASM=$(get_envvar "PRINT_ASM" 0)
 mkdir -p ${TMP_DIR}
 
 file="$1"
-bname=pricc-rb
+bname=rclc-rb
 
-src_temp=${TMP_DIR}/${bname}.pric.rb
+src_temp=${TMP_DIR}/${bname}.rcl.rb
 
 # TODO check input_max
 ruby ${__DIR__}/check.rb gvar-width $file

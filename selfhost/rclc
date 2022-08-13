@@ -69,9 +69,9 @@ PRINT_ASM=$(get_envvar "PRINT_ASM" 0)
 mkdir -p ${TMP_DIR}
 
 file="$1"
-bname=pricc-pric
+bname=rclc-rcl
 
-src_temp=${TMP_DIR}/${bname}.pric.rb
+src_temp=${TMP_DIR}/${bname}.rcl.rb
 tokensfile=${TMP_DIR}/${bname}.tokens.txt
 treefile=${TMP_DIR}/${bname}.vgt.json
 asmfile=${TMP_DIR}/${bname}.vga.txt
