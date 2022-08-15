@@ -89,13 +89,27 @@ def set_token(g_, ti, t_)
   aset(g_ + GO_TOKENS(), ti, t_);
 end
 
-def read_tokens(g_)
+def read_token(g_, input_, pos, size)
   var line_size = 80; var [80]line;
-  var size;
-  var pos = 0;
   var sep_i;
   var [6]kind_str;
   var value_str_size = 64; var [64]value_str;
+  var t_;
+
+  substr_with_check(&line, input_, pos, pos + size, line_size);
+  chomp(&line);
+
+  sep_i = char_index(&line, 58, 0); # :
+  substr(&kind_str, &line, 0, sep_i);
+  substr_with_check(&value_str, &line, sep_i + 1, str_size(&line), value_str_size);
+
+  t_ = Token_new(g_, &kind_str, &value_str);
+  return t_;
+end
+
+def read_tokens(g_)
+  var size;
+  var pos = 0;
   var t_;
   var ti;
   var input_size_max = 150000; var [150000]input;
@@ -109,14 +123,7 @@ def read_tokens(g_)
       break;
     end
 
-    substr_with_check(&line, &input, pos, pos + size, line_size);
-    chomp(&line);
-
-    sep_i = char_index(&line, 58, 0); # :
-    substr(&kind_str, &line, 0, sep_i);
-    substr_with_check(&value_str, &line, sep_i + 1, str_size(&line), value_str_size);
-
-    t_ = Token_new(g_, &kind_str, &value_str);
+    t_ = read_token(g_, &input, pos, size);
     set_token(g_, ti, t_);
     ti = ti + 1;
 
