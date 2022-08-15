@@ -141,47 +141,36 @@ def is_kw(g_, str_)
   end
 end
 
-def print_kw(str_)
-  putchar(107); # k
-  putchar(119); # w
+def print_kw(g_, str_)
+  print_s("kw");
   putchar( 58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_ident(str_)
-  putchar(105); # i
-  putchar(100); # d
-  putchar(101); # e
-  putchar(110); # n
-  putchar(116); # t
+def print_ident(g_, str_)
+  print_s("ident");
   putchar( 58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_symbol(str_)
-  putchar(115); # s
-  putchar(121); # y
-  putchar(109); # m
+def print_symbol(g_, str_)
+  print_s("sym");
   putchar( 58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_int(str_)
-  putchar(105); # i
-  putchar(110); # n
-  putchar(116); # t
+def print_int(g_, str_)
+  print_s("int");
   putchar( 58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_str(str_)
-  putchar(115); # s
-  putchar(116); # t
-  putchar(114); # r
+def print_str(g_, str_)
+  print_s("str");
   putchar( 58); # :
   print_s(str_);
   putchar(C_LF());
@@ -217,7 +206,7 @@ def lex(g_)
     when (0 < match_symbol(&input, pos))
       size = match_symbol(&input, pos);
       substr(&s_temp, &input, pos, pos + size);
-      print_symbol(&s_temp);
+      print_symbol(g_, &s_temp);
       pos = pos + size;
 
     when (0 < match_str(&input, pos))
@@ -228,13 +217,13 @@ def lex(g_)
         s_temp_size
       );
 
-      print_str(&s_temp);
+      print_str(g_, &s_temp);
       pos = pos + size + 2;
 
     when (0 < match_int(&input, pos))
       size = match_int(&input, pos);
       substr(&s_temp, &input, pos, pos + size);
-      print_int(&s_temp);
+      print_int(g_, &s_temp);
       pos = pos + size;
 
     when (0 < match_ident(&input, pos))
@@ -243,13 +232,13 @@ def lex(g_)
 
       if (is_kw(g_, &s_temp))
         if (str_eq(&s_temp, str_lit_if(g_)))
-          print_kw(str_lit_case(g_));
-          print_kw(str_lit_when(g_));
+          print_kw(g_, str_lit_case(g_));
+          print_kw(g_, str_lit_when(g_));
         else
-          print_kw(&s_temp);
+          print_kw(g_, &s_temp);
         end
       else
-        print_ident(&s_temp);
+        print_ident(g_, &s_temp);
       end
 
       pos = pos + size;
