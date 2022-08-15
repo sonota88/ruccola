@@ -143,35 +143,35 @@ end
 
 def print_kw(g_, str_)
   print_s("kw");
-  putchar( 58); # :
+  putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
 def print_ident(g_, str_)
   print_s("ident");
-  putchar( 58); # :
+  putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
 def print_symbol(g_, str_)
   print_s("sym");
-  putchar( 58); # :
+  putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
 def print_int(g_, str_)
   print_s("int");
-  putchar( 58); # :
+  putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
 def print_str(g_, str_)
   print_s("str");
-  putchar( 58); # :
+  putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
