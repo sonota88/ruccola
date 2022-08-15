@@ -109,19 +109,19 @@ end
 
 def is_kw(g_, str_)
   case
-  when (str_eq(str_, "def"  )) return true;
-  when (str_eq(str_, "end"  )) return true;
-  when (str_eq(str_, "var"  )) return true;
+  when (str_eq(str_, "def"   )) return true;
+  when (str_eq(str_, "end"   )) return true;
+  when (str_eq(str_, "var"   )) return true;
   when (str_eq(str_, "return")) return true;
-  when (str_eq(str_, "while")) return true;
-  when (str_eq(str_, "break")) return true;
-  when (str_eq(str_, "case")) return true;
-  when (str_eq(str_, "when")) return true;
-  when (str_eq(str_, "else" )) return true;
-  when (str_eq(str_, "_cmt" )) return true;
-  when (str_eq(str_, "true" )) return true;
-  when (str_eq(str_, "false")) return true;
-  when (str_eq(str_, "if")) return true;
+  when (str_eq(str_, "while" )) return true;
+  when (str_eq(str_, "break" )) return true;
+  when (str_eq(str_, "case"  )) return true;
+  when (str_eq(str_, "when"  )) return true;
+  when (str_eq(str_, "else"  )) return true;
+  when (str_eq(str_, "_cmt"  )) return true;
+  when (str_eq(str_, "true"  )) return true;
+  when (str_eq(str_, "false" )) return true;
+  when (str_eq(str_, "if"    )) return true;
   else
     return false;
   end
