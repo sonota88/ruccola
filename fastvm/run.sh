@@ -6,7 +6,7 @@ docker_build() {
   docker build \
     --build-arg USER=$USER \
     --build-arg GROUP=$(id -gn) \
-    -t ruccola-fast-vm:0.0.1 .
+    -t ruccola-fast-vm:2 .
 }
 
 build() {
