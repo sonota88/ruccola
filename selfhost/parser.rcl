@@ -8,18 +8,6 @@ def str_lit_GO_STRINGS(g_)
   return "GO_STRINGS";
 end
 
-def str_lit__cmt(g_)
-  return "_cmt";
-end
-
-def str_lit_break(g_)
-  return "break";
-end
-
-def str_lit_case(g_)
-  return "case";
-end
-
 def str_lit_def(g_)
   return "def";
 end
@@ -38,14 +26,6 @@ end
 
 def str_lit_plus(g_)
   return "+";
-end
-
-def str_lit_return(g_)
-  return "return";
-end
-
-def str_lit_while(g_)
-  return "while";
 end
 
 # --------------------------------
@@ -851,10 +831,10 @@ def parse_return(g_)
   var expr_;
   var stmt_;
 
-  consume_kw(g_, str_lit_return(g_));
+  consume_kw(g_, "return");
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, str_lit_return(g_));
+  List_add_str(g_, stmt_, "return");
 
   if (str_eq(Token_get_val(peek(g_, 0)), ";"))
     consume_sym_semicolon(g_); # ;
@@ -873,7 +853,7 @@ def parse_while(g_)
   var expr_node_;
   var stmts_;
 
-  consume_kw(g_, str_lit_while(g_));
+  consume_kw(g_, "while");
 
   consume_sym_paren_l(g_); # (
   expr_node_ = parse_expr(g_);
@@ -884,7 +864,7 @@ def parse_while(g_)
   consume_kw(g_, "end");
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, str_lit_while(g_));
+  List_add_str(g_, stmt_, "while");
   List_add(g_, stmt_, expr_node_);
   List_add_list(g_, stmt_, stmts_);
 
@@ -894,11 +874,11 @@ end
 def parse_break(g_)
   var stmt_;
 
-  consume_kw(g_, str_lit_break(g_));
+  consume_kw(g_, "break");
   consume_sym_semicolon(g_); # ;
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, str_lit_break(g_));
+  List_add_str(g_, stmt_, "break");
 
   return stmt_;
 end
@@ -938,10 +918,10 @@ def parse_case(g_)
   var stmt_;
   var when_clause_;
 
-  consume_kw(g_, str_lit_case(g_));
+  consume_kw(g_, "case");
 
   stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, str_lit_case(g_));
+  List_add_str(g_, stmt_, "case");
 
   while (__not(Token_val_eq(peek(g_, 0), "end")))
     when_clause_ = _parse_when_clause(g_);
@@ -959,13 +939,13 @@ def parse_vm_comment(g_)
 
   stmt_ = List_new(g_);
 
-  consume_kw(g_, str_lit__cmt(g_));
+  consume_kw(g_, "_cmt");
   consume_sym_paren_l(g_); # (
 
   t_ = peek(g_, 0);
   inc_token_index(g_);
 
-  List_add_str(g_, stmt_, str_lit__cmt(g_));
+  List_add_str(g_, stmt_, "_cmt");
   List_add_str(g_, stmt_, Token_get_val(t_));
 
   consume_sym_paren_r(g_); # )
@@ -979,15 +959,15 @@ def parse_stmt(g_)
   var val_ = Token_get_val(t_);
 
   case
-  when (str_eq(val_, str_lit__cmt(g_)))
+  when (str_eq(val_, "_cmt"))
     return parse_vm_comment(g_);
-  when (str_eq(val_, str_lit_return(g_)))
+  when (str_eq(val_, "return"))
     return parse_return(g_);
-  when (str_eq(val_, str_lit_while(g_)))
+  when (str_eq(val_, "while"))
     return parse_while(g_);
-  when (str_eq(val_, str_lit_break(g_)))
+  when (str_eq(val_, "break"))
     return parse_break(g_);
-  when (str_eq(val_, str_lit_case(g_)))
+  when (str_eq(val_, "case"))
     return parse_case(g_);
   else
     case
