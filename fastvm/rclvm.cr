@@ -1,7 +1,67 @@
 require "json"
 
-alias InsnElem = String | Int32
+alias RawInsnElem = String | Int32
+alias InsnElem = OpCode | String | Int32
+alias RawInsn = Array(RawInsnElem)
 alias Insn = Array(InsnElem)
+
+enum OpCode
+  Exit
+  Cp
+  Lea
+  AddAb
+  MultAb
+  AddSp
+  SubSp
+  Compare
+  Label
+  Jump
+  JumpEq
+  JumpG
+  Call
+  Ret
+  Push
+  Pop
+  Read
+  Write
+  SetVram
+  GetVram
+  VmCmt
+  VmDebug
+
+  def self.from(raw_insn_el : RawInsnElem)
+    unless raw_insn_el.is_a?(String)
+      raise "invalid type (#{raw_insn_el})"
+    end
+
+    case raw_insn_el
+    when "exit"     then OpCode::Exit
+    when "cp"       then OpCode::Cp
+    when "lea"      then OpCode::Lea
+    when "add_ab"   then OpCode::AddAb
+    when "mult_ab"  then OpCode::MultAb
+    when "add_sp"   then OpCode::AddSp
+    when "sub_sp"   then OpCode::SubSp
+    when "compare"  then OpCode::Compare
+    when "label"    then OpCode::Label
+    when "jump"     then OpCode::Jump
+    when "jump_eq"  then OpCode::JumpEq
+    when "jump_g"   then OpCode::JumpG
+    when "call"     then OpCode::Call
+    when "ret"      then OpCode::Ret
+    when "push"     then OpCode::Push
+    when "pop"      then OpCode::Pop
+    when "read"     then OpCode::Read
+    when "write"    then OpCode::Write
+    when "set_vram" then OpCode::SetVram
+    when "get_vram" then OpCode::GetVram
+    when "_cmt"     then OpCode::VmCmt
+    when "_debug"   then OpCode::VmDebug
+    else
+      raise "unsupported opcode (#{raw_insn_el})"
+    end
+  end
+end
 
 class Memory
   @main : Array(Insn)
@@ -108,7 +168,14 @@ class Vm
   def load_program_file(path)
     insns = [] of Insn
     File.open(path).each_line do |line|
-      insns << Insn.from_json(line)
+      raw_insn = [] of RawInsnElem
+      raw_insn = RawInsn.from_json(line)
+
+      insn = [] of InsnElem
+      raw_insn.each { |it| insn << it }
+      insn[0] = OpCode.from(raw_insn[0])
+
+      insns << insn
     end
 
     load_program(insns)
@@ -119,28 +186,28 @@ class Vm
 
     opcode = insn[0]
     case opcode
-    when "exit"     then return insn[1].as(Int32)
-    when "cp"       then cp()       ; @pc += 1
-    when "lea"      then lea()      ; @pc += 1
-    when "add_ab"   then add_ab()   ; @pc += 1
-    when "mult_ab"  then mult_ab()  ; @pc += 1
-    when "add_sp"   then add_sp()   ; @pc += 1
-    when "sub_sp"   then sub_sp()   ; @pc += 1
-    when "compare"  then compare()  ; @pc += 1
-    when "label"    then              @pc += 1
-    when "jump"     then jump()
-    when "jump_eq"  then jump_eq()
-    when "jump_g"   then jump_g()
-    when "call"     then call()
-    when "ret"      then ret()
-    when "push"     then push()     ; @pc += 1
-    when "pop"      then pop()      ; @pc += 1
-    when "read"     then read()     ; @pc += 1
-    when "write"    then write()    ; @pc += 1
-    when "set_vram" then set_vram() ; @pc += 1
-    when "get_vram" then get_vram() ; @pc += 1
-    when "_cmt"     then              @pc += 1
-    when "_debug"   then _debug()   ; @pc += 1
+    when OpCode::Exit    then return insn[1].as(Int32)
+    when OpCode::Cp      then cp()       ; @pc += 1
+    when OpCode::Lea     then lea()      ; @pc += 1
+    when OpCode::AddAb   then add_ab()   ; @pc += 1
+    when OpCode::MultAb  then mult_ab()  ; @pc += 1
+    when OpCode::AddSp   then add_sp()   ; @pc += 1
+    when OpCode::SubSp   then sub_sp()   ; @pc += 1
+    when OpCode::Compare then compare()  ; @pc += 1
+    when OpCode::Label   then              @pc += 1
+    when OpCode::Jump    then jump()
+    when OpCode::JumpEq  then jump_eq()
+    when OpCode::JumpG   then jump_g()
+    when OpCode::Call    then call()
+    when OpCode::Ret     then ret()
+    when OpCode::Push    then push()     ; @pc += 1
+    when OpCode::Pop     then pop()      ; @pc += 1
+    when OpCode::Read    then read()     ; @pc += 1
+    when OpCode::Write   then write()    ; @pc += 1
+    when OpCode::SetVram then set_vram() ; @pc += 1
+    when OpCode::GetVram then get_vram() ; @pc += 1
+    when OpCode::VmCmt   then              @pc += 1
+    when OpCode::VmDebug then _debug()   ; @pc += 1
     else
       raise "unknown opcode #{insn.inspect}"
     end
