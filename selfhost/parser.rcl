@@ -44,10 +44,6 @@ def str_lit_return(g_)
   return "return";
 end
 
-def str_lit_var(g_)
-  return "var";
-end
-
 def str_lit_while(g_)
   return "while";
 end
@@ -419,7 +415,7 @@ def parse_func(g_)
       break;
     end
 
-    if (str_eq(Token_get_val(t_), str_lit_var(g_)))
+    if (str_eq(Token_get_val(t_), "var"))
       stmt_ = parse_var(g_);
     else
       stmt_ = parse_stmt(g_);
@@ -442,8 +438,8 @@ def _parse_var_declare(g_)
 
   stmt_ = List_new(g_);
 
-  consume_kw(g_, str_lit_var(g_));
-  List_add_str(g_, stmt_, str_lit_var(g_));
+  consume_kw(g_, "var");
+  List_add_str(g_, stmt_, "var");
 
   t_ = peek(g_, 0);
   inc_token_index(g_);
@@ -464,8 +460,8 @@ def _parse_var_init(g_)
 
   stmt_ = List_new(g_);
 
-  consume_kw(g_, str_lit_var(g_));
-  List_add_str(g_, stmt_, str_lit_var(g_));
+  consume_kw(g_, "var");
+  List_add_str(g_, stmt_, "var");
 
   t_ = peek(g_, 0);
   inc_token_index(g_);
@@ -488,7 +484,7 @@ def _parse_var_array(g_)
   var var_name_;
   var stmt_;
 
-  consume_kw(g_, str_lit_var(g_));
+  consume_kw(g_, "var");
 
   consume_sym_one_char(g_, 91); # [
 
