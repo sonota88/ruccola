@@ -8,10 +8,6 @@ def str_lit_GO_STRINGS(g_)
   return "GO_STRINGS";
 end
 
-def str_lit_def(g_)
-  return "def";
-end
-
 def str_lit_funcall(g_)
   return "funcall";
 end
@@ -369,7 +365,7 @@ def parse_func(g_)
   var fn_name_;
   check_heap_stack_overlap(g_);
 
-  consume_kw(g_, str_lit_def(g_));
+  consume_kw(g_, "def");
 
   func_stmt_ = List_new(g_);
 
@@ -1013,7 +1009,7 @@ end
 def parse_top_stmt(g_)
   var t_ = peek(g_, 0);
 
-  if (str_eq(Token_get_val(t_), str_lit_def(g_)))
+  if (str_eq(Token_get_val(t_), "def"))
     return parse_func(g_);
   else
     panic(770); # parse_top_stmt
