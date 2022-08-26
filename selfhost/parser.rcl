@@ -4,28 +4,6 @@
 #include lib/types.rcl
 #include lib/json.rcl
 
-def str_lit_GO_STRINGS(g_)
-  return "GO_STRINGS";
-end
-
-def str_lit_funcall(g_)
-  return "funcall";
-end
-
-def str_lit_offset_(g_)
-  return "offset_";
-end
-
-def str_lit_g_(g_)
-  return "g_";
-end
-
-def str_lit_plus(g_)
-  return "+";
-end
-
-# --------------------------------
-
 def get_line_size(input_, pos_from)
   var pos_to;
   var lf_pos = char_index(input_, C_LF(), pos_from);
@@ -585,16 +563,16 @@ def _make_str_expr(g_, offset)
   var expr3_ = List_new(g_);
 
   # GO_STRINGS()
-  List_add_str(g_, expr1_, str_lit_funcall(g_));
-  List_add_str(g_, expr1_, str_lit_GO_STRINGS(g_));
+  List_add_str(g_, expr1_, "funcall");
+  List_add_str(g_, expr1_, "GO_STRINGS");
 
   # g_ + GO_STRINGS()
-  List_add_str(g_, expr2_, str_lit_plus(g_));
-  List_add_str(g_, expr2_, str_lit_g_(g_));
+  List_add_str(g_, expr2_, "+");
+  List_add_str(g_, expr2_, "g_");
   List_add_list(g_, expr2_, expr1_);
 
   # g_ + GO_STRINGS() + offset
-  List_add_str(g_, expr3_, str_lit_plus(g_));
+  List_add_str(g_, expr3_, "+");
   List_add_list(g_, expr3_, expr2_);
   List_add_int(g_, expr3_, offset);
 
@@ -1041,8 +1019,8 @@ def make_set_byte_stmt(g_, bi, byte)
   var stmt_ = List_new(g_);
 
   # offset_ + bi
-  List_add_str(g_, expr1_, str_lit_plus(g_));
-  List_add_str(g_, expr1_, str_lit_offset_(g_));
+  List_add_str(g_, expr1_, "+");
+  List_add_str(g_, expr1_, "offset_");
   List_add_int(g_, expr1_, bi);
 
   # *(offset_ + bi)
@@ -1062,26 +1040,26 @@ def make_init_strings_fn(g_)
   var args_ = List_new(g_);
   var stmts_ = List_new(g_);
 
-  List_add_str(g_, args_, str_lit_g_(g_));
+  List_add_str(g_, args_, "g_");
 
   # ----
   # var offset_ = g_ + GO_STRINGS();
 
   # GO_STRINGS()
   var funcall_ = List_new(g_);
-  List_add_str(g_, funcall_, str_lit_funcall(g_));
-  List_add_str(g_, funcall_, str_lit_GO_STRINGS(g_));
+  List_add_str(g_, funcall_, "funcall");
+  List_add_str(g_, funcall_, "GO_STRINGS");
 
   # g_  + GO_STRINGS()
   var g_funcall_ = List_new(g_);
-  List_add_str(g_, g_funcall_, str_lit_plus(g_));
-  List_add_str(g_, g_funcall_, str_lit_g_(g_));
+  List_add_str(g_, g_funcall_, "+");
+  List_add_str(g_, g_funcall_, "g_");
   List_add_list(g_, g_funcall_, funcall_);
 
   # var offset_ = g_ + GO_STRINGS()
   var var_offset_ = List_new(g_);
   List_add_str(g_, var_offset_, "var");
-  List_add_str(g_, var_offset_, str_lit_offset_(g_));
+  List_add_str(g_, var_offset_, "offset_");
   List_add_list(g_, var_offset_, g_funcall_);
 
   List_add_list(g_, stmts_, var_offset_);
