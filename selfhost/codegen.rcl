@@ -6,32 +6,16 @@
 
 # --------------------------------
 
-def str_lit__cmt(g_)
-  return "_cmt";
-end
-
 def str_lit_bp(g_)
   return "bp";
-end
-
-def str_lit_call(g_)
-  return "call";
 end
 
 def str_lit_deref(g_)
   return "deref";
 end
 
-def str_lit_set(g_)
-  return "set";
-end
-
 def str_lit_sp(g_)
   return "sp";
-end
-
-def str_lit_while(g_)
-  return "while";
 end
 
 # --------------------------------
@@ -56,7 +40,7 @@ end
 
 def asm_call(g_, label_)
   asm_indent();
-  print_s(str_lit_call(g_));
+  print_s("call");
   putchar(C_SPC()); print_s(label_);
   putchar(C_LF());
 end
@@ -151,7 +135,7 @@ def asm_vm_comment(g_, vm_comment_)
   end
 
   asm_indent();
-  print_s(str_lit__cmt(g_));
+  print_s("_cmt");
   putchar(C_SPC()); print_s(&vm_comment);
   putchar(C_LF());
 end
@@ -542,7 +526,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   fn_name_ = List_get_as_str(stmt_, 1);
   args_ = List_rest(g_, stmt_, 2);
 
-  str_cp_with_check(&vm_comment, str_lit_call(g_), vm_comment_size);
+  str_cp_with_check(&vm_comment, "call", vm_comment_size);
   aset(&vm_comment, 4, C_SPC());
   aset(&vm_comment, 5, C_SPC());
   aset(&vm_comment, 6, 0);
@@ -645,7 +629,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   label_id = get_label_id(g_);
   WhileStack_push(g_, label_id);
 
-  str_cp_with_check(&label_begin, str_lit_while(g_), label_begin_size);
+  str_cp_with_check(&label_begin, "while", label_begin_size);
   append_label_id(&label_begin, label_id, label_begin_size);
 
   str_cp_with_check(&label_end, "end_while", label_end_size);
@@ -747,15 +731,15 @@ def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
   var head_str_ = List_get_as_str(stmt_, 0);
 
   case
-  when (str_eq(head_str_, str_lit_set(g_)))
+  when (str_eq(head_str_, "set"))
     gen_set(g_, fn_arg_names_, lvar_names_, stmt_);
-  when (str_eq(head_str_, str_lit__cmt(g_)))
+  when (str_eq(head_str_, "_cmt"))
     gen_vm_comment(g_, stmt_);
-  when (str_eq(head_str_, str_lit_call(g_)))
+  when (str_eq(head_str_, "call"))
     gen_call(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq(head_str_, "return"))
     gen_return(g_, fn_arg_names_, lvar_names_, stmt_);
-  when (str_eq(head_str_, str_lit_while(g_)))
+  when (str_eq(head_str_, "while"))
     gen_while(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq(head_str_, "break"))
     gen_break(g_);
@@ -784,7 +768,7 @@ def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
 
   if (List_size(stmt_) == 3)
     set_stmt_ = List_new(g_);
-    List_add_str(g_, set_stmt_, str_lit_set(g_));
+    List_add_str(g_, set_stmt_, "set");
     List_add(g_, set_stmt_, List_get(stmt_, 1));
     List_add(g_, set_stmt_, List_get(stmt_, 2));
 
