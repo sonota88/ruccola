@@ -117,32 +117,6 @@ end
 
 # --------------------------------
 
-def parse_func
-  consume "def"
-
-  t = peek()
-  $pos += 1
-  func_name = t.value
-
-  consume "("
-  args = parse_args()
-  consume ")"
-
-  stmts = []
-  while peek().value != "end"
-    stmts <<
-      if peek().value == "var"
-        parse_var()
-      else
-        parse_stmt()
-      end
-  end
-
-  consume "end"
-
-  [:func, func_name, args, stmts]
-end
-
 def _parse_var_declare
   t = peek()
   $pos += 1
@@ -491,6 +465,32 @@ def parse_stmts
   end
 
   stmts
+end
+
+def parse_func
+  consume "def"
+
+  t = peek()
+  $pos += 1
+  func_name = t.value
+
+  consume "("
+  args = parse_args()
+  consume ")"
+
+  stmts = []
+  while peek().value != "end"
+    stmts <<
+      if peek().value == "var"
+        parse_var()
+      else
+        parse_stmt()
+      end
+  end
+
+  consume "end"
+
+  [:func, func_name, args, stmts]
 end
 
 def parse_top_stmt

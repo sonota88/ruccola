@@ -334,56 +334,6 @@ def parse_exprs(g_)
   return exprs_;
 end
 
-def parse_func(g_)
-  var func_stmt_;
-  var t_;
-  var stmts_;
-  var stmt_;
-  var args_;
-  var fn_name_;
-  check_heap_stack_overlap(g_);
-
-  consume_kw(g_, "def");
-
-  func_stmt_ = List_new(g_);
-
-  List_add_str(g_, func_stmt_, "func");
-
-  t_ = peek(g_, 0);
-  inc_token_index(g_);
-  fn_name_ = Token_get_val(t_);
-  List_add_str(g_, func_stmt_, fn_name_);
-
-  consume_sym_paren_l(g_); # (
-
-  args_ = parse_args(g_);
-  List_add_list(g_, func_stmt_, args_);
-
-  consume_sym_paren_r(g_); # )
-
-  stmts_ = List_new(g_);
-
-  while (true)
-    t_ = peek(g_, 0);
-    if (Token_val_eq(t_, "end"))
-      break;
-    end
-
-    if (str_eq(Token_get_val(t_), "var"))
-      stmt_ = parse_var(g_);
-    else
-      stmt_ = parse_stmt(g_);
-    end
-    List_add_list(g_, stmts_, stmt_);
-  end
-
-  consume_kw(g_, "end");
-
-  List_add_list(g_, func_stmt_, stmts_);
-
-  return func_stmt_;
-end
-
 def _parse_var_declare(g_)
   var stmt_;
   var t_;
@@ -982,6 +932,56 @@ def parse_stmts(g_)
   end
 
   return stmts_;
+end
+
+def parse_func(g_)
+  var func_stmt_;
+  var t_;
+  var stmts_;
+  var stmt_;
+  var args_;
+  var fn_name_;
+  check_heap_stack_overlap(g_);
+
+  consume_kw(g_, "def");
+
+  func_stmt_ = List_new(g_);
+
+  List_add_str(g_, func_stmt_, "func");
+
+  t_ = peek(g_, 0);
+  inc_token_index(g_);
+  fn_name_ = Token_get_val(t_);
+  List_add_str(g_, func_stmt_, fn_name_);
+
+  consume_sym_paren_l(g_); # (
+
+  args_ = parse_args(g_);
+  List_add_list(g_, func_stmt_, args_);
+
+  consume_sym_paren_r(g_); # )
+
+  stmts_ = List_new(g_);
+
+  while (true)
+    t_ = peek(g_, 0);
+    if (Token_val_eq(t_, "end"))
+      break;
+    end
+
+    if (str_eq(Token_get_val(t_), "var"))
+      stmt_ = parse_var(g_);
+    else
+      stmt_ = parse_stmt(g_);
+    end
+    List_add_list(g_, stmts_, stmt_);
+  end
+
+  consume_kw(g_, "end");
+
+  List_add_list(g_, func_stmt_, stmts_);
+
+  return func_stmt_;
 end
 
 def parse_top_stmt(g_)
