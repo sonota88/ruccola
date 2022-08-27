@@ -270,7 +270,7 @@ class Vm
     when /^-?\d+$/ then str.to_i
     when /^ind:/   then @mem.stack[calc_indirect_addr(str)]
     else
-      raise "TODO (#{str})"
+      raise "unsupported (#{str})"
     end
   end
 
@@ -303,7 +303,7 @@ class Vm
     when "sp"    then @sp    = src_val
     when /^ind:/ then @mem.stack[calc_indirect_addr(arg_dest)] = src_val
     else
-      raise "TODO (#{arg_dest.inspect})"
+      raise "unsupported (#{arg_dest.inspect})"
     end
   end
 
@@ -316,14 +316,14 @@ class Vm
       when /^ind:/
         calc_indirect_addr(src)
       else
-        raise "TODO src(#{src})"
+        raise "unsupported (#{src})"
       end
 
     case dest
     when "reg_a"
       @reg_a = addr
     else
-      raise "TODO dest(#{dest})"
+      raise "unsupported (#{dest})"
     end
   end
 
@@ -434,7 +434,7 @@ class Vm
     case arg
     when "reg_a" then @reg_a = n
     else
-      raise "TODO arg (#{arg})"
+      raise "unsupported (#{arg})"
     end
   end
 
@@ -490,10 +490,10 @@ class Vm
         vram_addr = @mem.stack[calc_indirect_addr(arg_vram)]
         @mem.vram[vram_addr] = src_val
       else
-        raise "TODO arg_vram (#{arg_vram})"
+        raise "unsupported (#{arg_vram})"
       end
     else
-      raise "TODO arg_vram (#{arg_vram})"
+      raise "unsupported (#{arg_vram})"
     end
   end
 
@@ -510,10 +510,10 @@ class Vm
         when /^ind:/
           @mem.stack[calc_indirect_addr(arg_vram)]
         else
-          raise "TODO arg_vram (#{arg_vram})"
+          raise "unsupported (#{arg_vram})"
         end
       else
-        raise "TODO arg_vram (#{arg_vram})"
+        raise "unsupported (#{arg_vram})"
       end
 
     val = @mem.vram[vram_addr]
@@ -522,7 +522,7 @@ class Vm
     when "reg_a"
       @reg_a = val
     else
-      raise "TODO arg_dest (#{arg_dest})"
+      raise "unsupported (#{arg_dest})"
     end
   end
 
