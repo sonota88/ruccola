@@ -220,7 +220,7 @@ class Vm
     STDIN.gets if @debug
 
     loop do
-      @step +=1
+      @step += 1
 
       exit_status = execute()
       if exit_status
