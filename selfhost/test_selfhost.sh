@@ -50,6 +50,6 @@ TEMP_DIR="${__DIR__}/tmp"
 mkdir -p tmp exe
 build_all
 
-test_selfhost lexer
-test_selfhost parser
-test_selfhost codegen
+test_selfhost rcl_lexer
+test_selfhost rcl_parser
+test_selfhost rcl_codegen
