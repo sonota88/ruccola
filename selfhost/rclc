@@ -102,5 +102,5 @@ run "codegen" $treefile $asmfile
 if [ $PRINT_ASM -eq 1 ]; then
   cat $asmfile
 else
-  ruby ${__DIR__}/../vgasm.rb $asmfile
+  ruby ${__DIR__}/../rcl_asm.rb $asmfile
 fi

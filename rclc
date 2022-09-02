@@ -42,15 +42,15 @@ treefile=${TMP_DIR}/${bname}.vgt.json
 asmfile=${TMP_DIR}/${bname}.vga.txt
 exefile=${TMP_DIR}/${bname}.vge.txt
 
-ruby ${__DIR__}/vglexer.rb $src_temp > $tokensfile
-ruby ${__DIR__}/vgparser.rb $tokensfile > $treefile
+ruby ${__DIR__}/rcl_lexer.rb $src_temp > $tokensfile
+ruby ${__DIR__}/rcl_parser.rb $tokensfile > $treefile
 
 ruby ${__DIR__}/check.rb fn-sig $treefile
 
 if [ $PRINT_ASM -eq 1 ]; then
-  ruby ${__DIR__}/vgcodegen.rb $treefile
+  ruby ${__DIR__}/rcl_codegen.rb $treefile
 else
-  ruby ${__DIR__}/vgcodegen.rb $treefile > $asmfile
+  ruby ${__DIR__}/rcl_codegen.rb $treefile > $asmfile
 
-  ruby ${__DIR__}/vgasm.rb $asmfile
+  ruby ${__DIR__}/rcl_asm.rb $asmfile
 fi

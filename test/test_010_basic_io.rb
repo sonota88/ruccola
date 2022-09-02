@@ -32,7 +32,7 @@ class Test010 < Minitest::Test
     # compile and assemble
     build(FILE_SRC, FILE_EXE)
 
-    output = _system(%( ruby #{PROJECT_DIR}/vgvm.rb #{FILE_EXE} ))
+    output = _system(%( ruby #{PROJECT_DIR}/rcl_vm.rb #{FILE_EXE} ))
 
     assert_equal("Hello, world\n", output)
   end
@@ -59,7 +59,7 @@ class Test010 < Minitest::Test
     build(FILE_SRC, FILE_EXE)
 
     file_write(FILE_STDIN, "abc" + LF + "123" + LF)
-    output = _system(%( ruby #{PROJECT_DIR}/vgvm.rb #{FILE_EXE} ))
+    output = _system(%( ruby #{PROJECT_DIR}/rcl_vm.rb #{FILE_EXE} ))
 
     assert_equal("abc" + LF + "123" + LF, output)
   end

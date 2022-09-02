@@ -18,7 +18,7 @@ print_vm_cmd() {
   if [ "$val" = "1" ]; then
     echo "${__DIR__}/fastvm/exe/rclvm"
   else
-    echo "ruby ${__DIR__}/vgvm.rb"
+    echo "ruby ${__DIR__}/rcl_vm.rb"
   fi
 }
 

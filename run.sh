@@ -28,8 +28,8 @@ treefile=${TEMP_DIR}/${bname}.vgt.json
 asmfile=${TEMP_DIR}/${bname}.vga.txt
 exefile=${TEMP_DIR}/${bname}.vge.txt
 
-ruby vglexer.rb $src_temp > $tokensfile
-ruby vgparser.rb $tokensfile > $treefile
-ruby vgcodegen.rb $treefile > $asmfile
-ruby vgasm.rb $asmfile > $exefile
-ruby vgvm.rb $exefile
+ruby rcl_lexer.rb $src_temp > $tokensfile
+ruby rcl_parser.rb $tokensfile > $treefile
+ruby rcl_codegen.rb $treefile > $asmfile
+ruby rcl_asm.rb $asmfile > $exefile
+ruby rcl_vm.rb $exefile

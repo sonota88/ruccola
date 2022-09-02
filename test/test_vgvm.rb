@@ -1,5 +1,5 @@
 require_relative "helper"
-require "vgvm"
+require "rcl_vm"
 
 class Vm
   attr_accessor :reg_a, :reg_b
