@@ -4,6 +4,19 @@
 #include lib/types.rcl
 #include lib/json.rcl
 
+# --------------------------------
+
+def mklist2(g_, n0_, n1_)
+  var list_ = List_new(g_);
+
+  List_add(g_, list_, n0_);
+  List_add(g_, list_, n1_);
+
+  return list_;
+end
+
+# --------------------------------
+
 def get_line_size(input_, pos_from)
   var pos_to;
   var lf_pos = char_index(input_, C_LF(), pos_from);
