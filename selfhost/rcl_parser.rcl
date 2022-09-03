@@ -15,6 +15,14 @@ def mklist2(g_, n0_, n1_)
   return list_;
 end
 
+def mklist3(g_, n0_, n1_, n2_)
+  var list_ = mklist2(g_, n0_, n1_);
+
+  List_add(g_, list_, n2_);
+
+  return list_;
+end
+
 # --------------------------------
 
 def get_line_size(input_, pos_from)
