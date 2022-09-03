@@ -526,7 +526,7 @@ def _make_str_expr(g_, offset)
   List_add_list(g_, expr3_, expr2_);
   List_add_int(g_, expr3_, offset);
 
-  return expr3_;
+  return Node_new_list(g_, expr3_);
 end
 
 def _parse_expr_factor_int(g_)
@@ -631,8 +631,7 @@ def _parse_expr_factor_str(g_)
     StrLitList_add(g_, str_, str_offset);
   end
 
-  expr_list_ = _make_str_expr(g_, str_offset);
-  return Node_new_list(g_, expr_list_);
+  return _make_str_expr(g_, str_offset);
 end
 
 def _parse_expr_factor(g_)
