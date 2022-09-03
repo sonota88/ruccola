@@ -529,40 +529,25 @@ def is_binop(t_)
 end
 
 def _make_str_expr(g_, offset)
-  var expr1_;
-  var expr2_;
-  var expr3_;
-
-  # GO_STRINGS()
-  expr1_ =
-    Node_new_list(g_,
-      mklist2(g_,
-        Node_new_str(g_, "funcall"),
-        Node_new_str(g_, "GO_STRINGS")
-      )
-    );
-
-  # g_ + GO_STRINGS()
-  expr2_ =
-    Node_new_list(g_,
-      mklist3(g_,
-        Node_new_str(g_, "+"),
-        Node_new_str(g_, "g_"),
-        expr1_
-      )
-    );
-
   # g_ + GO_STRINGS() + offset
-  expr3_ =
-    Node_new_list(g_,
-      mklist3(g_,
-        Node_new_str(g_, "+"),
-        expr2_,
-        Node_new_int(g_, offset)
-      )
-    );
-
-  return expr3_;
+  return Node_new_list(g_,
+    mklist3(g_,
+      Node_new_str(g_, "+"),
+      Node_new_list(g_,
+        mklist3(g_,
+          Node_new_str(g_, "+"),
+          Node_new_str(g_, "g_"),
+          Node_new_list(g_,
+            mklist2(g_,
+              Node_new_str(g_, "funcall"),
+              Node_new_str(g_, "GO_STRINGS")
+            )
+          )
+        )
+      ),
+      Node_new_int(g_, offset)
+    )
+  );
 end
 
 def _parse_expr_factor_int(g_)
@@ -1049,38 +1034,23 @@ def parse(g_)
 end
 
 def make_set_byte_stmt(g_, bi, byte)
-  var expr1_;
-  var expr2_;
-  var stmt_;
-
-  # offset_ + bi
-  expr1_ =
-    Node_new_list(g_,
-      mklist3(g_,
-        Node_new_str(g_, "+"),
-        Node_new_str(g_, "offset_"),
-        Node_new_int(g_, bi)
-      )
-    );
-
-  # *(offset_ + bi)
-  expr2_ =
+  # *(offset_ + bi) = byte
+  return mklist3(g_,
+    Node_new_str(g_, "set"),
     Node_new_list(g_,
       mklist2(g_,
         Node_new_str(g_, "deref"),
-        expr1_
+        Node_new_list(g_,
+          mklist3(g_,
+            Node_new_str(g_, "+"),
+            Node_new_str(g_, "offset_"),
+            Node_new_int(g_, bi)
+          )
+        )
       )
-    );
-
-  # *(offset_ + bi) = byte
-  stmt_ =
-    mklist3(g_,
-        Node_new_str(g_, "set"),
-        expr2_,
-        Node_new_int(g_, byte)
-    );
-
-  return stmt_;
+    ),
+    Node_new_int(g_, byte)
+  );
 end
 
 def make_init_strings_fn(g_)
@@ -1092,32 +1062,22 @@ def make_init_strings_fn(g_)
 
   # ----
   # var offset_ = g_ + GO_STRINGS();
-
-  # GO_STRINGS()
-  var funcall_ =
-    Node_new_list(g_,
-      mklist2(g_,
-        Node_new_str(g_, "funcall"),
-        Node_new_str(g_, "GO_STRINGS")
-      )
-    );
-
-  # g_  + GO_STRINGS()
-  var g_funcall_ =
-    Node_new_list(g_,
-      mklist3(g_,
-        Node_new_str(g_, "+"),
-        Node_new_str(g_, "g_"),
-        funcall_
-      )
-    );
-
-  # var offset_ = g_ + GO_STRINGS()
   var var_offset_ =
     mklist3(g_,
       Node_new_str(g_, "var"),
       Node_new_str(g_, "offset_"),
-      g_funcall_
+      Node_new_list(g_,
+        mklist3(g_,
+          Node_new_str(g_, "+"),
+          Node_new_str(g_, "g_"),
+          Node_new_list(g_,
+            mklist2(g_,
+              Node_new_str(g_, "funcall"),
+              Node_new_str(g_, "GO_STRINGS")
+            )
+          )
+        )
+      )
     );
 
   List_add_list(g_, stmts_, var_offset_);
