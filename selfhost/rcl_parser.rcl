@@ -517,11 +517,11 @@ def is_binop(t_)
     return true;
   when (char_at(Token_get_val(t_), 0) == 42) # *
     return true;
+  when (char_at(Token_get_val(t_), 0) == 60) # <
+    return true;
   when (Token_val_eq(t_, &s_double_equal))
     return true;
   when (Token_val_eq(t_, &s_not_equal))
-    return true;
-  when (char_at(Token_get_val(t_), 0) == 60) # <
     return true;
   else
     return false;
