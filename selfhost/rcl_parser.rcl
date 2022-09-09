@@ -188,14 +188,6 @@ def consume_sym_paren_r(g_)
   consume_sym_one_char(g_, 41); # )
 end
 
-def consume_sym_cbracket_l(g_)
-  consume_sym_one_char(g_, 123); # {
-end
-
-def consume_sym_cbracket_r(g_)
-  consume_sym_one_char(g_, 125); # }
-end
-
 def consume_sym_semicolon(g_)
   consume_sym_one_char(g_, 59); # ;
 end
