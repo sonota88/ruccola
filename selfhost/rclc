@@ -38,22 +38,30 @@ print_vm_cmd() {
   fi
 }
 
+timestamp() {
+  date "+%s.%N"
+}
+
+log_clear() {
+  echo -n > $LOGFILE
+}
+
+log_time() {
+  local name="$1"; shift
+  echo "${name} $(timestamp)" >> $LOGFILE
+}
+
 run() {
   local name="$1"; shift
   local infile="$1"; shift
   local outfile="$1"; shift
 
-  echo "-->> ${name}" >&2
-
-  # time (
-  #   printf "${name} ... "
+  log_time "${name}_beg"
 
   STDIN=$infile DEBUG=0 VERBOSE=0 \
     $RCLVM ${__DIR__}/exe/${name}.exe.txt > $outfile
 
-  #   printf "done\n"
-  #   printf "\n"
-  # ) >&2
+  log_time "${name}_end"
 }
 
 # --------------------------------
@@ -67,6 +75,7 @@ PROJECT_DIR="$(
 TMP_DIR=${__DIR__}/tmp/
 RCLVM="$(print_vm_cmd)"
 PRINT_ASM=$(get_envvar "PRINT_ASM" 0)
+LOGFILE=${TMP_DIR}/rclc.log
 
 mkdir -p ${TMP_DIR}
 
@@ -79,6 +88,8 @@ src_temp=${TMP_DIR}/${bname}.rcl.rb
 tokensfile=${TMP_DIR}/${bname}.tokens.txt
 treefile=${TMP_DIR}/${bname}.vgt.json
 asmfile=${TMP_DIR}/${bname}.vga.txt
+
+log_clear
 
 (
   cd $__DIR__

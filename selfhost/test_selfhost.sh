@@ -19,13 +19,35 @@ build_all() {
   fi
 }
 
+timestamp() {
+  date "+%s.%N"
+}
+
+log_time() {
+  local name="$1"; shift
+  echo "${name} $(timestamp)" >> $LOGFILE
+}
+
 test_selfhost() {
   local name="$1"
 
-  echo "compile ${name}:"
+  echo "compile ${name}" >&2
+  {
+    printf "\n"
+    echo "# ==== compile ${name} ===="
+  } >> $LOGFILE
 
   ../rclc ${name}.rcl > ${TEMP_DIR}/${name}_gen1.exe.txt
+
+  log_time "${name}_beg"
   ./rclc  ${name}.rcl > ${TEMP_DIR}/${name}_gen2.exe.txt
+
+  {
+    echo "@beg ${name}"
+    cat tmp/rclc.log
+    echo "@end ${name}"
+  } >> $LOGFILE
+  log_time "${name}_end"
 
   local timestamp=$(date "+%Y%m%d_%H%M%S")
 
@@ -46,10 +68,23 @@ test_selfhost() {
 
 __DIR__="$(print_this_dir)"
 TEMP_DIR="${__DIR__}/tmp"
+LOGFILE=${TEMP_DIR}/rclc_sub.log
 
 mkdir -p tmp exe
 build_all
 
+{
+  echo "---"
+  printf "# "
+  date "+%F %T"
+} >> $LOGFILE
+
+log_time "test_selfhost_beg"
+
 test_selfhost rcl_lexer
 test_selfhost rcl_parser
 test_selfhost rcl_codegen
+
+log_time "test_selfhost_end"
+
+ruby test_selfhost_utils.rb print-times
