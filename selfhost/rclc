@@ -91,6 +91,7 @@ asmfile=${TMP_DIR}/${bname}.vga.txt
 
 log_clear
 
+# generate rcl executable
 (
   cd $__DIR__
   rake build-all
