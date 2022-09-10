@@ -84,7 +84,7 @@ class Test090 < Minitest::Test
     SRC
 
     expected = <<-ASM
-  _cmt call~~f
+  _cmt call:f
   call f
     ASM
 
