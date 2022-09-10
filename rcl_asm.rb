@@ -63,7 +63,7 @@ alines.each do |aline|
     label_name = rest[0]
 
     if label_addr_map.key?(label_name)
-      insn << label_addr_map[label_name]
+      insn << label_addr_map[label_name] + 1
     else
       raise "label not found (#{label_name})"
     end
