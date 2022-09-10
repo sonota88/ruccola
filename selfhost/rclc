@@ -93,8 +93,8 @@ if (is_fastvm); then
   )
 fi
 
-ruby ${__DIR__}/../check.rb gvar-width $file
 ruby ${__DIR__}/../preproc.rb $file > $src_temp
+ruby ${__DIR__}/../check.rb gvar-width $src_temp
 
 run "lexer" $src_temp $tokensfile
 

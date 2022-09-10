@@ -34,8 +34,8 @@ bname=rclc-rb
 src_temp=${TMP_DIR}/${bname}.rcl.rb
 
 # TODO check input_max
-ruby ${__DIR__}/check.rb gvar-width $file
 ruby ${__DIR__}/preproc.rb $file > $src_temp
+ruby ${__DIR__}/check.rb gvar-width $src_temp
 
 tokensfile=${TMP_DIR}/${bname}.vgtok.txt
 treefile=${TMP_DIR}/${bname}.vgt.json

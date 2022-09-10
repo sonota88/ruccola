@@ -245,7 +245,7 @@ def GS_STRINGS() return 1000; end
 def INPUT_MAX() return 60000; end
 
 def main()
-  var [1001]g;
+  var [1002]g;
   var g_ = &g;
 
   # init globals

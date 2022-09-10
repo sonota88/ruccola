@@ -994,7 +994,7 @@ def load_ast(g_)
 end
 
 def main()
-  var [1013]g;
+  var [1014]g;
   var ast_;
 
   # init globals

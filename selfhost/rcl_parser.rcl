@@ -1126,7 +1126,7 @@ def NUM_TOKENS_MAX()
 end
 
 def main()
-  var [16004]g;
+  var [16005]g;
   var g_ = &g;
 
   # init globals
