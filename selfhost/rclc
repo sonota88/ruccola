@@ -56,6 +56,8 @@ run() {
   # ) >&2
 }
 
+# --------------------------------
+
 __DIR__="$(print_this_dir)"
 
 PROJECT_DIR="$(
@@ -67,6 +69,8 @@ RCLVM="$(print_vm_cmd)"
 PRINT_ASM=$(get_envvar "PRINT_ASM" 0)
 
 mkdir -p ${TMP_DIR}
+
+# --------------------------------
 
 file="$1"
 bname=rclc-rcl
