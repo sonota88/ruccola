@@ -20,7 +20,7 @@ class Test130 < Minitest::Test
       #{@types_src}
 
       def main()
-        var [1]g;
+        var [2]g;
         var g_ = &g;
         var c_slash = 47;
         var xs_;
@@ -62,7 +62,7 @@ class Test130 < Minitest::Test
       #{@types_src}
 
       def main()
-        var [1]g;
+        var [2]g;
         var g_ = &g;
         var c_slash = 47;
         var xs_;
@@ -95,7 +95,7 @@ class Test130 < Minitest::Test
       #{@types_src}
 
       def main()
-        var [1]g;
+        var [2]g;
         var g_ = &g;
         var c_slash = 47;
         var xs_;
@@ -139,7 +139,7 @@ class Test130 < Minitest::Test
       #{@types_src}
 
       def main()
-        var [1]g;
+        var [2]g;
         var g_ = &g;
         var c_slash = 47;
         var xs_;
@@ -188,7 +188,7 @@ class Test130 < Minitest::Test
       #{@types_src}
 
       def main()
-        var [1]g;
+        var [2]g;
         var g_ = &g;
         var c_slash = 47;
         var xs_;

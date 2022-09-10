@@ -19,7 +19,7 @@ class Test120 < Minitest::Test
       def GS_STRINGS() return 10; end
 
       def main()
-        var [11]g;
+        var [12]g;
         var g_ = &g;
         var c_slash = 47;
         var str_;
@@ -61,7 +61,7 @@ class Test120 < Minitest::Test
       end
 
       def main()
-        var [11]g;
+        var [12]g;
         var g_ = &g;
 
         # init globals

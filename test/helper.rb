@@ -79,19 +79,14 @@ SRC
 def compile_to_asm(src)
   infile = FILE_SRC
   file_write(infile, src)
-  _system %( ruby #{PROJECT_DIR}/rcl_lexer.rb   #{infile     } > #{FILE_TOKENS} )
-  _system %( ruby #{PROJECT_DIR}/rcl_parser.rb  #{FILE_TOKENS} > #{FILE_TREE  } )
-  _system %( ruby #{PROJECT_DIR}/rcl_codegen.rb #{FILE_TREE  } )
+  _system %( PRINT_ASM=1 #{PROJECT_DIR}/rclc #{infile} )
 end
 
 def build(infile, outfile)
   temp_src = temp_path("test_with_utils.rcl")
   file_write(temp_src, File.read(infile) + SRC_UTILS)
 
-  _system %( ruby #{PROJECT_DIR}/rcl_lexer.rb   #{temp_src   } > #{FILE_TOKENS} )
-  _system %( ruby #{PROJECT_DIR}/rcl_parser.rb  #{FILE_TOKENS} > #{FILE_TREE  } )
-  _system %( ruby #{PROJECT_DIR}/rcl_codegen.rb #{FILE_TREE  } > #{FILE_ASM   } )
-  _system %( ruby #{PROJECT_DIR}/rcl_asm.rb     #{FILE_ASM   } > #{outfile    } )
+  _system %( #{PROJECT_DIR}/rclc #{temp_src} > #{outfile} )
 end
 
 def rclc_rb(infile, outfile, print_asm: false)
