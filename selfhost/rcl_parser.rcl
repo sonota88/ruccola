@@ -493,28 +493,20 @@ def parse_expr_deref(g_)
 end
 
 def is_binop(t_)
-  var [3]s_double_equal;
-  var [3]s_not_equal;
-
-  aset(&s_double_equal, 0, 61); # =
-  aset(&s_double_equal, 1, 61); # =
-  aset(&s_double_equal, 2,  0);
-
-  aset(&s_not_equal, 0, 33); # !
-  aset(&s_not_equal, 1, 61); # =
-  aset(&s_not_equal, 2,  0);
+  var s_op_ = Token_get_val(t_);
+  var c0 = char_at(s_op_, 0);
 
   case
-  when (char_at(Token_get_val(t_), 0) == 43) # +
+  when (c0 == 43) # +
     return true;
-  when (char_at(Token_get_val(t_), 0) == 42) # *
+  when (c0 == 42) # *
     return true;
-  when (char_at(Token_get_val(t_), 0) == 60) # <
+  when (c0 == 60) # <
     return true;
-  when (Token_val_eq(t_, &s_double_equal))
-    return true;
-  when (Token_val_eq(t_, &s_not_equal))
-    return true;
+  when (c0 == 61) # =
+    return char_at(s_op_, 1) == 61; # ==
+  when (c0 == 33) # !
+    return char_at(s_op_, 1) == 61; # !=
   else
     return false;
   end
