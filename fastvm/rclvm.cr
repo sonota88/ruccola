@@ -14,7 +14,6 @@ enum OpCode
   AddSp
   SubSp
   Compare
-  Label
   Jump
   JumpEq
   JumpG
@@ -43,7 +42,6 @@ enum OpCode
     when "add_sp"   then OpCode::AddSp
     when "sub_sp"   then OpCode::SubSp
     when "compare"  then OpCode::Compare
-    when "label"    then OpCode::Label
     when "jump"     then OpCode::Jump
     when "jump_eq"  then OpCode::JumpEq
     when "jump_g"   then OpCode::JumpG
@@ -194,7 +192,6 @@ class Vm
     when OpCode::AddSp   then add_sp()   ; @pc += 1
     when OpCode::SubSp   then sub_sp()   ; @pc += 1
     when OpCode::Compare then compare()  ; @pc += 1
-    when OpCode::Label   then              @pc += 1
     when OpCode::Jump    then jump()
     when OpCode::JumpEq  then jump_eq()
     when OpCode::JumpG   then jump_g()

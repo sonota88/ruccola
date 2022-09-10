@@ -210,7 +210,6 @@ class Vm
     when :add_sp   then add_sp()   ; @pc += 1
     when :sub_sp   then sub_sp()   ; @pc += 1
     when :compare  then compare()  ; @pc += 1
-    when :label    then              @pc += 1
     when :jump     then jump()
     when :jump_eq  then jump_eq()
     when :jump_g   then jump_g()

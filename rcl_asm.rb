@@ -54,7 +54,12 @@ label_addr_map = create_label_addr_map(alines)
 alines.each do |aline|
   head, *rest = aline
 
-  insn = [head]
+  insn =
+    if head == "label"
+      ["_cmt"]
+    else
+      [head]
+    end
 
   case head
   when "label"
