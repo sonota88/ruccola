@@ -6,6 +6,20 @@
 
 # --------------------------------
 
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 1000; end
+
+def GO_LABEL_ID() return GO_STRINGS() + GS_STRINGS(); end
+def GS_LABEL_ID() return 1; end
+
+def GO_WHILE_CURSOR() return GO_LABEL_ID() + GS_LABEL_ID(); end
+def GS_WHILE_CURSOR() return 1; end
+
+def GO_WHILE_STACK() return GO_WHILE_CURSOR() + GS_WHILE_CURSOR(); end
+def GS_WHILE_STACK() return 10; end
+
+# --------------------------------
+
 def asm_indent()
   putchar(C_SPC());
   putchar(C_SPC());
@@ -964,18 +978,6 @@ def codegen(g_, ast_)
   print_s("#<builtins");
   putchar(C_LF());
 end
-
-def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-def GS_STRINGS() return 1000; end
-
-def GO_LABEL_ID() return GO_STRINGS() + GS_STRINGS(); end
-def GS_LABEL_ID() return 1; end
-
-def GO_WHILE_CURSOR() return GO_LABEL_ID() + GS_LABEL_ID(); end
-def GS_WHILE_CURSOR() return 1; end
-
-def GO_WHILE_STACK() return GO_WHILE_CURSOR() + GS_WHILE_CURSOR(); end
-def GS_WHILE_STACK() return 10; end
 
 def get_label_id(g_)
   return *(g_ + GO_LABEL_ID());

@@ -4,6 +4,13 @@
 
 # --------------------------------
 
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 1000; end
+
+def INPUT_MAX() return 60000; end
+
+# --------------------------------
+
 def is_ident_char(c)
   case
   when (range_include(48, 57, c)) # 0..9
@@ -238,11 +245,6 @@ def lex(g_)
 end
 
 # --------------------------------
-
-def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-def GS_STRINGS() return 1000; end
-
-def INPUT_MAX() return 60000; end
 
 def main()
   var [1002]g;

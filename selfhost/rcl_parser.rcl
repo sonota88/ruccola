@@ -6,6 +6,27 @@
 
 # --------------------------------
 
+def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+def GS_STRINGS() return 1000; end
+
+def GO_TOKENS() return GO_STRINGS() + GS_STRINGS(); end
+def GS_TOKENS() return 15000; end
+
+def GO_TOKEN_INDEX() return GO_TOKENS() + GS_TOKENS(); end
+def GS_TOKEN_INDEX() return 1; end
+
+def GO_NUM_TOKENS() return GO_TOKEN_INDEX() + GS_TOKEN_INDEX(); end
+def GS_NUM_TOKENS() return 1; end
+
+def GO_STR_LIT_LIST() return GO_NUM_TOKENS() + GS_NUM_TOKENS(); end
+def GS_STR_LIT_LIST() return 1; end
+
+def NUM_TOKENS_MAX()
+  return GS_TOKENS();
+end
+
+# --------------------------------
+
 def mklist2(g_, n0_, n1_)
   var list_ = List_new(g_);
 
@@ -1082,25 +1103,6 @@ def make_init_strings_fn(g_)
   List_add_list(g_, fn_, stmts_);
 
   return fn_;
-end
-
-def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-def GS_STRINGS() return 1000; end
-
-def GO_TOKENS() return GO_STRINGS() + GS_STRINGS(); end
-def GS_TOKENS() return 15000; end
-
-def GO_TOKEN_INDEX() return GO_TOKENS() + GS_TOKENS(); end
-def GS_TOKEN_INDEX() return 1; end
-
-def GO_NUM_TOKENS() return GO_TOKEN_INDEX() + GS_TOKEN_INDEX(); end
-def GS_NUM_TOKENS() return 1; end
-
-def GO_STR_LIT_LIST() return GO_NUM_TOKENS() + GS_NUM_TOKENS(); end
-def GS_STR_LIT_LIST() return 1; end
-
-def NUM_TOKENS_MAX()
-  return GS_TOKENS();
 end
 
 def main()
