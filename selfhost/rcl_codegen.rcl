@@ -20,6 +20,39 @@ def GS_WHILE_STACK() return 10; end
 
 # --------------------------------
 
+def WhileStack_init(g_)
+  *(g_ + GO_WHILE_CURSOR()) = 0;
+end
+
+def WhileStack_push(g_, label_id)
+  var cur = *(g_ + GO_WHILE_CURSOR());
+
+  *(g_ + GO_WHILE_STACK() + cur) = label_id;
+
+  if (__le(GS_WHILE_STACK(), cur + 1))
+    panic(359); # out of range
+  else
+    *(g_ + GO_WHILE_CURSOR()) = cur + 1;
+  end
+end
+
+def WhileStack_pop(g_)
+  var cur = *(g_ + GO_WHILE_CURSOR());
+
+  if (0 < cur)
+    *(g_ + GO_WHILE_CURSOR()) = cur + -1;
+  else
+    panic(371); # out of range
+  end
+end
+
+def WhileStack_top(g_)
+  var cur = *(g_ + GO_WHILE_CURSOR()) + -1;
+  return *(g_ + GO_WHILE_STACK() + cur);
+end
+
+# --------------------------------
+
 def asm_indent()
   putchar(C_SPC());
   putchar(C_SPC());
@@ -224,39 +257,6 @@ def append_label_id(label_, id, dest_size)
 
   unparse_int(&id_str, id);
   append_str_with_check(label_, &id_str, dest_size);
-end
-
-# --------------------------------
-
-def WhileStack_init(g_)
-  *(g_ + GO_WHILE_CURSOR()) = 0;
-end
-
-def WhileStack_push(g_, label_id)
-  var cur = *(g_ + GO_WHILE_CURSOR());
-
-  *(g_ + GO_WHILE_STACK() + cur) = label_id;
-
-  if (__le(GS_WHILE_STACK(), cur + 1))
-    panic(359); # out of range
-  else
-    *(g_ + GO_WHILE_CURSOR()) = cur + 1;
-  end
-end
-
-def WhileStack_pop(g_)
-  var cur = *(g_ + GO_WHILE_CURSOR());
-
-  if (0 < cur)
-    *(g_ + GO_WHILE_CURSOR()) = cur + -1;
-  else
-    panic(371); # out of range
-  end
-end
-
-def WhileStack_top(g_)
-  var cur = *(g_ + GO_WHILE_CURSOR()) + -1;
-  return *(g_ + GO_WHILE_STACK() + cur);
 end
 
 # --------------------------------
