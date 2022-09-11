@@ -348,7 +348,6 @@ def parse_exprs(g_)
 end
 
 def _parse_var_declare(g_)
-  var stmt_;
   var t_;
   var var_name_;
   check_heap_stack_overlap(g_);
@@ -361,11 +360,10 @@ def _parse_var_declare(g_)
 
   consume_sym_semicolon(g_); # ;
 
-  stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, "var");
-  List_add_str(g_, stmt_, var_name_);
-
-  return stmt_;
+  return mklist2(g_,
+    Node_new_str(g_, "var"),
+    Node_new_str(g_, var_name_)
+  );
 end
 
 def _parse_var_init(g_)
@@ -458,8 +456,6 @@ end
 def parse_expr_addr(g_)
   var t_;
   var var_name_;
-  var expr_list_;
-  var expr_node_;
 
   consume_sym_one_char(g_, 38); # &
 
@@ -467,17 +463,15 @@ def parse_expr_addr(g_)
   incr_token_index(g_);
   var var_name_ = Token_get_val(t_);
 
-  expr_list_ = List_new(g_);
-  List_add_str(g_, expr_list_, "addr");
-  List_add_str(g_, expr_list_, var_name_);
-
-  expr_node_ = Node_new_list(g_, expr_list_);
-
-  return expr_node_;
+  return Node_new_list(g_,
+    mklist2(g_,
+      Node_new_str(g_, "addr"),
+      Node_new_str(g_, var_name_)
+    )
+  );
 end
 
 def parse_expr_deref(g_)
-  var list_;
   var expr_node_;
 
   consume_sym_one_char(g_, 42); # *
@@ -485,11 +479,12 @@ def parse_expr_deref(g_)
   expr_node_ = parse_expr(g_);
   consume_sym_paren_r(g_);      # )
 
-  list_ = List_new(g_);
-  List_add_str(g_, list_, "deref");
-  List_add(g_, list_, expr_node_);
-
-  return Node_new_list(g_, list_);
+  return Node_new_list(g_,
+    mklist2(g_,
+      Node_new_str(g_, "deref"),
+      expr_node_
+    )
+  );
 end
 
 def is_binop(t_)
