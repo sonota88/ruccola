@@ -367,7 +367,6 @@ def _parse_var_declare(g_)
 end
 
 def _parse_var_init(g_)
-  var stmt_;
   var t_;
   var var_name_;
   var expr_node_;
@@ -385,19 +384,17 @@ def _parse_var_init(g_)
 
   consume_sym_semicolon(g_); # ;
 
-  stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, "var");
-  List_add_str(g_, stmt_, var_name_);
-  List_add(g_, stmt_, expr_node_);
-
-  return stmt_;
+  return mklist3(g_,
+    Node_new_str(g_, "var"),
+    Node_new_str(g_, var_name_),
+    expr_node_
+  );
 end
 
 def _parse_var_array(g_)
   var t_;
   var width;
   var var_name_;
-  var stmt_;
 
   consume_kw(g_, "var");
 
@@ -414,12 +411,11 @@ def _parse_var_array(g_)
 
   consume_sym_semicolon(g_);
 
-  stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, "var_array");
-  List_add_str(g_, stmt_, var_name_);
-  List_add_int(g_, stmt_, width);
-
-  return stmt_;
+  return mklist3(g_,
+    Node_new_str(g_, "var_array"),
+    Node_new_str(g_, var_name_),
+    Node_new_int(g_, width)
+  );
 end
 
 def parse_var(g_)
@@ -659,7 +655,6 @@ def _parse_expr_factor(g_)
 end
 
 def parse_expr(g_)
-  var list_;
   var expr_node_;
   var factor_node_;
   var s_op_;
@@ -672,19 +667,20 @@ def parse_expr(g_)
 
     factor_node_ = _parse_expr_factor(g_);
 
-    list_ = List_new(g_);
-    List_add_str(g_, list_, s_op_);
-    List_add(g_, list_, expr_node_);
-    List_add(g_, list_, factor_node_);
-
-    expr_node_ = Node_new_list(g_, list_);
+    expr_node_ =
+      Node_new_list(g_,
+        mklist3(g_,
+          Node_new_str(g_, s_op_),
+          expr_node_,
+          factor_node_
+        )
+      );
   end
 
   return expr_node_;
 end
 
 def parse_set(g_)
-  var stmt_;
   var t_;
   var lhs_node_;
   var expr_node_;
@@ -704,12 +700,11 @@ def parse_set(g_)
 
   consume_sym_semicolon(g_); # ;
 
-  stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, "set");
-  List_add(g_, stmt_, lhs_node_);
-  List_add(g_, stmt_, expr_node_);
-
-  return stmt_;
+  return mklist3(g_,
+    Node_new_str(g_, "set"),
+    lhs_node_,
+    expr_node_
+  );
 end
 
 def parse_funcall(g_)
@@ -772,7 +767,6 @@ def parse_return(g_)
 end
 
 def parse_while(g_)
-  var stmt_;
   var expr_node_;
   var stmts_;
 
@@ -786,12 +780,11 @@ def parse_while(g_)
 
   consume_kw(g_, "end");
 
-  stmt_ = List_new(g_);
-  List_add_str(g_, stmt_, "while");
-  List_add(g_, stmt_, expr_node_);
-  List_add_list(g_, stmt_, stmts_);
-
-  return stmt_;
+  return mklist3(g_,
+    Node_new_str(g_, "while"),
+    expr_node_,
+    Node_new_list(g_, stmts_)
+  );
 end
 
 def parse_break(g_)
