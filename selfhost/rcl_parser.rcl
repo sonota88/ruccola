@@ -353,17 +353,17 @@ def _parse_var_declare(g_)
   var var_name_;
   check_heap_stack_overlap(g_);
 
-  stmt_ = List_new(g_);
-
   consume_kw(g_, "var");
-  List_add_str(g_, stmt_, "var");
 
   t_ = peek(g_, 0);
   incr_token_index(g_);
   var_name_ = Token_get_val(t_);
-  List_add_str(g_, stmt_, var_name_);
 
   consume_sym_semicolon(g_); # ;
+
+  stmt_ = List_new(g_);
+  List_add_str(g_, stmt_, "var");
+  List_add_str(g_, stmt_, var_name_);
 
   return stmt_;
 end
@@ -375,22 +375,22 @@ def _parse_var_init(g_)
   var expr_node_;
   check_heap_stack_overlap(g_);
 
-  stmt_ = List_new(g_);
-
   consume_kw(g_, "var");
-  List_add_str(g_, stmt_, "var");
 
   t_ = peek(g_, 0);
   incr_token_index(g_);
   var_name_ = Token_get_val(t_);
-  List_add_str(g_, stmt_, var_name_);
 
   consume_sym_equal(g_); # =
 
   expr_node_ = parse_expr(g_);
-  List_add(g_, stmt_, expr_node_);
 
   consume_sym_semicolon(g_); # ;
+
+  stmt_ = List_new(g_);
+  List_add_str(g_, stmt_, "var");
+  List_add_str(g_, stmt_, var_name_);
+  List_add(g_, stmt_, expr_node_);
 
   return stmt_;
 end
@@ -949,19 +949,13 @@ def parse_func(g_)
 
   consume_kw(g_, "def");
 
-  func_stmt_ = List_new(g_);
-
-  List_add_str(g_, func_stmt_, "func");
-
   t_ = peek(g_, 0);
   incr_token_index(g_);
   fn_name_ = Token_get_val(t_);
-  List_add_str(g_, func_stmt_, fn_name_);
 
   consume_sym_paren_l(g_); # (
 
   args_ = parse_args(g_);
-  List_add_list(g_, func_stmt_, args_);
 
   consume_sym_paren_r(g_); # )
 
@@ -983,6 +977,10 @@ def parse_func(g_)
 
   consume_kw(g_, "end");
 
+  func_stmt_ = List_new(g_);
+  List_add_str(g_, func_stmt_, "func");
+  List_add_str(g_, func_stmt_, fn_name_);
+  List_add_list(g_, func_stmt_, args_);
   List_add_list(g_, func_stmt_, stmts_);
 
   return func_stmt_;
