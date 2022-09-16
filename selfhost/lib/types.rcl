@@ -455,7 +455,7 @@ end
 def Names_get(self_, i)
   var items_ = Names_get_items(self_);
 
-  return *(items_ + i);
+  return aget(items_, i);
 end
 
 def Names_get_str(self_, i)

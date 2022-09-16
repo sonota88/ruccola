@@ -157,7 +157,7 @@ def peek(g_, i)
   var tokens_ = get_tokens(g_);
   var ti = get_token_index(g_);
 
-  return *(tokens_ + ti + i);
+  return aget(tokens_, ti + i);
 end
 
 def consume_kw(g_, str_)
