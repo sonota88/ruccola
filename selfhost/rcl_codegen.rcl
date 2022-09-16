@@ -994,17 +994,22 @@ def load_ast(g_)
   return Json_parse(g_, &input);
 end
 
+def _main(g_)
+  var ast_;
+
+  WhileStack_init(g_);
+
+  ast_ = load_ast(g_);
+  codegen(g_, ast_);
+end
+
 def main()
   var [1014]g;
   var g_ = &g;
-  var ast_;
 
   # init globals
   init_alloc_cursor(g_);
   init_strings(g_);
-  WhileStack_init(g_);
 
-  ast_ = load_ast(g_);
-
-  codegen(g_, ast_);
+  _main(g_);
 end

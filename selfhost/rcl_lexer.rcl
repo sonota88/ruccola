@@ -246,6 +246,10 @@ end
 
 # --------------------------------
 
+def _main(g_)
+  lex(g_);
+end
+
 def main()
   var [1002]g;
   var g_ = &g;
@@ -254,5 +258,5 @@ def main()
   init_alloc_cursor(g_);
   init_strings(g_);
 
-  lex(g_);
+  _main(g_);
 end
