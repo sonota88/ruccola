@@ -430,9 +430,14 @@ def Names_size(self_)
   return *(self_ + NAMES__SIZE());
 end
 
+def Names_get_items(self_)
+  return self_ + NAMES__ITEMS();
+end
+
 def Names_add(g_, self_, s_name_, width)
   var size = Names_size(self_);
   var name_;
+  var items_;
 
   if (__le(NAMES__ITEMS_WIDTH(), size))
     p_i(NAMES__ITEMS_WIDTH());
@@ -441,13 +446,16 @@ def Names_add(g_, self_, s_name_, width)
   end
 
   name_ = Name_new(g_, s_name_, width);
-  *(self_ + NAMES__ITEMS() + size) = name_;
+  items_ = Names_get_items(self_);
+  aset(items_, size, name_);
 
   *(self_ + NAMES__SIZE()) = size + 1;
 end
 
 def Names_get(self_, i)
-  return *(self_ + NAMES__ITEMS() + i);
+  var items_ = Names_get_items(self_);
+
+  return *(items_ + i);
 end
 
 def Names_get_str(self_, i)
