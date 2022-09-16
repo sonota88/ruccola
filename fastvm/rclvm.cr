@@ -265,7 +265,7 @@ class Vm
     when "bp"      then @bp
     when "sp"      then @sp
     when /^-?\d+$/ then str.to_i
-    when /^ind:/   then @mem.stack[calc_indirect_addr(str)]
+    when /^mem:/   then @mem.stack[calc_indirect_addr(str)]
     else
       raise "unsupported (#{str})"
     end
@@ -298,7 +298,7 @@ class Vm
     when "reg_b" then @reg_b = src_val
     when "bp"    then @bp    = src_val
     when "sp"    then @sp    = src_val
-    when /^ind:/ then @mem.stack[calc_indirect_addr(arg_dest)] = src_val
+    when /^mem:/ then @mem.stack[calc_indirect_addr(arg_dest)] = src_val
     else
       raise "unsupported (#{arg_dest.inspect})"
     end
@@ -310,7 +310,7 @@ class Vm
 
     addr =
       case src
-      when /^ind:/
+      when /^mem:/
         calc_indirect_addr(src)
       else
         raise "unsupported (#{src})"
@@ -483,7 +483,7 @@ class Vm
       @mem.vram[arg_vram] = src_val
     when String
       case arg_vram
-      when /^ind:/
+      when /^mem:/
         vram_addr = @mem.stack[calc_indirect_addr(arg_vram)]
         @mem.vram[vram_addr] = src_val
       else
@@ -504,7 +504,7 @@ class Vm
         arg_vram
       when String
         case arg_vram
-        when /^ind:/
+        when /^mem:/
           @mem.stack[calc_indirect_addr(arg_vram)]
         else
           raise "unsupported (#{arg_vram})"

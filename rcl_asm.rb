@@ -33,11 +33,11 @@ end
 def to_machine_code_operand(arg)
   case arg
   when /^\[(.+?):(.+?):(.+?)\]$/
-    "ind:#{$1}:#{$2}:#{$3}"
+    "mem:#{$1}:#{$2}:#{$3}"
   when /^\[(.+?):(.+?)\]$/
-    "ind:#{$1}:#{$2}:0"
+    "mem:#{$1}:#{$2}:0"
   when /^\[(reg_a)\]$/
-    "ind:#{$1}:0:0"
+    "mem:#{$1}:0:0"
   when /^-?\d+$/
     arg.to_i
   else
