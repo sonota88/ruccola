@@ -46,6 +46,10 @@ end
 
 # --------------------------------
 
+def get_tokens(g_)
+  return g_ + GO_TOKENS();
+end
+
 def get_line_size(input_, pos_from)
   var pos_to;
   var lf_pos = char_index(input_, C_LF(), pos_from);
@@ -61,12 +65,16 @@ def get_line_size(input_, pos_from)
 end
 
 def set_token(g_, ti, t_)
+  var tokens_;
+
   if (__le(NUM_TOKENS_MAX(), ti))
     p_i(NUM_TOKENS_MAX());
     p_i(ti);
     panic(27); # set_token: capacity over
   end
-  aset(g_ + GO_TOKENS(), ti, t_);
+
+  tokens_ = get_tokens(g_);
+  aset(tokens_, ti, t_);
 end
 
 def read_token(g_, input_, pos, size)
@@ -146,8 +154,10 @@ def incr_token_index(g_)
 end
 
 def peek(g_, i)
+  var tokens_ = get_tokens(g_);
   var ti = get_token_index(g_);
-  return *(g_ + GO_TOKENS() + ti + i);
+
+  return *(tokens_ + ti + i);
 end
 
 def consume_kw(g_, str_)
