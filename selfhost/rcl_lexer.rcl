@@ -251,8 +251,8 @@ def main()
   var g_ = &g;
 
   # init globals
-  init_alloc_cursor(&g);
-  init_strings(&g);
+  init_alloc_cursor(g_);
+  init_strings(g_);
 
   lex(g_);
 end

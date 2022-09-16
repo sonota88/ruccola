@@ -1110,21 +1110,21 @@ def main()
   var g_ = &g;
 
   # init globals
-  init_alloc_cursor(&g);
-  init_strings(&g);
+  init_alloc_cursor(g_);
+  init_strings(g_);
 
-  StrLitList_init(&g);
-  set_token_index(&g, 0);
-  assert(0, get_token_index(&g), 183);
+  StrLitList_init(g_);
+  set_token_index(g_, 0);
+  assert(0, get_token_index(g_), 183);
 
-  read_tokens(&g);
+  read_tokens(g_);
 
-  var ast_ = parse(&g);
+  var ast_ = parse(g_);
 
   var fn_init_strings_;
   if (0 < List_size(StrLitList_get_self(g_)))
-    fn_init_strings_ = make_init_strings_fn(&g);
-    List_add_list(&g, ast_, fn_init_strings_);
+    fn_init_strings_ = make_init_strings_fn(g_);
+    List_add_list(g_, ast_, fn_init_strings_);
   end
 
   Json_print(ast_);

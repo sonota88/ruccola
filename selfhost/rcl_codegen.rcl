@@ -996,14 +996,15 @@ end
 
 def main()
   var [1014]g;
+  var g_ = &g;
   var ast_;
 
   # init globals
-  init_alloc_cursor(&g);
-  init_strings(&g);
-  WhileStack_init(&g);
+  init_alloc_cursor(g_);
+  init_strings(g_);
+  WhileStack_init(g_);
 
-  ast_ = load_ast(&g);
+  ast_ = load_ast(g_);
 
-  codegen(&g, ast_);
+  codegen(g_, ast_);
 end
