@@ -1,7 +1,7 @@
 require "pp"
 require "json"
 
-require_relative "./common"
+require_relative "common"
 
 module TermColor
   RESET  = "\e[m"

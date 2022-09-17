@@ -1,4 +1,4 @@
-require_relative "./common"
+require_relative "common"
 
 KEYWORDS = %w[
   def end var return case when while

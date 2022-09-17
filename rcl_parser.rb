@@ -1,7 +1,7 @@
 require "json"
 require "pp"
 
-require_relative "./common"
+require_relative "common"
 
 $tokens = nil
 $pos = nil
