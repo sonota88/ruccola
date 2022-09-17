@@ -50,3 +50,12 @@ VERBOSE=1 SKIP=1000 ./rclrun ../examples/game_of_life.rcl
 FASTVM=1 ./test_selfhost.sh
   # （作者の環境だと 1分15秒程度）
 ```
+
+
+# Memory layout
+
+```
+0--9    unused
+10--19  global variables
+20--    heap/stack
+```

@@ -18,6 +18,9 @@ def GS_WHILE_CURSOR() return 1; end
 def GO_WHILE_STACK() return GO_WHILE_CURSOR() + GS_WHILE_CURSOR(); end
 def GS_WHILE_STACK() return 10; end
 
+def GO_GVAR_NAMES() return GO_WHILE_STACK() + GS_WHILE_STACK(); end
+def GS_GVAR_NAMES() return 1; end
+
 # --------------------------------
 
 def WhileStack_init(g_)
@@ -259,6 +262,38 @@ def append_label_id(label_, id, dest_size)
   append_str_with_check(label_, &id_str, dest_size);
 end
 
+def get_gvar_names(g_)
+  return *(g_ + GO_GVAR_NAMES());
+end
+
+def is_gvar(g_, name_)
+  var gvar_names_;
+
+  gvar_names_ = get_gvar_names(g_);
+  return Names_includes(gvar_names_, name_);
+end
+
+def render_indirection_gvar(dest_, base, dest_size)
+  var [8]s_base;
+
+  unparse_int(&s_base, base);
+
+  aset(dest_, 0, 0);
+  append_char_with_check(dest_, 91, dest_size); # [
+  append_str_with_check(dest_, &s_base, dest_size);
+  append_char_with_check(dest_, 58, dest_size); # :
+  append_char_with_check(dest_, 48, dest_size); # 0
+  append_char_with_check(dest_, 93, dest_size); # ]
+end
+
+def to_gvar_addr(dest_, names_, name_, dest_size)
+  var base = 10;
+  var offset = Names_index(names_, name_);
+  var base = base + offset;
+
+  return render_indirection_gvar(dest_, base, dest_size);
+end
+
 # --------------------------------
 
 def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
@@ -454,6 +489,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
   var expr;
   var str_;
   var list_;
+  var gvar_names_;
 
   case
   when (Node_kind_eq(expr_, NODE_KIND__INT()))
@@ -481,6 +517,11 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
 
     when (Names_includes(lvar_names_, str_))
       to_lvar_addr(&cp_src, lvar_names_, str_, cp_src_size);
+      asm_cp(g_, &cp_src, s_reg_a_);
+
+    when (is_gvar(g_, str_))
+      gvar_names_ = get_gvar_names(g_);
+      to_gvar_addr(&cp_src, gvar_names_, str_, cp_src_size);
       asm_cp(g_, &cp_src, s_reg_a_);
 
     else
@@ -559,6 +600,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
   var expr_node_;
   var list_;
   var s_reg_a_ind_size = 8; var [8]s_reg_a_ind; # [reg_a]
+  var gvar_names_;
 
   # "[reg_a]"
   aset(&s_reg_a_ind, 0, 0);
@@ -578,6 +620,10 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
     case
     when (Names_includes(lvar_names_, dest_str_))
       to_lvar_addr(&dest, lvar_names_, dest_str_, dest_size);
+      asm_cp(g_, s_reg_a_, &dest);
+    when (is_gvar(g_, dest_str_))
+      gvar_names_ = get_gvar_names(g_);
+      to_gvar_addr(&dest, gvar_names_, dest_str_, dest_size);
       asm_cp(g_, s_reg_a_, &dest);
     else
       Json_print(stmt_);
@@ -837,12 +883,25 @@ def gen_func(g_, func_)
   asm_ret(g_);
 end
 
+# (gvar {name})
+def register_gvar(g_, top_stmt_)
+  var gvar_names_;
+  var gvar_name_;
+
+  gvar_name_ = List_get_as_str(top_stmt_, 1);
+
+  gvar_names_ = get_gvar_names(g_);
+  Names_add(g_, gvar_names_, gvar_name_, 1);
+end
+
 def gen_top_stmt(g_, top_stmt_)
   var s_head_ = List_get_as_str(top_stmt_, 0);
 
   case
   when (str_eq(s_head_, "func"))
     gen_func(g_, top_stmt_);
+  when (str_eq(s_head_, "gvar"))
+    register_gvar(g_, top_stmt_);
   else
     panic(194); # gen_top_stmt
   end
@@ -987,6 +1046,10 @@ def incr_label_id(g_)
   *(g_ + GO_LABEL_ID()) = get_label_id(g_) + 1;
 end
 
+def init_gvar_names(g_)
+  *(g_ + GO_GVAR_NAMES()) = Names_new(g_);
+end
+
 def load_ast(g_)
   var input_size_max = 250000; var [250000]input;
 
@@ -997,6 +1060,7 @@ end
 def _main(g_)
   var ast_;
 
+  init_gvar_names(g_);
   WhileStack_init(g_);
 
   ast_ = load_ast(g_);
@@ -1004,7 +1068,7 @@ def _main(g_)
 end
 
 def main()
-  var [1014]g;
+  var [1015]g;
   var g_ = &g;
 
   # init globals

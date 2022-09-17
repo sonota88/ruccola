@@ -493,11 +493,23 @@ def parse_func
   [:func, func_name, args, stmts]
 end
 
+def parse_global()
+  consume "global"
+
+  name = peek().value
+  $pos += 1
+
+  consume ";"
+
+  [:gvar, name]
+end
+
 def parse_top_stmt
   t = peek()
 
   case t.value
   when "def" then parse_func()
+  when "global" then parse_global()
   else
     raise ParseError, "Unexpected token (#{t.inspect})"
   end

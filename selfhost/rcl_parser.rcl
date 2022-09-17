@@ -1005,11 +1005,30 @@ def parse_func(g_)
   return func_stmt_;
 end
 
+def parse_global(g_)
+  var name_;
+
+  consume_kw(g_, "global");
+
+  name_ = Token_get_val(peek(g_, 0));
+  incr_token_index(g_);
+
+  consume_sym_semicolon(g_);
+
+  return mklist2(g_,
+    Node_new_str(g_, "gvar"),
+    Node_new_str(g_, name_)
+  );
+end
+
 def parse_top_stmt(g_)
   var t_ = peek(g_, 0);
 
-  if (str_eq(Token_get_val(t_), "def"))
+  case
+  when (str_eq(Token_get_val(t_), "def"))
     return parse_func(g_);
+  when (str_eq(Token_get_val(t_), "global"))
+    return parse_global(g_);
   else
     panic(770); # parse_top_stmt
   end

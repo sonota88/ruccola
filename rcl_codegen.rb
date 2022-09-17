@@ -4,6 +4,7 @@ require_relative "common"
 
 $label_id = 0
 $while_stack = []
+$gvar_names = []
 
 class Names
   def initialize
@@ -39,6 +40,18 @@ class Names
   def index(target)
     @names.map{ |name, _| name }.index(target)
   end
+end
+
+# --------------------------------
+
+def gvar_name?(name)
+  $gvar_names.include?(name)
+end
+
+def get_gvar_addr(name)
+  base = 10
+  offset = $gvar_names.index(name)
+  base + offset
 end
 
 # --------------------------------
@@ -224,6 +237,9 @@ def gen_expr(fn_arg_names, lvar_names, expr)
       when lvar_names.include?(expr)
         disp = lvar_names.disp_lvar(expr)
         "[bp:#{disp}]"
+      when gvar_name?(expr)
+        addr = get_gvar_addr(expr)
+        "[#{addr}:0]"
       else
         raise "no such function argument or local variable (#{expr})"
       end
@@ -283,6 +299,9 @@ def _gen_set(fn_arg_names, lvar_names, dest, expr)
     when lvar_names.include?(dest)
       disp = lvar_names.disp_lvar(dest)
       puts "  cp reg_a [bp:#{disp}]"
+    when gvar_name?(dest)
+      addr = get_gvar_addr(dest)
+      puts "  cp reg_a [#{addr}:0]"
     else
       raise not_yet_impl("dest", dest)
     end
@@ -485,6 +504,14 @@ def gen_func_def(func_def)
   puts "  ret"
 end
 
+def register_gvar(stmt)
+  _, name = stmt
+  $gvar_names << name
+  if 10 < $gvar_names.size
+    raise "too many global variables"
+  end
+end
+
 def gen_top_stmts(tree)
   _, *top_stmts = tree
 
@@ -492,6 +519,8 @@ def gen_top_stmts(tree)
     case top_stmt[0]
     when "func"
       gen_func_def(top_stmt)
+    when "gvar"
+      register_gvar(top_stmt)
     else
       raise not_yet_impl("top_stmt", top_stmt)
     end

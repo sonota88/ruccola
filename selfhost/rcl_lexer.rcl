@@ -129,6 +129,7 @@ def is_kw(g_, str_)
   when (str_eq(str_, "true"  )) return true;
   when (str_eq(str_, "false" )) return true;
   when (str_eq(str_, "if"    )) return true;
+  when (str_eq(str_, "global")) return true;
   else
     return false;
   end

@@ -36,7 +36,7 @@ def allocate(g_, size)
 end
 
 def init_alloc_cursor(g_)
-  *(g_ + GO_ALLOC_CURSOR()) = 0;
+  *(g_ + GO_ALLOC_CURSOR()) = 20;
 end
 
 # --------------------------------
