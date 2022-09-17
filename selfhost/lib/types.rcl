@@ -33,8 +33,8 @@ end
 def Node_new_int(g_, n)
   var self_ = Node_new(g_);
 
-  *(self_ + NODE__KIND()) = NODE_KIND__INT();
-  *(self_ + NODE__INT()) = n;
+  fset(self_, NODE__KIND(), NODE_KIND__INT());
+  fset(self_, NODE__INT(), n);
 
   return self_;
 end
@@ -42,8 +42,8 @@ end
 def Node_new_str(g_, str_)
   var self_ = Node_new(g_);
 
-  *(self_ + NODE__KIND()) = NODE_KIND__STR();
-  *(self_ + NODE__STR()) = String_new(g_, str_);
+  fset(self_, NODE__KIND(), NODE_KIND__STR());
+  fset(self_, NODE__STR(), String_new(g_, str_));
 
   return self_;
 end
@@ -51,8 +51,8 @@ end
 def Node_new_list(g_, list_)
   var self_ = Node_new(g_);
 
-  *(self_ + NODE__KIND()) = NODE_KIND__LIST();
-  *(self_ + NODE__LIST()) = list_;
+  fset(self_, NODE__KIND(), NODE_KIND__LIST());
+  fset(self_, NODE__LIST(), list_);
 
   return self_;
 end
@@ -102,7 +102,7 @@ def CONS_CELL__TYPE_SIZE()
 end
 
 def ConsCell_set_car(self_, car)
-  *(self_ + CONS_CELL__CAR()) = car;
+  fset(self_, CONS_CELL__CAR(), car);
 end
 
 def ConsCell_get_car(self_)
@@ -110,7 +110,7 @@ def ConsCell_get_car(self_)
 end
 
 def ConsCell_set_cdr(self_, cdr)
-  *(self_ + CONS_CELL__CDR()) = cdr;
+  fset(self_, CONS_CELL__CDR(), cdr);
 end
 
 def ConsCell_get_cdr(self_)
@@ -144,7 +144,7 @@ end
 def LIST_NULL() return 0; end
 
 def List_set_cell(self_, cell_)
-  *(self_ + LIST__CELL()) = cell_;
+  fset(self_, LIST__CELL(), cell_);
 end
 
 def List_get_cell(self_)
@@ -152,7 +152,7 @@ def List_get_cell(self_)
 end
 
 def List_set_size(self_, size)
-  *(self_ + LIST__SIZE()) = size;
+  fset(self_, LIST__SIZE(), size);
 end
 
 def List_get_size(self_)
@@ -334,7 +334,7 @@ def TOKEN__TYPE_SIZE () return 41; end
 def Token_new(g_, kind_str_, str_)
   var self_ = allocate(g_, TOKEN__TYPE_SIZE());
 
-  *(self_ + TOKEN__KIND()) = TokenKind_from_str(kind_str_);
+  fset(self_, TOKEN__KIND(), TokenKind_from_str(kind_str_));
 
   str_cp_with_check(self_ + TOKEN__VAL(), str_, TOKEN__VAL_SIZE());
 
@@ -389,7 +389,7 @@ end
 def Name_new(g_, s_name_, width)
   var self_ = allocate(g_, NAME__TYPE_SIZE());
 
-  *(self_ + NAME__WIDTH()) = width;
+  fset(self_, NAME__WIDTH(), width);
   str_cp_with_check(self_ + NAME__STR(), s_name_, NAME__STR_WIDTH());
 
   return self_;
@@ -421,7 +421,7 @@ end
 def Names_new(g_)
   var self_ = allocate(g_, NAMES__TYPE_SIZE());
 
-  *(self_ + NAMES__SIZE()) = 0;
+  fset(self_, NAMES__SIZE(), 0);
 
   return self_;
 end
@@ -449,7 +449,7 @@ def Names_add(g_, self_, s_name_, width)
   items_ = Names_get_items(self_);
   aset(items_, size, name_);
 
-  *(self_ + NAMES__SIZE()) = size + 1;
+  fset(self_, NAMES__SIZE(), size + 1);
 end
 
 def Names_get(self_, i)

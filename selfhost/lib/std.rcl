@@ -447,6 +447,13 @@ def range_include(from, to, target)
 end
 
 # --------------------------------
+# struct field
+
+def fset(base, offset, val)
+  *(base + offset) = val;
+end
+
+# --------------------------------
 
 # TODO - 演算子を用意するまでの代替
 def __sub(a, b)
