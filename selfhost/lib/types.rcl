@@ -58,28 +58,25 @@ def Node_new_list(g_, list_)
 end
 
 def Node_get_kind(self_)
-  var kind = *(self_ + NODE__KIND());
-  return kind;
+  return fget(self_, NODE__KIND());
 end
 
 def Node_get_int(self_)
   assert(NODE_KIND__INT(), Node_get_kind(self_), 62);
 
-  var n = *(self_ + NODE__INT());
-  return n;
+  return fget(self_, NODE__INT());
 end
 
 def Node_get_str(self_)
   assert(NODE_KIND__STR(), Node_get_kind(self_), 69);
 
-  return *(self_ + NODE__STR());
+  return fget(self_, NODE__STR());
 end
 
 def Node_get_list(self_)
   assert(NODE_KIND__LIST(), Node_get_kind(self_), 77);
 
-  var nl_ = *(self_ + NODE__LIST());
-  return nl_;
+  return fget(self_, NODE__LIST());
 end
 
 def Node_kind_eq(self_, kind)
@@ -106,7 +103,7 @@ def ConsCell_set_car(self_, car)
 end
 
 def ConsCell_get_car(self_)
-  return *(self_ + CONS_CELL__CAR());
+  return fget(self_, CONS_CELL__CAR());
 end
 
 def ConsCell_set_cdr(self_, cdr)
@@ -114,7 +111,7 @@ def ConsCell_set_cdr(self_, cdr)
 end
 
 def ConsCell_get_cdr(self_)
-  return *(self_ + CONS_CELL__CDR());
+  return fget(self_, CONS_CELL__CDR());
 end
 
 def ConsCell_new(g_, car, cdr)
@@ -148,7 +145,7 @@ def List_set_cell(self_, cell_)
 end
 
 def List_get_cell(self_)
-  return *(self_ + LIST__CELL());
+  return fget(self_, LIST__CELL());
 end
 
 def List_set_size(self_, size)
@@ -156,7 +153,7 @@ def List_set_size(self_, size)
 end
 
 def List_get_size(self_)
-  return *(self_ + LIST__SIZE());
+  return fget(self_, LIST__SIZE());
 end
 
 def List_new(g_)
@@ -342,7 +339,7 @@ def Token_new(g_, kind_str_, str_)
 end
 
 def Token_get_kind(self_)
-  return *(self_ + TOKEN__KIND());
+  return fget(self_, TOKEN__KIND());
 end
 
 def Token_get_val(self_)
@@ -400,7 +397,7 @@ def Name_get_str(self_)
 end
 
 def Name_get_width(self_)
-  return *(self_ + NAME__WIDTH());
+  return fget(self_, NAME__WIDTH());
 end
 
 # --------------------------------
@@ -427,7 +424,7 @@ def Names_new(g_)
 end
 
 def Names_size(self_)
-  return *(self_ + NAMES__SIZE());
+  return fget(self_, NAMES__SIZE());
 end
 
 def Names_get_items(self_)

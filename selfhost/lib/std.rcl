@@ -453,6 +453,10 @@ def fset(base, offset, val)
   *(base + offset) = val;
 end
 
+def fget(base, offset)
+  return *(base + offset);
+end
+
 # --------------------------------
 
 # TODO - 演算子を用意するまでの代替
