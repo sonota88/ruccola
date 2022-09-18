@@ -1137,7 +1137,6 @@ end
 def _main(g_)
   StrLitList_init(g_);
   set_token_index(g_, 0);
-  assert(0, get_token_index(g_), 183);
 
   read_tokens(g_);
 
