@@ -19,7 +19,7 @@ class Test140 < Minitest::Test
 
       def add2()
         var temp = x; # read
-        x = temp + 2; # re-asign
+        x = temp + 2; # re-assign
       end
 
       def main()
@@ -29,7 +29,7 @@ class Test140 < Minitest::Test
         # init globals
         init_alloc_cursor(g_);
 
-        x = 1; # asign
+        x = 1; # assign
         add2();
 
         print_i(x); # read
