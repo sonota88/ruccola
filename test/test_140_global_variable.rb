@@ -15,7 +15,7 @@ class Test140 < Minitest::Test
     src = <<~SRC
       #{@std_src}
 
-      global x; # GVAR_WIDTH=1
+      global x;
 
       def add2()
         var temp = x; # read

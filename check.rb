@@ -78,8 +78,6 @@ module Checker
       case line
       when /^def GS_.+ return (\d+);/
         gs_total += $1.to_i
-      when /# GVAR_WIDTH=(\d+)/
-        gs_total += $1.to_i
       when /var \[(\d+)\]g;/
         declared_size = $1.to_i
       end
