@@ -99,7 +99,7 @@ def read_tokens(g_)
   var size;
   var pos = 0;
   var t_;
-  var ti;
+  var ti = 0;
   var input_size_max = 150000; var [150000]input;
   check_heap_stack_overlap(g_);
 
