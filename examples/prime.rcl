@@ -26,12 +26,13 @@ end
 
 def main()
   var [2]g;
+  var g_ = &g;
   var n;
   var primes_;
 
-  init_globals(&g);
+  init_globals(g_);
 
-  primes_ = List_new(&g);
+  primes_ = List_new(g_);
 
   n = 2;
   while (n < 101)
@@ -39,7 +40,7 @@ def main()
       print_i(n);
       putchar(C_LF());
 
-      List_add_int(&g, primes_, n);
+      List_add_int(g_, primes_, n);
     end
 
     n = n + 1;
