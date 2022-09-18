@@ -23,15 +23,8 @@ class Test140 < Minitest::Test
       end
 
       def main()
-        var [3]g;
-        var g_ = &g;
-
-        # init globals
-        init_alloc_cursor(g_);
-
         x = 1; # assign
         add2();
-
         print_i(x); # read
       end
     SRC
