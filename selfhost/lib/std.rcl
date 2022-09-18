@@ -16,6 +16,8 @@ def DEBUG() return 0; end
 
 # --------------------------------
 
+global g_main_;
+
 def check_heap_stack_overlap(g_)
   var heap_max = *(g_ + GO_ALLOC_CURSOR());
   var sp = get_sp();
