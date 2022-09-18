@@ -25,6 +25,7 @@ class Test120 < Minitest::Test
         var str_;
 
         # init globals
+        init_globals(g_);
         init_alloc_cursor(g_);
         init_strings(g_);
 
@@ -65,6 +66,7 @@ class Test120 < Minitest::Test
         var g_ = &g;
 
         # init globals
+        init_globals(g_);
         init_alloc_cursor(g_);
         init_strings(g_);
 

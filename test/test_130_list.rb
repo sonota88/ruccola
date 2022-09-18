@@ -26,6 +26,7 @@ class Test130 < Minitest::Test
         var xs_;
 
         # init globals
+        init_globals(g_);
         init_alloc_cursor(g_);
 
         xs_ = List_new(g_);
@@ -69,6 +70,7 @@ class Test130 < Minitest::Test
         var [3]str;
 
         # init globals
+        init_globals(g_);
         init_alloc_cursor(g_);
 
         aset(&str, 0, 65); # A
@@ -103,6 +105,7 @@ class Test130 < Minitest::Test
         var xs_inner2_;
 
         # init globals
+        init_globals(g_);
         init_alloc_cursor(g_);
 
         xs_inner_ = List_new(g_);
@@ -147,6 +150,7 @@ class Test130 < Minitest::Test
         var xs_inner2_;
 
         # init globals
+        init_globals(g_);
         init_alloc_cursor(g_);
 
         xs_inner_ = List_new(g_);
@@ -195,6 +199,7 @@ class Test130 < Minitest::Test
         var xs2_;
 
         # init globals
+        init_globals(g_);
         init_alloc_cursor(g_);
 
         xs_ = List_new(g_);

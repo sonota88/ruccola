@@ -1051,7 +1051,7 @@ def init_gvar_names(g_)
 end
 
 def load_ast(g_)
-  var input_size_max = 250000; var [250000]input;
+  var input_size_max = 260000; var [260000]input;
 
   read_stdin_all(&input, input_size_max);
   return Json_parse(g_, &input);
@@ -1072,6 +1072,7 @@ def main()
   var g_ = &g;
 
   # init globals
+  init_globals(g_);
   init_alloc_cursor(g_);
   init_strings(g_);
 

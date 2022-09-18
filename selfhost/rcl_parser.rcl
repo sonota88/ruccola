@@ -1156,6 +1156,7 @@ def main()
   var g_ = &g;
 
   # init globals
+  init_globals(g_);
   init_alloc_cursor(g_);
   init_strings(g_);
 
