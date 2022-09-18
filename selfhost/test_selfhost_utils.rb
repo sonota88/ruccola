@@ -7,13 +7,13 @@ def modify_log(lines)
 
   lines.each { |line|
     if group
-      if m = line.match(/^@end /)
+      if (m = line.match(/^@end /))
         group = nil
       else
         new_lines << "#{group}__#{line}"
       end
     else
-      if m = line.match(/^@beg (.+)/)
+      if (m = line.match(/^@beg (.+)/))
         group = m[1]
       else
         new_lines << line
@@ -61,9 +61,9 @@ def print_times
   }
 
   puts "----"
-  %w(lexer parser codegen).each { |stage|
+  %w[lexer parser codegen].each { |stage|
     print_time(map, "rcl_#{stage}")
-    %w(lexer parser codegen).each{ |stagesub|
+    %w[lexer parser codegen].each{ |stagesub|
       print "    "
       print_time(map, "rcl_#{stage}__#{stagesub}")
     }

@@ -5,6 +5,7 @@ ignore:
     - Layout/SpaceBeforeComma
     - Layout/SpaceBeforeSemicolon
     - Style/GlobalVars
+    - Style/IfInsideElse
     - Style/MethodCallWithoutArgsParentheses
     - Style/StderrPuts
     # TODO
