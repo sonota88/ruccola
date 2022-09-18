@@ -20,6 +20,7 @@ global g_main_;
 
 def init_globals(g_)
   g_main_ = g_;
+  init_alloc_cursor(g_);
 end
 
 def check_heap_stack_overlap(g_)

@@ -255,9 +255,7 @@ def main()
   var [1002]g;
   var g_ = &g;
 
-  # init globals
   init_globals(g_);
-  init_alloc_cursor(g_);
   init_strings(g_);
 
   _main(g_);

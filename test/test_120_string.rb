@@ -24,9 +24,7 @@ class Test120 < Minitest::Test
         var c_slash = 47;
         var str_;
 
-        # init globals
         init_globals(g_);
-        init_alloc_cursor(g_);
         init_strings(g_);
 
         str_ = "fdsa";
@@ -65,9 +63,7 @@ class Test120 < Minitest::Test
         var [12]g;
         var g_ = &g;
 
-        # init globals
         init_globals(g_);
-        init_alloc_cursor(g_);
         init_strings(g_);
 
         f("ab", "cd");

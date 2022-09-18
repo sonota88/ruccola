@@ -29,9 +29,7 @@ def main()
   var n;
   var primes_;
 
-  # init globals
   init_globals(&g);
-  init_alloc_cursor(&g);
 
   primes_ = List_new(&g);
 

@@ -13,9 +13,7 @@ def main()
   var [22]g;
   var g_ = &g;
 
-  # init globals
   init_globals(g_);
-  init_alloc_cursor(g_);
   init_strings(g_);
 
   print_s("Hello, World!");
