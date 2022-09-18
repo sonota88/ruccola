@@ -25,7 +25,7 @@ def is_prime(primes_, n)
 end
 
 def main()
-  var [1]g;
+  var [2]g;
   var n;
   var primes_;
 

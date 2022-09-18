@@ -10,7 +10,7 @@ def putchar(c)
 end
 
 def main()
-  var [21]g;
+  var [22]g;
   var g_ = &g;
 
   # init globals
