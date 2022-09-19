@@ -37,7 +37,8 @@ def check_heap_stack_overlap()
   end
 end
 
-def allocate(g_, size)
+def allocate(size)
+  var g_ = get_g_main();
   var head_addr = *(g_ + GO_ALLOC_CURSOR());
   var next_addr = *(g_ + GO_ALLOC_CURSOR()) + size;
 

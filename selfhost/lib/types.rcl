@@ -9,7 +9,7 @@ def NODE_KIND__STR () return 2; end
 def STRING__TYPE_SIZE() return 40; end
 
 def String_new(g_, str_)
-  var self_ = allocate(g_, STRING__TYPE_SIZE());
+  var self_ = allocate(STRING__TYPE_SIZE());
 
   str_cp_with_check(self_, str_, STRING__TYPE_SIZE());
 
@@ -26,7 +26,7 @@ def NODE__STR () return 3; end
 def NODE__TYPE_SIZE() return 4; end
 
 def Node_new(g_)
-  var self_ = allocate(g_, NODE__TYPE_SIZE());
+  var self_ = allocate(NODE__TYPE_SIZE());
   return self_;
 end
 
@@ -115,7 +115,7 @@ def ConsCell_get_cdr(self_)
 end
 
 def ConsCell_new(g_, car, cdr)
-  var self_ = allocate(g_, CONS_CELL__TYPE_SIZE());
+  var self_ = allocate(CONS_CELL__TYPE_SIZE());
 
   ConsCell_set_car(self_, car);
   ConsCell_set_cdr(self_, cdr);
@@ -157,7 +157,7 @@ def List_get_size(self_)
 end
 
 def List_new(g_)
-  var self_ = allocate(g_, LIST__TYPE_SIZE());
+  var self_ = allocate(LIST__TYPE_SIZE());
 
   List_set_cell(self_, LIST_NULL());
   List_set_size(self_, 0);
@@ -329,7 +329,7 @@ def TOKEN__VAL_SIZE() return 40; end
 def TOKEN__TYPE_SIZE () return 41; end
 
 def Token_new(g_, kind_str_, str_)
-  var self_ = allocate(g_, TOKEN__TYPE_SIZE());
+  var self_ = allocate(TOKEN__TYPE_SIZE());
 
   fset(self_, TOKEN__KIND(), TokenKind_from_str(kind_str_));
 
@@ -357,7 +357,7 @@ end
 def Token_to_plain(g_, self_)
   var list_ = List_new(g_);
   var kind = Token_get_kind(self_);
-  var kind_str_ = allocate(g_, 3);
+  var kind_str_ = allocate(3);
 
   TokenKind_to_str(kind_str_, kind);
 
@@ -384,7 +384,7 @@ def NAME__TYPE_SIZE()
 end
 
 def Name_new(g_, s_name_, width)
-  var self_ = allocate(g_, NAME__TYPE_SIZE());
+  var self_ = allocate(NAME__TYPE_SIZE());
 
   fset(self_, NAME__WIDTH(), width);
   str_cp_with_check(self_ + NAME__STR(), s_name_, NAME__STR_WIDTH());
@@ -416,7 +416,7 @@ def NAMES__TYPE_SIZE()
 end
 
 def Names_new(g_)
-  var self_ = allocate(g_, NAMES__TYPE_SIZE());
+  var self_ = allocate(NAMES__TYPE_SIZE());
 
   fset(self_, NAMES__SIZE(), 0);
 
