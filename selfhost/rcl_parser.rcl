@@ -101,7 +101,7 @@ def read_tokens(g_)
   var t_;
   var ti = 0;
   var input_size_max = 150000; var [150000]input;
-  check_heap_stack_overlap(g_);
+  check_heap_stack_overlap();
 
   read_stdin_all(&input, input_size_max);
 
@@ -381,7 +381,7 @@ end
 def _parse_var_declare(g_)
   var t_;
   var var_name_;
-  check_heap_stack_overlap(g_);
+  check_heap_stack_overlap();
 
   consume_kw(g_, "var");
 
@@ -401,7 +401,7 @@ def _parse_var_init(g_)
   var t_;
   var var_name_;
   var expr_node_;
-  check_heap_stack_overlap(g_);
+  check_heap_stack_overlap();
 
   consume_kw(g_, "var");
 
@@ -964,7 +964,7 @@ def parse_func(g_)
   var stmt_;
   var args_;
   var fn_name_;
-  check_heap_stack_overlap(g_);
+  check_heap_stack_overlap();
 
   consume_kw(g_, "def");
 

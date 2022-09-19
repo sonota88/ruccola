@@ -27,7 +27,8 @@ def init_globals(g_)
   init_alloc_cursor(g_);
 end
 
-def check_heap_stack_overlap(g_)
+def check_heap_stack_overlap()
+  var g_ = get_g_main();
   var heap_max = *(g_ + GO_ALLOC_CURSOR());
   var sp = get_sp();
 
@@ -41,7 +42,7 @@ def allocate(g_, size)
   var next_addr = *(g_ + GO_ALLOC_CURSOR()) + size;
 
   *(g_ + GO_ALLOC_CURSOR()) = next_addr;
-  check_heap_stack_overlap(g_);
+  check_heap_stack_overlap();
 
   return head_addr;
 end
