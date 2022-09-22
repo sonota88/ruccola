@@ -542,7 +542,7 @@ def make_set_byte_stmt(bi, byte)
 end
 
 # def init_strings(g_)
-#   var offset_ = g_ + GO_STRINGS();
+#   var offset_ = g_main_ + GO_STRINGS();
 #   *(offset_ + 0) = 97;
 #   *(offset_ + 1) = 98;
 #   *(offset_ + 2) =  0;
@@ -550,7 +550,7 @@ end
 # end
 def make_init_strings_fn
   stmts = [
-    [:var, "offset_", [:+, "g_", [:funcall, "GO_STRINGS"]]]
+    [:var, "offset_", [:+, "g_main_", [:funcall, "GO_STRINGS"]]]
   ]
 
   bi = 0
