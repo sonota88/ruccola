@@ -252,12 +252,12 @@ def _parse_expr_factor_str
     $strings << [t.value, offset]
   end
 
-  # g_ + GO_STRINGS() + offset
+  # g_main_ + GO_STRINGS() + offset
   [
     :+,
     [
       :+,
-      "g_",
+      "g_main_",
       [:funcall, "GO_STRINGS"]
     ],
     offset

@@ -535,14 +535,14 @@ def is_binop(t_)
 end
 
 def _make_str_expr(g_, offset)
-  # g_ + GO_STRINGS() + offset
+  # g_main_ + GO_STRINGS() + offset
   return Node_new_list(g_,
     mklist3(g_,
       Node_new_str(g_, "+"),
       Node_new_list(g_,
         mklist3(g_,
           Node_new_str(g_, "+"),
-          Node_new_str(g_, "g_"),
+          Node_new_str(g_, "g_main_"),
           Node_new_list(g_,
             mklist2(g_,
               Node_new_str(g_, "funcall"),
