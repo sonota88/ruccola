@@ -25,7 +25,7 @@ class Test120 < Minitest::Test
         var str_;
 
         init_globals(g_);
-        init_strings(g_);
+        init_strings();
 
         str_ = "fdsa";
 
@@ -64,7 +64,7 @@ class Test120 < Minitest::Test
         var g_ = &g;
 
         init_globals(g_);
-        init_strings(g_);
+        init_strings();
 
         f("ab", "cd");
       end

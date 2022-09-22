@@ -256,7 +256,7 @@ def main()
   var g_ = &g;
 
   init_globals(g_);
-  init_strings(g_);
+  init_strings();
 
   _main(g_);
 end

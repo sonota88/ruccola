@@ -14,7 +14,7 @@ def main()
   var g_ = &g;
 
   init_globals(g_);
-  init_strings(g_);
+  init_strings();
 
   print_s("Hello, World!");
   putchar(10); # (LF)

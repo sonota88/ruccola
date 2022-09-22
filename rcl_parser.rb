@@ -563,7 +563,7 @@ def make_init_strings_fn
     bi += 1
   }
 
-  [:func, "init_strings", ["g_"], stmts]
+  [:func, "init_strings", [], stmts]
 end
 
 # --------------------------------

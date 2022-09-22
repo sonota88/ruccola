@@ -1078,8 +1078,6 @@ def make_init_strings_fn(g_)
   var args_ = List_new(g_);
   var stmts_ = List_new(g_);
 
-  List_add_str(g_, args_, "g_");
-
   # ----
   # var offset_ = g_main_ + GO_STRINGS();
   var var_offset_ =
@@ -1156,7 +1154,7 @@ def main()
   var g_ = &g;
 
   init_globals(g_);
-  init_strings(g_);
+  init_strings();
 
   _main(g_);
 end
