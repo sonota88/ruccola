@@ -63,7 +63,7 @@ alines.each do |aline|
 
   case head
   when "label"
-    insn << rest[0]
+    insn << "label:" + rest[0]
   when "jump", "jump_eq", "jump_g", "call"
     label_name = rest[0]
 
