@@ -68,7 +68,7 @@ def asm_exit(exit_status)
   putchar(C_LF());
 end
 
-def asm_label(g_, label_)
+def asm_label(label_)
   print_s("label");
   putchar(C_SPC()); print_s(label_);
   putchar(C_LF());
@@ -370,10 +370,10 @@ def _gen_expr_eq(g_)
   asm_cp(g_, "0", s_reg_a_);
   asm_jump(g_, &label_end);
 
-  asm_label(g_, &label_then);
+  asm_label(&label_then);
   asm_cp(g_, "1", s_reg_a_);
 
-  asm_label(g_, &label_end);
+  asm_label(&label_end);
 end
 
 def _gen_expr_neq(g_)
@@ -400,10 +400,10 @@ def _gen_expr_neq(g_)
   asm_cp(g_, "1", s_reg_a_);
   asm_jump(g_, &label_end);
 
-  asm_label(g_, &label_then);
+  asm_label(&label_then);
   asm_cp(g_, "0", s_reg_a_);
 
-  asm_label(g_, &label_end);
+  asm_label(&label_end);
 end
 
 def _gen_expr_lt(g_)
@@ -430,10 +430,10 @@ def _gen_expr_lt(g_)
   asm_cp(g_, "0", s_reg_a_);
   asm_jump(g_, &label_end);
 
-  asm_label(g_, &label_then);
+  asm_label(&label_then);
   asm_cp(g_, "1", s_reg_a_);
 
-  asm_label(g_, &label_end);
+  asm_label(&label_end);
 end
 
 def _gen_expr_unary(g_, fn_arg_names_, lvar_names_, expr_)
@@ -680,7 +680,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   str_cp_with_check(&label_end, "end_while", label_end_size);
   append_label_id(&label_end, label_id, label_end_size);
 
-  asm_label(g_, &label_begin);
+  asm_label(&label_begin);
 
   gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
 
@@ -692,7 +692,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
   gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_);
   asm_jump(g_, &label_begin);
 
-  asm_label(g_, &label_end);
+  asm_label(&label_end);
 
   WhileStack_pop(g_);
 end
@@ -760,12 +760,12 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
     # {label_end_when_head}_{when_index}
     str_cp(&label_temp, &label_end_when_head);
     append_label_id(&label_temp, when_index, label_size);
-    asm_label(g_, &label_temp);
+    asm_label(&label_temp);
 
     i = i + 1;
   end
 
-  asm_label(g_, &label_end);
+  asm_label(&label_end);
 end
 
 def gen_vm_comment(g_, stmt_)
@@ -850,7 +850,7 @@ def gen_func(g_, func_)
 
   stmts_ = Node_get_list(List_get(func_, 3));
 
-  asm_label(g_, fn_name_);
+  asm_label(fn_name_);
 
   asm_fn_prologue(g_);
 
@@ -930,7 +930,7 @@ def gen_builtin_write(g_)
   render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
   render_indirection_bp(&s_fn_arg2, 3, s_fn_arg2_size);
 
-  asm_label(g_, s_write_);
+  asm_label(s_write_);
   asm_fn_prologue(g_);
 
   asm_cp(g_, &s_fn_arg1, s_reg_a_);
@@ -950,7 +950,7 @@ def gen_builtin_getchar(g_)
 
   render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
 
-  asm_label(g_, "getchar");
+  asm_label("getchar");
   asm_fn_prologue(g_);
 
   asm_indent();
@@ -963,7 +963,7 @@ def gen_builtin_getchar(g_)
 end
 
 def gen_builtin_get_sp(g_)
-  asm_label(g_, "get_sp");
+  asm_label("get_sp");
 
   asm_fn_prologue(g_);
 
@@ -974,7 +974,7 @@ def gen_builtin_get_sp(g_)
 end
 
 def gen_builtin_panic(g_)
-  asm_label(g_, "_panic");
+  asm_label("_panic");
 
   asm_write(g_, 80, 2); # P
   asm_write(g_, 65, 2); # A
@@ -993,7 +993,7 @@ def gen_builtin_set_vram(g_)
   render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
   render_indirection_bp(&s_val, 3, s_val_size);
 
-  asm_label(g_, "set_vram");
+  asm_label("set_vram");
   asm_fn_prologue(g_);
 
   asm_set_vram(g_, &s_vram_addr, &s_val);
@@ -1007,7 +1007,7 @@ def gen_builtin_get_vram(g_)
 
   render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
 
-  asm_label(g_, "get_vram");
+  asm_label("get_vram");
   asm_fn_prologue(g_);
 
   asm_get_vram(g_, &s_vram_addr, "reg_a");
