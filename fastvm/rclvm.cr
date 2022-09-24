@@ -77,11 +77,19 @@ class Memory
     @vram = Array.new(50, 0)
   end
 
+  def label?(insn)
+    if insn[0] == OpCode::VmCmt
+      insn[1].as(String).starts_with?("label:")
+    else
+      false
+    end
+  end
+
   def dump_main(pc)
     s = [] of String
     @main.each_with_index do |insn, i|
       if pc - 3 <= i && i <= pc + 3
-        head = (insn[0] == "label") ? "" : "  "
+        head = label?(insn) ? "" : "  "
         if i == pc
           s << "=> " + "#{i} " + head + insn.inspect
         else

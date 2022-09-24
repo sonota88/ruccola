@@ -23,6 +23,10 @@ class Memory
     @vram = Array.new(50, 0)
   end
 
+  def label?(insn)
+    insn[0] == :"_cmt" && insn[1].start_with?("label:")
+  end
+
   def dump_main(pc)
     work_insns = []
     @main.each_with_index do |insn, i|
@@ -55,7 +59,7 @@ class Memory
           end
 
         indent =
-          if opcode == "label"
+          if label?(work_insn[:insn])
             ""
           else
             "  "
