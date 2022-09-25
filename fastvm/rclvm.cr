@@ -63,14 +63,14 @@ end
 
 class Memory
   property code : Array(Insn)
-  getter stack : Array(Int32)
+  getter data : Array(Int32)
   getter vram : Array(Int32)
 
-  STACK_SIZE = 1_000_000
+  DATA_SIZE = 1_000_000
 
   def initialize
     @code = [] of Insn
-    @stack = Array.new(STACK_SIZE, 0)
+    @data = Array.new(DATA_SIZE, 0)
     @vram = Array.new(50, 0)
   end
 
@@ -98,9 +98,9 @@ class Memory
     s.join("\n")
   end
 
-  def dump_stack(bp, sp)
+  def dump_data(bp, sp)
     s = [] of String
-    @stack.each_with_index do |val, addr|
+    @data.each_with_index do |val, addr|
       next if addr < sp - 2
       next if bp + 2 < addr
 
@@ -150,7 +150,7 @@ class Vm
     @sf = FLAG_FALSE # sign flag
 
     @pc = 0
-    @sp = Memory::STACK_SIZE - 1
+    @sp = Memory::DATA_SIZE - 1
     @bp = @sp
 
     @step = 0
@@ -249,8 +249,8 @@ class Vm
     puts dump_regs()
     puts "---- code ----"
     puts @mem.dump_code(@pc)
-    puts "---- stack ----"
-    puts @mem.dump_stack(@bp, @sp)
+    puts "---- data ----"
+    puts @mem.dump_data(@bp, @sp)
   end
 
   def dump_for_test
@@ -270,7 +270,7 @@ class Vm
     when "bp"      then @bp
     when "sp"      then @sp
     when /^-?\d+$/ then str.to_i
-    when /^mem:/   then @mem.stack[calc_indirect_addr(str)]
+    when /^mem:/   then @mem.data[calc_indirect_addr(str)]
     else
       raise "unsupported (#{str})"
     end
@@ -303,7 +303,7 @@ class Vm
     when "reg_b" then @reg_b = src_val
     when "bp"    then @bp    = src_val
     when "sp"    then @sp    = src_val
-    when /^mem:/ then @mem.stack[calc_indirect_addr(arg_dest)] = src_val
+    when /^mem:/ then @mem.data[calc_indirect_addr(arg_dest)] = src_val
     else
       raise "unsupported (#{arg_dest.inspect})"
     end
@@ -376,13 +376,13 @@ class Vm
 
   def call
     set_sp(@sp - 1)
-    @mem.stack[@sp] = @pc + 1
+    @mem.data[@sp] = @pc + 1
     next_addr = @mem.code[@pc][1]
     @pc = next_addr.as(Int32)
   end
 
   def ret
-    ret_addr = @mem.stack[@sp]
+    ret_addr = @mem.data[@sp]
     @pc = ret_addr
     set_sp(@sp + 1)
   end
@@ -399,12 +399,12 @@ class Vm
       end
 
     set_sp(@sp - 1)
-    @mem.stack[@sp] = val_to_push
+    @mem.data[@sp] = val_to_push
   end
 
   def pop
     arg = @mem.code[@pc][1]
-    val = @mem.stack[@sp]
+    val = @mem.data[@sp]
 
     case arg
     when "reg_a" then @reg_a = val
@@ -489,7 +489,7 @@ class Vm
     when String
       case arg_vram
       when /^mem:/
-        vram_addr = @mem.stack[calc_indirect_addr(arg_vram)]
+        vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
         @mem.vram[vram_addr] = src_val
       else
         raise "unsupported (#{arg_vram})"
@@ -510,7 +510,7 @@ class Vm
       when String
         case arg_vram
         when /^mem:/
-          @mem.stack[calc_indirect_addr(arg_vram)]
+          @mem.data[calc_indirect_addr(arg_vram)]
         else
           raise "unsupported (#{arg_vram})"
         end

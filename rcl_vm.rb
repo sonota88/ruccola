@@ -11,15 +11,15 @@ end
 
 class Memory
   attr_accessor :code
-  attr_reader :stack, :vram
+  attr_reader :data, :vram
 
   CODE_DUMP_WIDTH = 10
 
-  def initialize(stack_size)
+  def initialize(data_size)
     @code = []
 
     # スタック領域
-    @stack = Array.new(stack_size, 0)
+    @data = Array.new(data_size, 0)
 
     @vram = Array.new(50, 0)
   end
@@ -98,9 +98,9 @@ class Memory
     end
   end
 
-  def dump_stack(sp, bp)
+  def dump_data(sp, bp)
     lines = []
-    @stack.each_with_index do |x, i|
+    @data.each_with_index do |x, i|
       addr = i
       next if addr < sp - 12
       next if addr > sp + 8
@@ -149,7 +149,7 @@ class Vm
   FLAG_FALSE = 0
   EOF = -1
 
-  def initialize(mem, stack_size, debug, verbose, skip)
+  def initialize(mem, data_size, debug, verbose, skip)
     @debug = debug
 
     @verbose =
@@ -171,8 +171,8 @@ class Vm
     @sf = FLAG_FALSE # sign flag
 
     @mem = mem
-    @sp = stack_size - 1 # stack pointer
-    @bp = stack_size - 1 # base pointer
+    @sp = data_size - 1 # stack pointer
+    @bp = data_size - 1 # base pointer
 
     @step = 0
 
@@ -272,8 +272,8 @@ class Vm
       #{ @step }: #{ dump_reg() } zf(#{ @zf }) sf(#{ @sf })
       ---- memory (code) ----
       #{ @mem.dump_code(@pc) }
-      ---- memory (stack) ----
-      #{ @mem.dump_stack(@sp, @bp) }
+      ---- memory (data) ----
+      #{ @mem.dump_data(@sp, @bp) }
       ---- memory (vram) ----
       #{ @mem.dump_vram() }
       ---- output ----
@@ -298,7 +298,7 @@ class Vm
     when "bp"      then @bp
     when "sp"      then @sp
     when /^-?\d+$/ then str.to_i
-    when /^mem:/   then @mem.stack[calc_indirect_addr(str)]
+    when /^mem:/   then @mem.data[calc_indirect_addr(str)]
     else
       raise not_yet_impl("str", str)
     end
@@ -316,7 +316,7 @@ class Vm
 
   def dump_at_exit
     lines = []
-    @mem.stack.each_with_index do |n, i|
+    @mem.data.each_with_index do |n, i|
       line = format("%04d (% 4d) (0x% 4x)", i, n, n)
       if 32 <= n && n <= 126
         line += " (#{ n.chr })"
@@ -356,7 +356,7 @@ class Vm
     when "reg_b" then @reg_b = src_val
     when "bp"    then @bp    = src_val
     when "sp"    then set_sp(src_val)
-    when /^mem:/ then @mem.stack[calc_indirect_addr(arg_dest)] = src_val
+    when /^mem:/ then @mem.data[calc_indirect_addr(arg_dest)] = src_val
     else
       raise not_yet_impl("copy dest", arg_dest)
     end
@@ -421,13 +421,13 @@ class Vm
 
   def call
     set_sp(@sp - 1) # スタックポインタを1減らす
-    @mem.stack[@sp] = @pc + 1 # 戻り先を記憶
+    @mem.data[@sp] = @pc + 1 # 戻り先を記憶
     next_addr = @mem.code[@pc][1] # ジャンプ先
     @pc = next_addr
   end
 
   def ret
-    ret_addr = @mem.stack[@sp] # 戻り先アドレスを取得
+    ret_addr = @mem.data[@sp] # 戻り先アドレスを取得
     @pc = ret_addr # 戻る
     set_sp(@sp + 1) # スタックポインタを戻す
   end
@@ -438,12 +438,12 @@ class Vm
     val_to_push = get_value(arg)
 
     set_sp(@sp - 1)
-    @mem.stack[@sp] = val_to_push
+    @mem.data[@sp] = val_to_push
   end
 
   def pop
     arg = @mem.code[@pc][1]
-    val = @mem.stack[@sp]
+    val = @mem.data[@sp]
 
     case arg
     when "reg_a" then @reg_a = val
@@ -524,7 +524,7 @@ class Vm
     when String
       case arg_vram
       when /^mem:/
-        vram_addr = @mem.stack[calc_indirect_addr(arg_vram)]
+        vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
         @mem.vram[vram_addr] = src_val
       else
         raise not_yet_impl("arg_vram", arg_vram)
@@ -545,7 +545,7 @@ class Vm
       when String
         case arg_vram
         when /^mem:/
-          @mem.stack[calc_indirect_addr(arg_vram)]
+          @mem.data[calc_indirect_addr(arg_vram)]
         else
           raise not_yet_impl("arg_vram", arg_vram)
         end
@@ -598,11 +598,11 @@ if $PROGRAM_NAME == __FILE__
     $stdin_ = File.open(stdin_file, "rb")
   end
 
-  stack_size = 1_000_000
-  mem = Memory.new(stack_size)
+  data_size = 1_000_000
+  mem = Memory.new(data_size)
   vm = Vm.new(
     mem,
-    stack_size,
+    data_size,
     env_to_bool("DEBUG"),
     env_to_bool("VERBOSE"),
     env_to_int("SKIP", 1)
