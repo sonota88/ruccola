@@ -445,7 +445,7 @@ class Vm
 
   def write
     arg_val = @mem.main[@pc][1]
-    fd = @mem.main[@pc][2]
+    arg_fd  = @mem.main[@pc][2]
 
     n =
       case arg_val
@@ -456,11 +456,11 @@ class Vm
       end
 
     fd =
-      case fd
-      when Int32  then fd
-      when String then get_value(fd)
+      case arg_fd
+      when Int32  then arg_fd
+      when String then get_value(arg_fd)
       else
-        raise "invalid type (#{fd.inspect})"
+        raise "invalid type (#{arg_fd.inspect})"
       end
 
     slice = Bytes.new(1)

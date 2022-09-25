@@ -473,7 +473,7 @@ class Vm
 
   def write
     arg_val = @mem.main[@pc][1]
-    arg2 = @mem.main[@pc][2]
+    arg_fd  = @mem.main[@pc][2]
 
     n =
       case arg_val
@@ -487,13 +487,13 @@ class Vm
     c = n.chr
 
     fd =
-      case arg2
+      case arg_fd
       when Integer
-        arg2
+        arg_fd
       when String
-        get_value(arg2)
+        get_value(arg_fd)
       else
-        raise not_yet_impl("arg2", arg2)
+        raise not_yet_impl("arg_fd", arg_fd)
       end
 
     case fd
