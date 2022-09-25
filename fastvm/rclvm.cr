@@ -62,14 +62,14 @@ enum OpCode
 end
 
 class Memory
-  property main : Array(Insn)
+  property code : Array(Insn)
   getter stack : Array(Int32)
   getter vram : Array(Int32)
 
   STACK_SIZE = 1_000_000
 
   def initialize
-    @main = [] of Insn
+    @code = [] of Insn
     @stack = Array.new(STACK_SIZE, 0)
     @vram = Array.new(50, 0)
   end
@@ -82,9 +82,9 @@ class Memory
     end
   end
 
-  def dump_main(pc)
+  def dump_code(pc)
     s = [] of String
-    @main.each_with_index do |insn, i|
+    @code.each_with_index do |insn, i|
       if pc - 3 <= i && i <= pc + 3
         head = label?(insn) ? "" : "  "
         if i == pc
@@ -165,7 +165,7 @@ class Vm
   end
 
   def load_program(insns)
-    @mem.main = insns
+    @mem.code = insns
   end
 
   def load_program_file(path)
@@ -185,7 +185,7 @@ class Vm
   end
 
   def execute : Int32 | Nil
-    insn = @mem.main[@pc]
+    insn = @mem.code[@pc]
 
     opcode = insn[0]
     case opcode
@@ -247,8 +247,8 @@ class Vm
     puts "================================"
     puts "step (#{@step})"
     puts dump_regs()
-    puts "---- main ----"
-    puts @mem.dump_main(@pc)
+    puts "---- code ----"
+    puts @mem.dump_code(@pc)
     puts "---- stack ----"
     puts @mem.dump_stack(@bp, @sp)
   end
@@ -287,8 +287,8 @@ class Vm
   end
 
   def cp
-    arg_src = @mem.main[@pc][1]
-    arg_dest = @mem.main[@pc][2].as(String)
+    arg_src = @mem.code[@pc][1]
+    arg_dest = @mem.code[@pc][2].as(String)
 
     src_val =
       case arg_src
@@ -310,8 +310,8 @@ class Vm
   end
 
   def lea
-    dest = @mem.main[@pc][1].as(String)
-    src = @mem.main[@pc][2].as(String)
+    dest = @mem.code[@pc][1].as(String)
+    src = @mem.code[@pc][2].as(String)
 
     addr =
       case src
@@ -338,11 +338,11 @@ class Vm
   end
 
   def add_sp
-    set_sp(@sp + @mem.main[@pc][1].as(Int32))
+    set_sp(@sp + @mem.code[@pc][1].as(Int32))
   end
 
   def sub_sp
-    set_sp(@sp - @mem.main[@pc][1].as(Int32))
+    set_sp(@sp - @mem.code[@pc][1].as(Int32))
   end
 
   def compare
@@ -352,13 +352,13 @@ class Vm
   end
 
   def jump
-    jump_dest = @mem.main[@pc][1].as(Int32)
+    jump_dest = @mem.code[@pc][1].as(Int32)
     @pc = jump_dest
   end
 
   def jump_eq
     if @zf == FLAG_TRUE
-      jump_dest = @mem.main[@pc][1].as(Int32)
+      jump_dest = @mem.code[@pc][1].as(Int32)
       @pc = jump_dest
     else
       @pc += 1
@@ -367,7 +367,7 @@ class Vm
 
   def jump_g
     if @zf == FLAG_FALSE && @sf == FLAG_TRUE
-      jump_dest = @mem.main[@pc][1].as(Int32)
+      jump_dest = @mem.code[@pc][1].as(Int32)
       @pc = jump_dest
     else
       @pc += 1
@@ -377,7 +377,7 @@ class Vm
   def call
     set_sp(@sp - 1)
     @mem.stack[@sp] = @pc + 1
-    next_addr = @mem.main[@pc][1]
+    next_addr = @mem.code[@pc][1]
     @pc = next_addr.as(Int32)
   end
 
@@ -388,7 +388,7 @@ class Vm
   end
 
   def push
-    arg = @mem.main[@pc][1]
+    arg = @mem.code[@pc][1]
 
     val_to_push =
       case arg
@@ -403,7 +403,7 @@ class Vm
   end
 
   def pop
-    arg = @mem.main[@pc][1]
+    arg = @mem.code[@pc][1]
     val = @mem.stack[@sp]
 
     case arg
@@ -422,7 +422,7 @@ class Vm
 
     stdin_str = @stdin.as(String)
 
-    arg = @mem.main[@pc][1]
+    arg = @mem.code[@pc][1]
 
     n =
       if @stdin_pos < stdin_str.bytesize
@@ -441,8 +441,8 @@ class Vm
   end
 
   def write
-    arg_val = @mem.main[@pc][1]
-    arg_fd  = @mem.main[@pc][2]
+    arg_val = @mem.code[@pc][1]
+    arg_fd  = @mem.code[@pc][2]
 
     n =
       case arg_val
@@ -472,8 +472,8 @@ class Vm
   end
 
   def set_vram
-    arg_vram = @mem.main[@pc][1] # dest
-    arg_val = @mem.main[@pc][2]
+    arg_vram = @mem.code[@pc][1] # dest
+    arg_val = @mem.code[@pc][2]
 
     src_val =
       case arg_val
@@ -500,8 +500,8 @@ class Vm
   end
 
   def get_vram
-    arg_vram = @mem.main[@pc][1] # src
-    arg_dest = @mem.main[@pc][2] # dest
+    arg_vram = @mem.code[@pc][1] # src
+    arg_dest = @mem.code[@pc][2] # dest
 
     vram_addr =
       case arg_vram

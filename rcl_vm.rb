@@ -10,13 +10,13 @@ module TermColor
 end
 
 class Memory
-  attr_accessor :main
+  attr_accessor :code
   attr_reader :stack, :vram
 
-  MAIN_DUMP_WIDTH = 10
+  CODE_DUMP_WIDTH = 10
 
   def initialize(stack_size)
-    @main = []
+    @code = []
 
     # スタック領域
     @stack = Array.new(stack_size, 0)
@@ -28,16 +28,16 @@ class Memory
     insn[0] == :"_cmt" && insn[1].start_with?("label:")
   end
 
-  def dump_main(pc)
+  def dump_code(pc)
     work_insns = []
-    @main.each_with_index do |insn, i|
+    @code.each_with_index do |insn, i|
       work_insns << { addr: i, insn: insn }
     end
 
     work_insns
       .select do |work_insn|
-        pc - MAIN_DUMP_WIDTH <= work_insn[:addr] &&
-          work_insn[:addr] <= pc + MAIN_DUMP_WIDTH
+        pc - CODE_DUMP_WIDTH <= work_insn[:addr] &&
+          work_insn[:addr] <= pc + CODE_DUMP_WIDTH
       end
       .map do |work_insn|
         head =
@@ -194,7 +194,7 @@ class Vm
   end
 
   def load_program(insns)
-    @mem.main = insns
+    @mem.code = insns
       .map do |insn|
         opcode, *rest = insn
         [opcode.to_sym, *rest]
@@ -202,12 +202,12 @@ class Vm
   end
 
   def execute
-    insn = @mem.main[@pc]
+    insn = @mem.code[@pc]
 
     opcode = insn[0]
 
     case opcode
-    when :exit     then return @mem.main[@pc][1]
+    when :exit     then return @mem.code[@pc][1]
     when :cp       then cp()       ; @pc += 1
     when :lea      then lea()      ; @pc += 1
     when :add_ab   then add_ab()   ; @pc += 1
@@ -270,8 +270,8 @@ class Vm
     $stderr.puts <<~DUMP
       ================================
       #{ @step }: #{ dump_reg() } zf(#{ @zf }) sf(#{ @sf })
-      ---- memory (main) ----
-      #{ @mem.dump_main(@pc) }
+      ---- memory (code) ----
+      #{ @mem.dump_code(@pc) }
       ---- memory (stack) ----
       #{ @mem.dump_stack(@sp, @bp) }
       ---- memory (vram) ----
@@ -340,8 +340,8 @@ class Vm
   end
 
   def cp
-    arg_src = @mem.main[@pc][1]
-    arg_dest = @mem.main[@pc][2]
+    arg_src = @mem.code[@pc][1]
+    arg_dest = @mem.code[@pc][2]
 
     src_val =
       case arg_src
@@ -364,7 +364,7 @@ class Vm
 
   # load effective address
   def lea
-    _, dest, src = @mem.main[@pc]
+    _, dest, src = @mem.code[@pc]
 
     addr =
       case src
@@ -383,11 +383,11 @@ class Vm
   end
 
   def add_sp
-    set_sp(@sp + @mem.main[@pc][1])
+    set_sp(@sp + @mem.code[@pc][1])
   end
 
   def sub_sp
-    set_sp(@sp - @mem.main[@pc][1])
+    set_sp(@sp - @mem.code[@pc][1])
   end
 
   def compare
@@ -397,13 +397,13 @@ class Vm
   end
 
   def jump
-    jump_dest = @mem.main[@pc][1]
+    jump_dest = @mem.code[@pc][1]
     @pc = jump_dest
   end
 
   def jump_eq
     if @zf == FLAG_TRUE
-      jump_dest = @mem.main[@pc][1]
+      jump_dest = @mem.code[@pc][1]
       @pc = jump_dest
     else
       @pc += 1
@@ -412,7 +412,7 @@ class Vm
 
   def jump_g
     if @zf == FLAG_FALSE && @sf == FLAG_TRUE
-      jump_dest = @mem.main[@pc][1]
+      jump_dest = @mem.code[@pc][1]
       @pc = jump_dest
     else
       @pc += 1
@@ -422,7 +422,7 @@ class Vm
   def call
     set_sp(@sp - 1) # スタックポインタを1減らす
     @mem.stack[@sp] = @pc + 1 # 戻り先を記憶
-    next_addr = @mem.main[@pc][1] # ジャンプ先
+    next_addr = @mem.code[@pc][1] # ジャンプ先
     @pc = next_addr
   end
 
@@ -433,7 +433,7 @@ class Vm
   end
 
   def push
-    arg = @mem.main[@pc][1]
+    arg = @mem.code[@pc][1]
 
     val_to_push = get_value(arg)
 
@@ -442,7 +442,7 @@ class Vm
   end
 
   def pop
-    arg = @mem.main[@pc][1]
+    arg = @mem.code[@pc][1]
     val = @mem.stack[@sp]
 
     case arg
@@ -459,7 +459,7 @@ class Vm
   def read
     raise "stdin is not available" if $stdin_.nil?
 
-    arg = @mem.main[@pc][1]
+    arg = @mem.code[@pc][1]
 
     c = $stdin_.getc
     n = c.nil? ? EOF : c.ord
@@ -473,8 +473,8 @@ class Vm
   end
 
   def write
-    arg_val = @mem.main[@pc][1]
-    arg_fd  = @mem.main[@pc][2]
+    arg_val = @mem.code[@pc][1]
+    arg_fd  = @mem.code[@pc][2]
 
     n =
       case arg_val
@@ -513,8 +513,8 @@ class Vm
   end
 
   def set_vram
-    arg_vram = @mem.main[@pc][1] # dest (vram)
-    arg_val = @mem.main[@pc][2] # src
+    arg_vram = @mem.code[@pc][1] # dest (vram)
+    arg_val = @mem.code[@pc][2] # src
 
     src_val = get_value(arg_val)
 
@@ -535,8 +535,8 @@ class Vm
   end
 
   def get_vram
-    arg_vram = @mem.main[@pc][1] # src (vram)
-    arg_dest = @mem.main[@pc][2] # dest
+    arg_vram = @mem.code[@pc][1] # src (vram)
+    arg_dest = @mem.code[@pc][2] # dest
 
     vram_addr =
       case arg_vram
