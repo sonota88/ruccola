@@ -62,10 +62,7 @@ enum OpCode
 end
 
 class Memory
-  @main : Array(Insn)
-
-  setter(:main)
-  getter(:main)
+  property main : Array(Insn)
   property stack : Array(Int32)
   property vram : Array(Int32)
 
