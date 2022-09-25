@@ -63,8 +63,8 @@ end
 
 class Memory
   property main : Array(Insn)
-  property stack : Array(Int32)
-  property vram : Array(Int32)
+  getter stack : Array(Int32)
+  getter vram : Array(Int32)
 
   STACK_SIZE = 1_000_000
 

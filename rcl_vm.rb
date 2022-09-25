@@ -10,7 +10,8 @@ module TermColor
 end
 
 class Memory
-  attr_accessor :main, :stack, :vram
+  attr_accessor :main
+  attr_reader :stack, :vram
 
   MAIN_DUMP_WIDTH = 10
 
