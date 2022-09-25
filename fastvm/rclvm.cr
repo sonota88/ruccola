@@ -444,15 +444,15 @@ class Vm
   end
 
   def write
-    val = @mem.main[@pc][1]
+    arg_val = @mem.main[@pc][1]
     fd = @mem.main[@pc][2]
 
     n =
-      case val
-      when Int32  then val
-      when String then get_value(val)
+      case arg_val
+      when Int32  then arg_val
+      when String then get_value(arg_val)
       else
-        raise "invalid type (#{val.inspect})"
+        raise "invalid type (#{arg_val.inspect})"
       end
 
     fd =
