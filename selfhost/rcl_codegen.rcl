@@ -74,7 +74,7 @@ def asm_label(label_)
   putchar(C_LF());
 end
 
-def asm_call(g_, label_)
+def asm_call(label_)
   asm_indent();
   print_s("call");
   putchar(C_SPC()); print_s(label_);
@@ -584,7 +584,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   end
 
   asm_vm_comment(g_, &vm_comment);
-  asm_call(g_, fn_name_);
+  asm_call(fn_name_);
 
   if (0 < List_size(args_))
     asm_add_sp(g_, List_size(args_));
@@ -1019,7 +1019,7 @@ end
 # --------------------------------
 
 def codegen(g_, ast_)
-  asm_call(g_, "main");
+  asm_call("main");
   asm_exit(0);
 
   gen_top_stmts(g_, ast_);
