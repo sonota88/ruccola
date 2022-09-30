@@ -291,16 +291,16 @@ class Vm
     puts "sf (#{@sf})"
   end
 
-  def get_value(str)
-    case str
+  def get_value(operand)
+    case operand
     when "reg_a"   then @reg_a
     when "reg_b"   then @reg_b
     when "bp"      then @bp
     when "sp"      then @sp
-    when /^-?\d+$/ then str.to_i
-    when /^mem:/   then @mem.data[calc_indirect_addr(str)]
+    when /^-?\d+$/ then operand.to_i
+    when /^mem:/   then @mem.data[calc_indirect_addr(operand)]
     else
-      raise not_yet_impl("str", str)
+      raise not_yet_impl("operand", operand)
     end
   end
 
