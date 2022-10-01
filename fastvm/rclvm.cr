@@ -3,7 +3,9 @@ require "json"
 alias RawInsnElem = String | Int32
 alias RawInsn = Array(RawInsnElem)
 
-alias InsnElem = OpCode | String | Int32
+alias Operand = String | Int32
+
+alias InsnElem = OpCode | Operand
 alias Insn = Array(InsnElem)
 
 enum OpCode
