@@ -289,9 +289,13 @@ class Vm
     base + disp + index
   end
 
+  def get_operand(i) : Operand
+    @mem.code[@pc][i + 1].as(Operand)
+  end
+
   def cp
-    arg_src = @mem.code[@pc][1]
-    arg_dest = @mem.code[@pc][2].as(String)
+    arg_src  = get_operand(0)
+    arg_dest = get_operand(1).as(String)
 
     src_val =
       case arg_src
@@ -313,8 +317,8 @@ class Vm
   end
 
   def lea
-    dest = @mem.code[@pc][1].as(String)
-    src = @mem.code[@pc][2].as(String)
+    dest = get_operand(0).as(String)
+    src  = get_operand(1).as(String)
 
     addr =
       case src
@@ -341,11 +345,11 @@ class Vm
   end
 
   def add_sp
-    set_sp(@sp + @mem.code[@pc][1].as(Int32))
+    set_sp(@sp + get_operand(0).as(Int32))
   end
 
   def sub_sp
-    set_sp(@sp - @mem.code[@pc][1].as(Int32))
+    set_sp(@sp - get_operand(0).as(Int32))
   end
 
   def compare
@@ -355,13 +359,13 @@ class Vm
   end
 
   def jump
-    jump_dest = @mem.code[@pc][1].as(Int32)
+    jump_dest = get_operand(0).as(Int32)
     @pc = jump_dest
   end
 
   def jump_eq
     if @zf == FLAG_TRUE
-      jump_dest = @mem.code[@pc][1].as(Int32)
+      jump_dest = get_operand(0).as(Int32)
       @pc = jump_dest
     else
       @pc += 1
@@ -370,7 +374,7 @@ class Vm
 
   def jump_g
     if @zf == FLAG_FALSE && @sf == FLAG_TRUE
-      jump_dest = @mem.code[@pc][1].as(Int32)
+      jump_dest = get_operand(0).as(Int32)
       @pc = jump_dest
     else
       @pc += 1
@@ -380,7 +384,7 @@ class Vm
   def call
     set_sp(@sp - 1)
     @mem.data[@sp] = @pc + 1
-    next_addr = @mem.code[@pc][1]
+    next_addr = get_operand(0)
     @pc = next_addr.as(Int32)
   end
 
@@ -391,7 +395,7 @@ class Vm
   end
 
   def push
-    arg = @mem.code[@pc][1]
+    arg = get_operand(0)
 
     val_to_push =
       case arg
@@ -406,7 +410,7 @@ class Vm
   end
 
   def pop
-    arg = @mem.code[@pc][1]
+    arg = get_operand(0)
     val = @mem.data[@sp]
 
     case arg
@@ -425,7 +429,7 @@ class Vm
 
     stdin_str = @stdin.as(String)
 
-    arg = @mem.code[@pc][1]
+    arg = get_operand(0)
 
     n =
       if @stdin_pos < stdin_str.bytesize
@@ -444,8 +448,8 @@ class Vm
   end
 
   def write
-    arg_val = @mem.code[@pc][1]
-    arg_fd  = @mem.code[@pc][2]
+    arg_val = get_operand(0)
+    arg_fd  = get_operand(1)
 
     n =
       case arg_val
@@ -475,8 +479,8 @@ class Vm
   end
 
   def set_vram
-    arg_vram = @mem.code[@pc][1] # dest
-    arg_val = @mem.code[@pc][2]
+    arg_vram = get_operand(0) # dest
+    arg_val  = get_operand(1)
 
     src_val =
       case arg_val
@@ -503,8 +507,8 @@ class Vm
   end
 
   def get_vram
-    arg_vram = @mem.code[@pc][1] # src
-    arg_dest = @mem.code[@pc][2] # dest
+    arg_vram = get_operand(0) # src
+    arg_dest = get_operand(1) # dest
 
     vram_addr =
       case arg_vram
