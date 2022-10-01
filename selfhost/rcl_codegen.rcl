@@ -834,7 +834,7 @@ def gen_func(g_, func_)
   var i;
   var lvar_names_;
   var lvar_name_;
-  var lvar_width_;
+  var lvar_width;
   var fn_arg_names_;
   var s_var_ = "var";
   var s_var_array_ = "var_array";
@@ -868,8 +868,8 @@ def gen_func(g_, func_)
       gen_var(g_, fn_arg_names_, lvar_names_, stmt_);
     when (str_eq(stmt_head_, s_var_array_))
       lvar_name_ = List_get_as_str(stmt_, 1);
-      lvar_width_ = List_get_as_int(stmt_, 2);
-      Names_add(g_, lvar_names_, lvar_name_, lvar_width_);
+      lvar_width = List_get_as_int(stmt_, 2);
+      Names_add(g_, lvar_names_, lvar_name_, lvar_width);
       gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_);
     else
       gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_);
