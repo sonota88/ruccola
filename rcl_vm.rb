@@ -22,7 +22,7 @@ class Memory
   end
 
   def label?(insn)
-    insn[0] == :"_cmt" && insn[1].start_with?("label:")
+    insn[0] == :_cmt && insn[1].start_with?("label:")
   end
 
   def dump_code(pc)
