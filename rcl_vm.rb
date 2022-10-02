@@ -17,10 +17,7 @@ class Memory
 
   def initialize(data_size)
     @code = []
-
-    # スタック領域
     @data = Array.new(data_size, 0)
-
     @vram = Array.new(50, 0)
   end
 
