@@ -87,7 +87,7 @@ def asm_ret()
   putchar(C_LF());
 end
 
-def asm_cp(g_, src_, dest_)
+def asm_cp(src_, dest_)
   asm_indent();
   print_s("cp");
   putchar(C_SPC()); print_s(src_);
@@ -216,11 +216,11 @@ end
 
 def asm_fn_prologue(g_)
   asm_push(g_, "bp");
-  asm_cp(g_, "sp", "bp");
+  asm_cp("sp", "bp");
 end
 
 def asm_fn_epilogue(g_)
-  asm_cp(g_, "bp", "sp");
+  asm_cp("bp", "sp");
   asm_pop(g_, "bp");
 end
 
@@ -325,7 +325,7 @@ def _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_)
 
   gen_expr(g_, fn_arg_names_, lvar_names_, inner_expr_);
 
-  asm_cp(g_, &s_reg_a_ind, s_reg_a_);
+  asm_cp(&s_reg_a_ind, s_reg_a_);
 end
 
 def _gen_expr_add(g_)
@@ -367,11 +367,11 @@ def _gen_expr_eq(g_)
   asm_compare(g_);
   asm_jump_eq(g_, &label_then);
 
-  asm_cp(g_, "0", s_reg_a_);
+  asm_cp("0", s_reg_a_);
   asm_jump(g_, &label_end);
 
   asm_label(&label_then);
-  asm_cp(g_, "1", s_reg_a_);
+  asm_cp("1", s_reg_a_);
 
   asm_label(&label_end);
 end
@@ -397,11 +397,11 @@ def _gen_expr_neq(g_)
   asm_compare(g_);
   asm_jump_eq(g_, &label_then);
 
-  asm_cp(g_, "1", s_reg_a_);
+  asm_cp("1", s_reg_a_);
   asm_jump(g_, &label_end);
 
   asm_label(&label_then);
-  asm_cp(g_, "0", s_reg_a_);
+  asm_cp("0", s_reg_a_);
 
   asm_label(&label_end);
 end
@@ -427,11 +427,11 @@ def _gen_expr_lt(g_)
   asm_compare(g_);
   asm_jump_g(g_, &label_then);
 
-  asm_cp(g_, "0", s_reg_a_);
+  asm_cp("0", s_reg_a_);
   asm_jump(g_, &label_end);
 
   asm_label(&label_then);
-  asm_cp(g_, "1", s_reg_a_);
+  asm_cp("1", s_reg_a_);
 
   asm_label(&label_end);
 end
@@ -495,7 +495,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
   when (Node_kind_eq(expr_, NODE_KIND__INT()))
     expr = Node_get_int(expr_);
     unparse_int(&cp_src, expr);
-    asm_cp(g_, &cp_src, s_reg_a_);
+    asm_cp(&cp_src, s_reg_a_);
 
   when (Node_kind_eq(expr_, NODE_KIND__STR()))
     str_ = Node_get_str(expr_);
@@ -504,25 +504,25 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
     when (str_eq(str_, "true"))
       aset(&cp_src, 0, 49); # 1
       aset(&cp_src, 1,  0);
-      asm_cp(g_, &cp_src, s_reg_a_);
+      asm_cp(&cp_src, s_reg_a_);
 
     when (str_eq(str_, "false"))
       aset(&cp_src, 0, 48); # 0
       aset(&cp_src, 1,  0);
-      asm_cp(g_, &cp_src, s_reg_a_);
+      asm_cp(&cp_src, s_reg_a_);
 
     when (Names_includes(fn_arg_names_, str_))
       to_fn_arg_addr(&cp_src, fn_arg_names_, str_, cp_src_size);
-      asm_cp(g_, &cp_src, s_reg_a_);
+      asm_cp(&cp_src, s_reg_a_);
 
     when (Names_includes(lvar_names_, str_))
       to_lvar_addr(&cp_src, lvar_names_, str_, cp_src_size);
-      asm_cp(g_, &cp_src, s_reg_a_);
+      asm_cp(&cp_src, s_reg_a_);
 
     when (is_gvar(g_, str_))
       gvar_names_ = get_gvar_names(g_);
       to_gvar_addr(&cp_src, gvar_names_, str_, cp_src_size);
-      asm_cp(g_, &cp_src, s_reg_a_);
+      asm_cp(&cp_src, s_reg_a_);
 
     else
       Json_print(Names_to_plain(g_, fn_arg_names_));
@@ -620,11 +620,11 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
     case
     when (Names_includes(lvar_names_, dest_str_))
       to_lvar_addr(&dest, lvar_names_, dest_str_, dest_size);
-      asm_cp(g_, s_reg_a_, &dest);
+      asm_cp(s_reg_a_, &dest);
     when (is_gvar(g_, dest_str_))
       gvar_names_ = get_gvar_names(g_);
       to_gvar_addr(&dest, gvar_names_, dest_str_, dest_size);
-      asm_cp(g_, s_reg_a_, &dest);
+      asm_cp(s_reg_a_, &dest);
     else
       Json_print(stmt_);
       p_s(&dest);
@@ -640,7 +640,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
       gen_expr(g_, fn_arg_names_, lvar_names_, List_get(list_, 1));
 
       asm_pop(g_, s_reg_b_);
-      asm_cp(g_, s_reg_b_, &s_reg_a_ind);
+      asm_cp(s_reg_b_, &s_reg_a_ind);
     else
       panic(859); # gen_set
     end
@@ -684,7 +684,7 @@ def gen_while(g_, fn_arg_names_, lvar_names_, stmt_)
 
   gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
 
-  asm_cp(g_, "0", "reg_b");
+  asm_cp("0", "reg_b");
   asm_compare(g_);
 
   asm_jump_eq(g_, &label_end);
@@ -745,7 +745,7 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
     stmts_ = List_rest(g_, when_clause_, 1);
 
     gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
-    asm_cp(g_, s_0_, s_reg_b_);
+    asm_cp(s_0_, s_reg_b_);
     asm_compare(g_);
 
     # {label_end_when_head}_{when_index}
@@ -933,7 +933,7 @@ def gen_builtin_write(g_)
   asm_label(s_write_);
   asm_fn_prologue(g_);
 
-  asm_cp(g_, &s_fn_arg1, s_reg_a_);
+  asm_cp(&s_fn_arg1, s_reg_a_);
 
   asm_indent();
   print_s(s_write_);
@@ -967,7 +967,7 @@ def gen_builtin_get_sp(g_)
 
   asm_fn_prologue(g_);
 
-  asm_cp(g_, "sp", "reg_a");
+  asm_cp("sp", "reg_a");
 
   asm_fn_epilogue(g_);
   asm_ret();
