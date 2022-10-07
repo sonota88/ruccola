@@ -87,7 +87,7 @@ def Json_parse_int(rest_, pos, size_)
   substr(&s_temp, rest_, pos, pos_end);
   n = parse_int(&s_temp);
 
-  *(size_) = str_size(&s_temp);
+  *(size_) = __sub(pos_end, pos);
   return n;
 end
 
