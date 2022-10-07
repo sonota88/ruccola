@@ -515,12 +515,7 @@ class Vm
       when Int32
         arg_vram
       when String
-        case arg_vram
-        when /^mem:/
-          @mem.data[calc_indirect_addr(arg_vram)]
-        else
-          raise "unsupported (#{arg_vram})"
-        end
+        get_value(arg_vram)
       else
         raise "unsupported (#{arg_vram})"
       end

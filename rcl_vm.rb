@@ -540,12 +540,7 @@ class Vm
       when Integer
         arg_vram
       when String
-        case arg_vram
-        when /^mem:/
-          @mem.data[calc_indirect_addr(arg_vram)]
-        else
-          raise not_yet_impl("arg_vram", arg_vram)
-        end
+        get_value(arg_vram)
       else
         raise not_yet_impl("arg_vram", arg_vram)
       end
