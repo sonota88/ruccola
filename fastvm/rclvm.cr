@@ -279,6 +279,15 @@ class Vm
     end
   end
 
+  def get_value_v2(operand : Operand) : Int32
+    case operand
+    when Int32  then operand
+    when String then get_value(operand)
+    else
+      raise "unsupported (#{operand})"
+    end
+  end
+
   def calc_indirect_addr(str : String) : Int32
     _, base_str, disp_str, index_str = str.split(":")
 
