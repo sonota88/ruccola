@@ -324,16 +324,7 @@ class Vm
     arg_dest = get_operand(1).as(String)
 
     src_val = get_value_v2(arg_src)
-
-    case arg_dest
-    when "reg_a" then @reg_a = src_val
-    when "reg_b" then @reg_b = src_val
-    when "bp"    then @bp    = src_val
-    when "sp"    then @sp    = src_val
-    when /^mem:/ then @mem.data[calc_indirect_addr(arg_dest)] = src_val
-    else
-      raise "unsupported (#{arg_dest.inspect})"
-    end
+    set_value(arg_dest, src_val)
   end
 
   def lea
@@ -348,12 +339,7 @@ class Vm
         raise "unsupported (#{src})"
       end
 
-    case dest
-    when "reg_a"
-      @reg_a = addr
-    else
-      raise "unsupported (#{dest})"
-    end
+    set_value(dest, addr)
   end
 
   def add_ab
@@ -427,14 +413,7 @@ class Vm
     arg = get_operand(0)
     val = @mem.data[@sp]
 
-    case arg
-    when "reg_a" then @reg_a = val
-    when "reg_b" then @reg_b = val
-    when "bp"    then @bp = val
-    else
-      raise "unsupported (#{arg})"
-    end
-
+    set_value(arg, val)
     set_sp(@sp + 1)
   end
 
@@ -454,11 +433,7 @@ class Vm
         EOF
       end
 
-    case arg
-    when "reg_a" then @reg_a = n
-    else
-      raise "unsupported (#{arg})"
-    end
+    set_value(arg, n)
   end
 
   def write
@@ -506,15 +481,8 @@ class Vm
     arg_dest = get_operand(1) # dest
 
     vram_addr = get_value_v2(arg_vram)
-
     val = @mem.vram[vram_addr]
-
-    case arg_dest
-    when "reg_a"
-      @reg_a = val
-    else
-      raise "unsupported (#{arg_dest})"
-    end
+    set_value(arg_dest, val)
   end
 
   def _debug
