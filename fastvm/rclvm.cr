@@ -306,13 +306,7 @@ class Vm
     arg_src  = get_operand(0)
     arg_dest = get_operand(1).as(String)
 
-    src_val =
-      case arg_src
-      when Int32  then arg_src
-      when String then get_value(arg_src)
-      else
-        raise "invalid type (#{arg_src.class})"
-      end
+    src_val = get_value_v2(arg_src)
 
     case arg_dest
     when "reg_a" then @reg_a = src_val
@@ -406,13 +400,7 @@ class Vm
   def push
     arg = get_operand(0)
 
-    val_to_push =
-      case arg
-      when Int32  then arg
-      when String then get_value(arg)
-      else
-        raise "invalid type"
-      end
+    val_to_push = get_value_v2(arg)
 
     set_sp(@sp - 1)
     @mem.data[@sp] = val_to_push
@@ -460,21 +448,8 @@ class Vm
     arg_val = get_operand(0)
     arg_fd  = get_operand(1)
 
-    n =
-      case arg_val
-      when Int32  then arg_val
-      when String then get_value(arg_val)
-      else
-        raise "invalid type (#{arg_val.inspect})"
-      end
-
-    fd =
-      case arg_fd
-      when Int32  then arg_fd
-      when String then get_value(arg_fd)
-      else
-        raise "invalid type (#{arg_fd.inspect})"
-      end
+    n  = get_value_v2(arg_val)
+    fd = get_value_v2(arg_fd)
 
     slice = Bytes.new(1)
     slice[0] = n.to_u8
@@ -491,13 +466,7 @@ class Vm
     arg_vram = get_operand(0) # dest
     arg_val  = get_operand(1)
 
-    src_val =
-      case arg_val
-      when Int32  then arg_val
-      when String then get_value(arg_val)
-      else
-        raise "invalid type (#{arg_val.inspect})"
-      end
+    src_val = get_value_v2(arg_val)
 
     case arg_vram
     when Int32
@@ -519,15 +488,7 @@ class Vm
     arg_vram = get_operand(0) # src
     arg_dest = get_operand(1) # dest
 
-    vram_addr =
-      case arg_vram
-      when Int32
-        arg_vram
-      when String
-        get_value(arg_vram)
-      else
-        raise "unsupported (#{arg_vram})"
-      end
+    vram_addr = get_value_v2(arg_vram)
 
     val = @mem.vram[vram_addr]
 
