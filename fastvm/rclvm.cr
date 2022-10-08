@@ -288,6 +288,23 @@ class Vm
     end
   end
 
+  def set_value(dest : Operand, val : Int32)
+    case dest
+    when String
+      case dest
+      when "reg_a" then @reg_a = val
+      when "reg_b" then @reg_b = val
+      when "bp"    then @bp    = val
+      when "sp"    then @sp    = val
+      when /^mem:/ then @mem.data[calc_indirect_addr(dest)] = val
+      else
+        raise "unsupported (#{dest.inspect})"
+      end
+    else
+      raise "unsupported (#{dest.inspect})"
+    end
+  end
+
   def calc_indirect_addr(str : String) : Int32
     _, base_str, disp_str, index_str = str.split(":")
 
