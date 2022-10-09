@@ -418,25 +418,11 @@ def parse_uint(s_)
 end
 
 def parse_int(s_)
-  var i = __sub(str_size(s_), 1);
-  var c;
-  var factor = 1;
-  var digit_factor = 1;
-  var n = 0;
-
-  while (__le(0, i))
-    c = char_at(s_, i);
-    if (c == 45) # -
-      factor = -1;
-    else
-      n = n + (__sub(c, 48) * digit_factor);
-    end
-
-    digit_factor = digit_factor * 10;
-    i = __sub(i, 1);
+  if (char_at(s_, 0) == 45) # -
+    return parse_uint(s_ + 1) * -1;
+  else
+    return parse_uint(s_);
   end
-
-  return n * factor;
 end
 
 def is_digit_char(c)
