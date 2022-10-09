@@ -6,7 +6,6 @@ alias RawInsn = Array(RawInsnElem)
 alias Operand = String | Int32
 
 alias InsnElem = OpCode | Operand
-alias Insn = Array(InsnElem)
 
 enum OpCode
   Exit
@@ -64,6 +63,16 @@ enum OpCode
   end
 end
 
+class Insn
+  getter opcode, operands
+
+  def initialize(
+        @opcode : OpCode,
+        @operands : Array(Operand)
+      )
+  end
+end
+
 class Memory
   property code : Array(Insn)
   getter data : Array(Int32)
@@ -78,8 +87,8 @@ class Memory
   end
 
   def label?(insn)
-    if insn[0] == OpCode::VmCmt
-      insn[1].as(String).starts_with?("label:")
+    if insn.opcode == OpCode::VmCmt
+      insn.operands[0].as(String).starts_with?("label:")
     else
       false
     end
@@ -177,11 +186,12 @@ class Vm
       raw_insn = [] of RawInsnElem
       raw_insn = RawInsn.from_json(line)
 
-      insn = [] of InsnElem
-      raw_insn.each { |it| insn << it }
-      insn[0] = OpCode.from(raw_insn[0])
+      opcode = OpCode.from(raw_insn[0])
 
-      insns << insn
+      operands = [] of Operand
+      raw_insn[1..].each { |it| operands << it }
+
+      insns << Insn.new(opcode, operands)
     end
 
     load_program(insns)
@@ -190,9 +200,9 @@ class Vm
   def execute : Int32 | Nil
     insn = @mem.code[@pc]
 
-    opcode = insn[0]
+    opcode = insn.opcode
     case opcode
-    when OpCode::Exit    then return insn[1].as(Int32)
+    when OpCode::Exit    then return insn.operands[0].as(Int32)
     when OpCode::Cp      then cp()       ; @pc += 1
     when OpCode::Lea     then lea()      ; @pc += 1
     when OpCode::AddAb   then add_ab()   ; @pc += 1
@@ -316,7 +326,7 @@ class Vm
   end
 
   def get_operand(i) : Operand
-    @mem.code[@pc][i + 1].as(Operand)
+    @mem.code[@pc].operands[i]
   end
 
   def cp
