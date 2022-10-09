@@ -91,12 +91,19 @@ def Json_parse_int(rest_, pos, size_)
   return n;
 end
 
+def Json_parse_str(rest_, pos, s_temp_, s_temp_size, size_)
+  var pos_end;
+
+  pos_end = char_index(rest_, C_DQ(), pos + 1);
+  substr_with_check(s_temp_, rest_, pos + 1, pos_end, s_temp_size);
+  *(size_) = __sub(pos_end + 1, pos);
+end
+
 def Json_parse_list(g_, rest_, pos_start, size_)
   var pos = pos_start;
   var size = 0;
   var list_;
   var c;
-  var pos_end;
   var s_temp_size = 40; var [40]s_temp;
   var n;
   var child_list_;
@@ -136,10 +143,9 @@ def Json_parse_list(g_, rest_, pos_start, size_)
       pos = pos + size;
 
     when (c == C_DQ())
-      pos_end = char_index(rest_, C_DQ(), pos + 1);
-      substr_with_check(&s_temp, rest_, pos + 1, pos_end, s_temp_size);
+      Json_parse_str(rest_, pos, &s_temp, s_temp_size, &size);
       List_add_str(g_, list_, &s_temp);
-      pos = pos + str_size(&s_temp) + 2;
+      pos = pos + size;
 
     when (c == 0)
       p_c(c);
