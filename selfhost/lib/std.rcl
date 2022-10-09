@@ -400,6 +400,23 @@ def char_index(str_, target_c, pos_from)
   panic(387); # char_index: must not happen
 end
 
+def parse_uint(s_)
+  var i = __sub(str_size(s_), 1);
+  var c;
+  var digit_factor = 1;
+  var n = 0;
+
+  while (__le(0, i))
+    c = char_at(s_, i);
+    n = n + (__sub(c, 48) * digit_factor);
+
+    digit_factor = digit_factor * 10;
+    i = __sub(i, 1);
+  end
+
+  return n;
+end
+
 def parse_int(s_)
   var i = __sub(str_size(s_), 1);
   var c;
