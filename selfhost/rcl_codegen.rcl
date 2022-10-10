@@ -102,7 +102,7 @@ def asm_push(arg_)
   putchar(C_LF());
 end
 
-def asm_pop(g_, dest_)
+def asm_pop(dest_)
   asm_indent();
   print_s("pop");
   putchar(C_SPC()); print_s(dest_);
@@ -221,7 +221,7 @@ end
 
 def asm_fn_epilogue(g_)
   asm_cp("bp", "sp");
-  asm_pop(g_, "bp");
+  asm_pop("bp");
 end
 
 # --------------------------------
@@ -329,8 +329,8 @@ def _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_)
 end
 
 def _gen_expr_add(g_)
-  asm_pop(g_, "reg_b");
-  asm_pop(g_, "reg_a");
+  asm_pop("reg_b");
+  asm_pop("reg_a");
 
   asm_indent();
   print_s("add_ab");
@@ -338,8 +338,8 @@ def _gen_expr_add(g_)
 end
 
 def _gen_expr_mult(g_)
-  asm_pop(g_, "reg_b");
-  asm_pop(g_, "reg_a");
+  asm_pop("reg_b");
+  asm_pop("reg_a");
 
   asm_indent();
   print_s("mult_ab");
@@ -361,8 +361,8 @@ def _gen_expr_eq(g_)
   str_cp_with_check(&label_then, "then", label_then_size);
   append_label_id(&label_then, label_id, label_then_size);
 
-  asm_pop(g_, "reg_b");
-  asm_pop(g_, s_reg_a_);
+  asm_pop("reg_b");
+  asm_pop(s_reg_a_);
 
   asm_compare(g_);
   asm_jump_eq(g_, &label_then);
@@ -391,8 +391,8 @@ def _gen_expr_neq(g_)
   str_cp_with_check(&label_then, "then", label_then_size);
   append_label_id(&label_then, label_id, label_then_size);
 
-  asm_pop(g_, "reg_b");
-  asm_pop(g_, s_reg_a_);
+  asm_pop("reg_b");
+  asm_pop(s_reg_a_);
 
   asm_compare(g_);
   asm_jump_eq(g_, &label_then);
@@ -421,8 +421,8 @@ def _gen_expr_lt(g_)
   str_cp_with_check(&label_then, "then", label_then_size);
   append_label_id(&label_then, label_id, label_then_size);
 
-  asm_pop(g_, "reg_b");
-  asm_pop(g_, s_reg_a_);
+  asm_pop("reg_b");
+  asm_pop(s_reg_a_);
 
   asm_compare(g_);
   asm_jump_g(g_, &label_then);
@@ -639,7 +639,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
 
       gen_expr(g_, fn_arg_names_, lvar_names_, List_get(list_, 1));
 
-      asm_pop(g_, s_reg_b_);
+      asm_pop(s_reg_b_);
       asm_cp(s_reg_b_, &s_reg_a_ind);
     else
       panic(859); # gen_set
