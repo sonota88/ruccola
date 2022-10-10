@@ -185,6 +185,22 @@ class Vm
     @mem.code = insns
   end
 
+  def to_operand(el : RawInsnElem) : Operand
+    case el
+    when String
+      case el
+      when "reg_a" then Register::A
+      when "reg_b" then Register::B
+      when "sp"    then Register::SP
+      when "bp"    then Register::BP
+      else
+        el
+      end
+    else
+      el
+    end
+  end
+
   def load_program_file(path)
     insns = [] of Insn
     File.open(path).each_line do |line|
@@ -195,20 +211,7 @@ class Vm
 
       operands = [] of Operand
       raw_insn[1..].each { |it|
-        operands <<
-          case it
-          when String
-            case it
-            when "reg_a" then Register::A
-            when "reg_b" then Register::B
-            when "sp"    then Register::SP
-            when "bp"    then Register::BP
-            else
-              it
-            end
-          else
-            it
-          end
+        operands << to_operand(it)
       }
 
       insns << Insn.new(opcode, operands)
