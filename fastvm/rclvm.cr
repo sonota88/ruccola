@@ -3,7 +3,7 @@ require "json"
 alias RawInsnElem = String | Int32
 alias RawInsn = Array(RawInsnElem)
 
-alias Operand = String | Int32
+alias Operand = String | Int32 | Register
 
 enum Register
   A
@@ -194,7 +194,22 @@ class Vm
       opcode = OpCode.from(raw_insn[0])
 
       operands = [] of Operand
-      raw_insn[1..].each { |it| operands << it }
+      raw_insn[1..].each { |it|
+        operands <<
+          case it
+          when String
+            case it
+            when "reg_a" then Register::A
+            when "reg_b" then Register::B
+            when "sp"    then Register::SP
+            when "bp"    then Register::BP
+            else
+              it
+            end
+          else
+            it
+          end
+      }
 
       insns << Insn.new(opcode, operands)
     end
@@ -298,6 +313,15 @@ class Vm
     case operand
     when Int32  then operand
     when String then get_value(operand)
+    when Register
+      case operand
+      when Register::A  then @reg_a
+      when Register::B  then @reg_b
+      when Register::SP then @sp
+      when Register::BP then @bp
+      else
+        raise "unsupported register (#{operand})"
+      end
     else
       raise "unsupported (#{operand})"
     end
@@ -312,6 +336,15 @@ class Vm
       when "bp"    then @bp    = val
       when "sp"    then @sp    = val
       when /^mem:/ then @mem.data[calc_indirect_addr(dest)] = val
+      else
+        raise "unsupported (#{dest.inspect})"
+      end
+    when Register
+      case dest
+      when Register::A  then @reg_a = val
+      when Register::B  then @reg_b = val
+      when Register::SP then @sp    = val
+      when Register::BP then @bp    = val
       else
         raise "unsupported (#{dest.inspect})"
       end
@@ -336,14 +369,14 @@ class Vm
 
   def cp
     arg_src  = get_operand(0)
-    arg_dest = get_operand(1).as(String)
+    arg_dest = get_operand(1)
 
     src_val = get_value_v2(arg_src)
     set_value(arg_dest, src_val)
   end
 
   def lea
-    dest = get_operand(0).as(String)
+    dest = get_operand(0)
     src  = get_operand(1).as(String)
 
     addr =
