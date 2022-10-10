@@ -5,8 +5,6 @@ alias RawInsn = Array(RawInsnElem)
 
 alias Operand = String | Int32
 
-alias InsnElem = OpCode | Operand
-
 enum OpCode
   Exit
   Cp
