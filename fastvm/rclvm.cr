@@ -5,6 +5,13 @@ alias RawInsn = Array(RawInsnElem)
 
 alias Operand = String | Int32
 
+enum Register
+  A
+  B
+  SP
+  BP
+end
+
 enum OpCode
   Exit
   Cp
