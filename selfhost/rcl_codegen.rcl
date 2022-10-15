@@ -116,7 +116,7 @@ def asm_sub_sp(n)
   putchar(C_LF());
 end
 
-def asm_add_sp(g_, n)
+def asm_add_sp(n)
   asm_indent();
   print_s("add_sp");
   putchar(C_SPC()); print_i(n);
@@ -587,7 +587,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   asm_call(fn_name_);
 
   if (0 < List_size(args_))
-    asm_add_sp(g_, List_size(args_));
+    asm_add_sp(List_size(args_));
   end
 end
 
