@@ -3,7 +3,7 @@ require "json"
 alias RawInsnElem = String | Int32
 alias RawInsn = Array(RawInsnElem)
 
-alias Operand = String | Int32 | Register
+alias Operand = String | Int32 | Register | MemRef
 
 enum Register
   A
@@ -199,6 +199,7 @@ class Vm
       when "reg_b" then Register::B
       when "sp"    then Register::SP
       when "bp"    then Register::BP
+      when /^mem:/ then MemRef.new(el)
       else
         el
       end
@@ -312,7 +313,6 @@ class Vm
     when "bp"      then @bp
     when "sp"      then @sp
     when /^-?\d+$/ then operand.to_i
-    when /^mem:/   then @mem.data[calc_indirect_addr(operand)]
     else
       raise "unsupported (#{operand})"
     end
@@ -331,6 +331,8 @@ class Vm
       else
         raise "unsupported register (#{operand})"
       end
+    when MemRef
+      @mem.data[calc_indirect_addr(operand)]
     else
       raise "unsupported (#{operand})"
     end
@@ -344,7 +346,6 @@ class Vm
       when "reg_b" then @reg_b = val
       when "bp"    then @bp    = val
       when "sp"    then @sp    = val
-      when /^mem:/ then @mem.data[calc_indirect_addr(dest)] = val
       else
         raise "unsupported (#{dest.inspect})"
       end
@@ -357,13 +358,15 @@ class Vm
       else
         raise "unsupported (#{dest.inspect})"
       end
+    when MemRef
+      @mem.data[calc_indirect_addr(dest)] = val
     else
       raise "unsupported (#{dest.inspect})"
     end
   end
 
-  def calc_indirect_addr(str : String) : Int32
-    _, base_str, disp_str, index_str = str.split(":")
+  def calc_indirect_addr(memref : MemRef) : Int32
+    _, base_str, disp_str, index_str = memref.str.split(":")
 
     base = get_value(base_str)
     disp = get_value(disp_str)
@@ -386,11 +389,11 @@ class Vm
 
   def lea
     dest = get_operand(0)
-    src  = get_operand(1).as(String)
+    src  = get_operand(1)
 
     addr =
       case src
-      when /^mem:/
+      when MemRef
         calc_indirect_addr(src)
       else
         raise "unsupported (#{src})"
@@ -520,14 +523,9 @@ class Vm
     case arg_vram
     when Int32
       @mem.vram[arg_vram] = src_val
-    when String
-      case arg_vram
-      when /^mem:/
-        vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
-        @mem.vram[vram_addr] = src_val
-      else
-        raise "unsupported (#{arg_vram})"
-      end
+    when MemRef
+      vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
+      @mem.vram[vram_addr] = src_val
     else
       raise "unsupported (#{arg_vram})"
     end
