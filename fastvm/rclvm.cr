@@ -318,22 +318,9 @@ class Vm
     puts "sf (#{@sf})"
   end
 
-  def get_value(operand : String) : Int32
-    case operand
-    when "reg_a"   then @reg_a
-    when "reg_b"   then @reg_b
-    when "bp"      then @bp
-    when "sp"      then @sp
-    when /^-?\d+$/ then operand.to_i
-    else
-      raise "unsupported (#{operand})"
-    end
-  end
-
   def get_value_v2(operand : Operand) : Int32
     case operand
     when Int32  then operand
-    when String then get_value(operand)
     when Register
       case operand
       when Register::A  then @reg_a
