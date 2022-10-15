@@ -318,7 +318,7 @@ class Vm
     puts "sf (#{@sf})"
   end
 
-  def get_value_v2(operand : Operand) : Int32
+  def get_value(operand : Operand) : Int32
     case operand
     when Int32  then operand
     when Register
@@ -365,7 +365,7 @@ class Vm
   end
 
   def calc_indirect_addr(memref : MemRef) : Int32
-    base = get_value_v2(memref.base)
+    base = get_value(memref.base)
     disp = memref.disp
     index = memref.index
 
@@ -380,7 +380,7 @@ class Vm
     arg_src  = get_operand(0)
     arg_dest = get_operand(1)
 
-    src_val = get_value_v2(arg_src)
+    src_val = get_value(arg_src)
     set_value(arg_dest, src_val)
   end
 
@@ -460,7 +460,7 @@ class Vm
   def push
     arg = get_operand(0)
 
-    val_to_push = get_value_v2(arg)
+    val_to_push = get_value(arg)
 
     set_sp(@sp - 1)
     @mem.data[@sp] = val_to_push
@@ -497,8 +497,8 @@ class Vm
     arg_val = get_operand(0)
     arg_fd  = get_operand(1)
 
-    n  = get_value_v2(arg_val)
-    fd = get_value_v2(arg_fd)
+    n  = get_value(arg_val)
+    fd = get_value(arg_fd)
 
     slice = Bytes.new(1)
     slice[0] = n.to_u8
@@ -515,7 +515,7 @@ class Vm
     arg_vram = get_operand(0) # dest
     arg_val  = get_operand(1)
 
-    src_val = get_value_v2(arg_val)
+    src_val = get_value(arg_val)
 
     case arg_vram
     when Int32
@@ -532,7 +532,7 @@ class Vm
     arg_vram = get_operand(0) # src
     arg_dest = get_operand(1) # dest
 
-    vram_addr = get_value_v2(arg_vram)
+    vram_addr = get_value(arg_vram)
     val = @mem.vram[vram_addr]
     set_value(arg_dest, val)
   end
