@@ -68,6 +68,12 @@ enum OpCode
   end
 end
 
+class MemRef
+  getter str
+
+  def initialize(@str : String) end
+end
+
 class Insn
   getter opcode, operands
 
