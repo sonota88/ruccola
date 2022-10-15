@@ -109,7 +109,7 @@ def asm_pop(dest_)
   putchar(C_LF());
 end
 
-def asm_sub_sp(g_, n)
+def asm_sub_sp(n)
   asm_indent();
   print_s("sub_sp");
   putchar(C_SPC()); print_i(n);
@@ -809,7 +809,7 @@ end
 def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
   var set_stmt_;
 
-  asm_sub_sp(g_, 1);
+  asm_sub_sp(1);
 
   if (List_size(stmt_) == 3)
     set_stmt_ = List_new(g_);
@@ -824,7 +824,7 @@ end
 def gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_)
   var width = List_get_as_int(stmt_, 2);
 
-  asm_sub_sp(g_, width);
+  asm_sub_sp(width);
 end
 
 def gen_func(g_, func_)
