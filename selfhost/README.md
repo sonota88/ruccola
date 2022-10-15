@@ -48,7 +48,7 @@ VERBOSE=1 SKIP=1000 ./rclrun ../examples/game_of_life.rcl
 
   # Crystal版のVMで確認:
 FASTVM=1 ./test_selfhost.sh
-  # （作者の環境だと 1分程度）
+  # （作者の環境だと 20秒程度）
 ```
 
 

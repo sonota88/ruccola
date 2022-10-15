@@ -69,9 +69,13 @@ enum OpCode
 end
 
 class MemRef
-  getter str
+  getter base, disp, index
 
-  def initialize(@str : String) end
+  def initialize(
+        @base : Operand,
+        @disp : Int32,
+        @index : Int32
+      ) end
 end
 
 class Insn
@@ -199,7 +203,15 @@ class Vm
       when "reg_b" then Register::B
       when "sp"    then Register::SP
       when "bp"    then Register::BP
-      when /^mem:/ then MemRef.new(el)
+      when /^-?\d+$/ then el.to_i
+      when /^mem:/
+        _, base_str, disp_str, index_str = el.split(":")
+
+        base  = to_operand(base_str)
+        disp  = to_operand(disp_str).as(Int32)
+        index = to_operand(index_str).as(Int32)
+
+        MemRef.new(base, disp, index)
       else
         el
       end
@@ -366,11 +378,9 @@ class Vm
   end
 
   def calc_indirect_addr(memref : MemRef) : Int32
-    _, base_str, disp_str, index_str = memref.str.split(":")
-
-    base = get_value(base_str)
-    disp = get_value(disp_str)
-    index = get_value(index_str)
+    base = get_value_v2(memref.base)
+    disp = memref.disp
+    index = memref.index
 
     base + disp + index
   end
