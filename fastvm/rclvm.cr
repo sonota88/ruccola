@@ -339,15 +339,6 @@ class Vm
 
   def set_value(dest : Operand, val : Int32)
     case dest
-    when String
-      case dest
-      when "reg_a" then @reg_a = val
-      when "reg_b" then @reg_b = val
-      when "bp"    then @bp    = val
-      when "sp"    then @sp    = val
-      else
-        raise "unsupported (#{dest.inspect})"
-      end
     when Register
       case dest
       when Register::A  then @reg_a = val
