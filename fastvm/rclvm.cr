@@ -229,9 +229,13 @@ class Vm
       opcode = OpCode.from(raw_insn[0])
 
       operands = [] of Operand
-      raw_insn[1..].each { |it|
-        operands << to_operand(it)
-      }
+      if opcode == OpCode::VmCmt
+        operands << raw_insn[1].as(String)
+      else
+        raw_insn[1..].each { |it|
+          operands << to_operand(it)
+        }
+      end
 
       insns << Insn.new(opcode, operands)
     end
