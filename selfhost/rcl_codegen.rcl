@@ -150,7 +150,7 @@ def asm_jump_g(label_)
   putchar(C_LF());
 end
 
-def asm_vm_comment(g_, vm_comment_)
+def asm_vm_comment(vm_comment_)
   var vm_comment_size = 40; var [40]vm_comment;
   var i;
   var c;
@@ -583,7 +583,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
     i = __sub(i, 1);
   end
 
-  asm_vm_comment(g_, &vm_comment);
+  asm_vm_comment(&vm_comment);
   asm_call(fn_name_);
 
   if (0 < List_size(args_))
@@ -769,7 +769,7 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
 end
 
 def gen_vm_comment(g_, stmt_)
-  asm_vm_comment(g_, List_get_as_str(stmt_, 1));
+  asm_vm_comment(List_get_as_str(stmt_, 1));
 end
 
 def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
