@@ -185,7 +185,7 @@ def asm_get_vram(vram_addr_, dest_)
   putchar(C_LF());
 end
 
-def asm_set_vram(g_, vram_addr_, val_)
+def asm_set_vram(vram_addr_, val_)
   asm_indent();
   print_s("set_vram");
   putchar(C_SPC()); print_s(vram_addr_);
@@ -997,7 +997,7 @@ def gen_builtin_set_vram(g_)
   asm_label("set_vram");
   asm_fn_prologue(g_);
 
-  asm_set_vram(g_, &s_vram_addr, &s_val);
+  asm_set_vram(&s_vram_addr, &s_val);
 
   asm_fn_epilogue(g_);
   asm_ret();
