@@ -335,7 +335,7 @@ class Vm
         raise "unsupported register (#{operand})"
       end
     when MemRef
-      @mem.data[calc_indirect_addr(operand)]
+      @mem.data[memref_to_addr(operand)]
     else
       raise "unsupported (#{operand})"
     end
@@ -353,13 +353,13 @@ class Vm
         raise "unsupported (#{dest.inspect})"
       end
     when MemRef
-      @mem.data[calc_indirect_addr(dest)] = val
+      @mem.data[memref_to_addr(dest)] = val
     else
       raise "unsupported (#{dest.inspect})"
     end
   end
 
-  def calc_indirect_addr(memref : MemRef) : Int32
+  def memref_to_addr(memref : MemRef) : Int32
     base = get_value(memref.base)
     disp = memref.disp
     index = memref.index
@@ -386,7 +386,7 @@ class Vm
     addr =
       case src
       when MemRef
-        calc_indirect_addr(src)
+        memref_to_addr(src)
       else
         raise "unsupported (#{src})"
       end
@@ -516,7 +516,7 @@ class Vm
     when Int32
       @mem.vram[arg_vram] = src_val
     when MemRef
-      vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
+      vram_addr = @mem.data[memref_to_addr(arg_vram)]
       @mem.vram[vram_addr] = src_val
     else
       raise "unsupported (#{arg_vram})"
