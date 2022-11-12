@@ -193,7 +193,7 @@ def asm_set_vram(vram_addr_, val_)
   putchar(C_LF());
 end
 
-def asm_lea(g_, dest_, src_)
+def asm_lea(dest_, src_)
   asm_indent();
   print_s("lea");
   putchar(C_SPC()); print_s(dest_);
@@ -306,7 +306,7 @@ def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
   if (Names_includes(lvar_names_, arg_))
     disp = Names_disp_lvar(lvar_names_, arg_);
     render_indirection_bp(&s_src, disp, s_src_size);
-    asm_lea(g_, "reg_a", &s_src);
+    asm_lea("reg_a", &s_src);
   else
     panic(526); # _gen_expr_addr
   end
