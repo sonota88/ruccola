@@ -201,7 +201,7 @@ def asm_lea(dest_, src_)
   putchar(C_LF());
 end
 
-def asm_write(g_, c, fd)
+def asm_write(c, fd)
   var [8]s_c;
 
   unparse_int(&s_c, c);
@@ -977,12 +977,12 @@ end
 def gen_builtin_panic(g_)
   asm_label("_panic");
 
-  asm_write(g_, 80, 2); # P
-  asm_write(g_, 65, 2); # A
-  asm_write(g_, 78, 2); # N
-  asm_write(g_, 73, 2); # I
-  asm_write(g_, 67, 2); # C
-  asm_write(g_, C_LF(), 2);
+  asm_write(80, 2); # P
+  asm_write(65, 2); # A
+  asm_write(78, 2); # N
+  asm_write(73, 2); # I
+  asm_write(67, 2); # C
+  asm_write(C_LF(), 2);
 
   asm_exit(1);
 end
