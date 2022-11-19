@@ -215,12 +215,12 @@ def asm_write(c, fd)
   putchar(C_LF());
 end
 
-def asm_fn_prologue(g_)
+def asm_fn_prologue()
   asm_push("bp");
   asm_cp("sp", "bp");
 end
 
-def asm_fn_epilogue(g_)
+def asm_fn_epilogue()
   asm_cp("bp", "sp");
   asm_pop("bp");
 end
@@ -659,7 +659,7 @@ def gen_return(g_, fn_arg_names_, lvar_names_, stmt_)
     gen_expr(g_, fn_arg_names_, lvar_names_, expr_);
   end
 
-  asm_fn_epilogue(g_);
+  asm_fn_epilogue();
   asm_ret();
 end
 
@@ -853,7 +853,7 @@ def gen_func(g_, func_)
 
   asm_label(fn_name_);
 
-  asm_fn_prologue(g_);
+  asm_fn_prologue();
 
   lvar_names_ = Names_new(g_);
 
@@ -879,7 +879,7 @@ def gen_func(g_, func_)
     i = i + 1;
   end
 
-  asm_fn_epilogue(g_);
+  asm_fn_epilogue();
 
   asm_ret();
 end
@@ -932,7 +932,7 @@ def gen_builtin_write(g_)
   render_indirection_bp(&s_fn_arg2, 3, s_fn_arg2_size);
 
   asm_label(s_write_);
-  asm_fn_prologue(g_);
+  asm_fn_prologue();
 
   asm_cp(&s_fn_arg1, s_reg_a_);
 
@@ -942,7 +942,7 @@ def gen_builtin_write(g_)
   putchar(C_SPC()); print_s(&s_fn_arg2);
   putchar(C_LF());
 
-  asm_fn_epilogue(g_);
+  asm_fn_epilogue();
   asm_ret();
 end
 
@@ -952,25 +952,25 @@ def gen_builtin_getchar(g_)
   render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
 
   asm_label("getchar");
-  asm_fn_prologue(g_);
+  asm_fn_prologue();
 
   asm_indent();
   print_s("read");
   putchar(C_SPC()); print_s("reg_a");
   putchar(C_LF());
 
-  asm_fn_epilogue(g_);
+  asm_fn_epilogue();
   asm_ret();
 end
 
 def gen_builtin_get_sp(g_)
   asm_label("get_sp");
 
-  asm_fn_prologue(g_);
+  asm_fn_prologue();
 
   asm_cp("sp", "reg_a");
 
-  asm_fn_epilogue(g_);
+  asm_fn_epilogue();
   asm_ret();
 end
 
@@ -995,11 +995,11 @@ def gen_builtin_set_vram(g_)
   render_indirection_bp(&s_val, 3, s_val_size);
 
   asm_label("set_vram");
-  asm_fn_prologue(g_);
+  asm_fn_prologue();
 
   asm_set_vram(&s_vram_addr, &s_val);
 
-  asm_fn_epilogue(g_);
+  asm_fn_epilogue();
   asm_ret();
 end
 
@@ -1009,11 +1009,11 @@ def gen_builtin_get_vram(g_)
   render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
 
   asm_label("get_vram");
-  asm_fn_prologue(g_);
+  asm_fn_prologue();
 
   asm_get_vram(&s_vram_addr, "reg_a");
 
-  asm_fn_epilogue(g_);
+  asm_fn_epilogue();
   asm_ret();
 end
 
