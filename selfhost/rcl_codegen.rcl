@@ -297,7 +297,7 @@ end
 
 # --------------------------------
 
-def _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_)
+def _gen_expr_addr(fn_arg_names_, lvar_names_, expr_)
   var list_ = Node_get_list(expr_);
   var arg_ = List_get_as_str(list_, 1);
   var disp;
@@ -446,7 +446,7 @@ def _gen_expr_unary(g_, fn_arg_names_, lvar_names_, expr_)
 
   case
   when (str_eq(operator_, "addr"))
-    return _gen_expr_addr(g_, fn_arg_names_, lvar_names_, expr_);
+    return _gen_expr_addr(fn_arg_names_, lvar_names_, expr_);
   when (str_eq(operator_, "deref"))
     return _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_);
   else
