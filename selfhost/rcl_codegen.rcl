@@ -329,7 +329,7 @@ def _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_)
   asm_cp(&s_reg_a_ind, s_reg_a_);
 end
 
-def _gen_expr_add(g_)
+def _gen_expr_add()
   asm_pop("reg_b");
   asm_pop("reg_a");
 
@@ -338,7 +338,7 @@ def _gen_expr_add(g_)
   putchar(C_LF());
 end
 
-def _gen_expr_mult(g_)
+def _gen_expr_mult()
   asm_pop("reg_b");
   asm_pop("reg_a");
 
@@ -470,9 +470,9 @@ def _gen_expr_binary(g_, fn_arg_names_, lvar_names_, expr_)
 
   case
   when (char_at(op_str_, 0) == 43) # +
-    _gen_expr_add(g_);
+    _gen_expr_add();
   when (char_at(op_str_, 0) == 42) # *
-    _gen_expr_mult(g_);
+    _gen_expr_mult();
   when (str_eq(op_str_, "=="))
     _gen_expr_eq(g_);
   when (str_eq(op_str_, "!="))
