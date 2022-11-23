@@ -193,8 +193,8 @@ class Vm
   def load_program(insns)
     @mem.code = insns
       .map do |insn|
-        opcode, *rest = insn
-        [opcode.to_sym, *rest]
+        opcode, *operands = insn
+        [opcode.to_sym, *operands]
       end
   end
 
