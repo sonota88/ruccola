@@ -769,7 +769,7 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   asm_label(&label_end);
 end
 
-def gen_vm_comment(g_, stmt_)
+def gen_vm_comment(stmt_)
   asm_vm_comment(List_get_as_str(stmt_, 1));
 end
 
@@ -780,7 +780,7 @@ def gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_)
   when (str_eq(head_str_, "set"))
     gen_set(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq(head_str_, "_cmt"))
-    gen_vm_comment(g_, stmt_);
+    gen_vm_comment(stmt_);
   when (str_eq(head_str_, "call"))
     gen_call(g_, fn_arg_names_, lvar_names_, stmt_);
   when (str_eq(head_str_, "return"))
