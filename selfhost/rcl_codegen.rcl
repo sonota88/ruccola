@@ -922,7 +922,7 @@ end
 
 # --------------------------------
 
-def gen_builtin_write(g_)
+def gen_builtin_write()
   var s_reg_a_ = "reg_a";
   var s_write_ = "write";
   var s_fn_arg1_size = 7; var [7]s_fn_arg1;
@@ -946,7 +946,7 @@ def gen_builtin_write(g_)
   asm_ret();
 end
 
-def gen_builtin_getchar(g_)
+def gen_builtin_getchar()
   var s_fn_arg1_size = 7; var [7]s_fn_arg1;
 
   render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
@@ -963,7 +963,7 @@ def gen_builtin_getchar(g_)
   asm_ret();
 end
 
-def gen_builtin_get_sp(g_)
+def gen_builtin_get_sp()
   asm_label("get_sp");
 
   asm_fn_prologue();
@@ -974,7 +974,7 @@ def gen_builtin_get_sp(g_)
   asm_ret();
 end
 
-def gen_builtin_panic(g_)
+def gen_builtin_panic()
   asm_label("_panic");
 
   asm_write(80, 2); # P
@@ -987,7 +987,7 @@ def gen_builtin_panic(g_)
   asm_exit(1);
 end
 
-def gen_builtin_set_vram(g_)
+def gen_builtin_set_vram()
   var s_vram_addr_size = 7; var [7]s_vram_addr;
   var s_val_size = 7; var [7]s_val;
 
@@ -1003,7 +1003,7 @@ def gen_builtin_set_vram(g_)
   asm_ret();
 end
 
-def gen_builtin_get_vram(g_)
+def gen_builtin_get_vram()
   var s_vram_addr_size = 7; var [7]s_vram_addr;
 
   render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
@@ -1028,12 +1028,12 @@ def codegen(g_, ast_)
   print_s("#>builtins");
   putchar(C_LF());
 
-  gen_builtin_write(g_);
-  gen_builtin_getchar(g_);
-  gen_builtin_get_sp(g_);
-  gen_builtin_panic(g_);
-  gen_builtin_set_vram(g_);
-  gen_builtin_get_vram(g_);
+  gen_builtin_write();
+  gen_builtin_getchar();
+  gen_builtin_get_sp();
+  gen_builtin_panic();
+  gen_builtin_set_vram();
+  gen_builtin_get_vram();
 
   print_s("#<builtins");
   putchar(C_LF());
