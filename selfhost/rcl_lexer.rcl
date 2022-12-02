@@ -114,7 +114,7 @@ def match_str(input_, pos_from)
   return __sub(pos, pos_from + 1);
 end
 
-def is_kw(g_, str_)
+def is_kw(str_)
   case
   when (str_eq(str_, "def"   )) return true;
   when (str_eq(str_, "end"   )) return true;
@@ -224,7 +224,7 @@ def lex(g_)
       size = match_ident(&input, pos);
       substr_with_check(&s_temp, &input, pos, pos + size, s_temp_size);
 
-      if (is_kw(g_, &s_temp))
+      if (is_kw(&s_temp))
         if (str_eq(&s_temp, "if"))
           print_kw(g_, "case");
           print_kw(g_, "when");
