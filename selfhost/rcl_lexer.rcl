@@ -135,35 +135,35 @@ def is_kw(str_)
   end
 end
 
-def print_kw(g_, str_)
+def print_kw(str_)
   print_s("kw");
   putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_ident(g_, str_)
+def print_ident(str_)
   print_s("ident");
   putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_symbol(g_, str_)
+def print_symbol(str_)
   print_s("sym");
   putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_int(g_, str_)
+def print_int(str_)
   print_s("int");
   putchar(58); # :
   print_s(str_);
   putchar(C_LF());
 end
 
-def print_str(g_, str_)
+def print_str(str_)
   print_s("str");
   putchar(58); # :
   print_s(str_);
@@ -200,7 +200,7 @@ def lex(g_)
     when (0 < match_symbol(&input, pos))
       size = match_symbol(&input, pos);
       substr(&s_temp, &input, pos, pos + size);
-      print_symbol(g_, &s_temp);
+      print_symbol(&s_temp);
       pos = pos + size;
 
     when (0 < match_str(&input, pos))
@@ -211,13 +211,13 @@ def lex(g_)
         s_temp_size
       );
 
-      print_str(g_, &s_temp);
+      print_str(&s_temp);
       pos = pos + size + 2;
 
     when (0 < match_int(&input, pos))
       size = match_int(&input, pos);
       substr(&s_temp, &input, pos, pos + size);
-      print_int(g_, &s_temp);
+      print_int(&s_temp);
       pos = pos + size;
 
     when (0 < match_ident(&input, pos))
@@ -226,13 +226,13 @@ def lex(g_)
 
       if (is_kw(&s_temp))
         if (str_eq(&s_temp, "if"))
-          print_kw(g_, "case");
-          print_kw(g_, "when");
+          print_kw("case");
+          print_kw("when");
         else
-          print_kw(g_, &s_temp);
+          print_kw(&s_temp);
         end
       else
-        print_ident(g_, &s_temp);
+        print_ident(&s_temp);
       end
 
       pos = pos + size;
