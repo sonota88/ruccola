@@ -25,13 +25,13 @@ def NODE__STR () return 3; end
 
 def NODE__TYPE_SIZE() return 4; end
 
-def Node_new(g_)
+def Node_new()
   var self_ = allocate(NODE__TYPE_SIZE());
   return self_;
 end
 
 def Node_new_int(g_, n)
-  var self_ = Node_new(g_);
+  var self_ = Node_new();
 
   fset(self_, NODE__KIND(), NODE_KIND__INT());
   fset(self_, NODE__INT(), n);
@@ -40,7 +40,7 @@ def Node_new_int(g_, n)
 end
 
 def Node_new_str(g_, str_)
-  var self_ = Node_new(g_);
+  var self_ = Node_new();
 
   fset(self_, NODE__KIND(), NODE_KIND__STR());
   fset(self_, NODE__STR(), String_new(str_));
@@ -49,7 +49,7 @@ def Node_new_str(g_, str_)
 end
 
 def Node_new_list(g_, list_)
-  var self_ = Node_new(g_);
+  var self_ = Node_new();
 
   fset(self_, NODE__KIND(), NODE_KIND__LIST());
   fset(self_, NODE__LIST(), list_);
