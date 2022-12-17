@@ -445,7 +445,7 @@ def _parse_var_array(g_)
   return mklist3(g_,
     Node_new_str(g_, "var_array"),
     Node_new_str(g_, var_name_),
-    Node_new_int(g_, width)
+    Node_new_int(width)
   );
 end
 
@@ -551,7 +551,7 @@ def _make_str_expr(g_, offset)
           )
         )
       ),
-      Node_new_int(g_, offset)
+      Node_new_int(offset)
     )
   );
 end
@@ -564,7 +564,7 @@ def _parse_expr_factor_int(g_)
   incr_token_index(g_);
 
   n = parse_int(Token_get_val(t_));
-  return Node_new_int(g_, n);
+  return Node_new_int(n);
 end
 
 def _parse_expr_factor_ident(g_)
@@ -847,7 +847,7 @@ def _parse_when_clause(g_)
     consume_sym_paren_r(g_); # )
   when (str_eq(Token_get_val(t_), "else"))
     consume_kw(g_, "else");
-    cond_expr_node_ = Node_new_int(g_, 1);
+    cond_expr_node_ = Node_new_int(1);
   else
     panic(748); # _parse_when_clause
   end
@@ -1064,12 +1064,12 @@ def make_set_byte_stmt(g_, bi, byte)
           mklist3(g_,
             Node_new_str(g_, "+"),
             Node_new_str(g_, "offset_"),
-            Node_new_int(g_, bi)
+            Node_new_int(bi)
           )
         )
       )
     ),
-    Node_new_int(g_, byte)
+    Node_new_int(byte)
   );
 end
 

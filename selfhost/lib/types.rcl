@@ -30,7 +30,7 @@ def Node_new()
   return self_;
 end
 
-def Node_new_int(g_, n)
+def Node_new_int(n)
   var self_ = Node_new();
 
   fset(self_, NODE__KIND(), NODE_KIND__INT());
@@ -202,7 +202,7 @@ def List_add_all(g_, self_, list_)
 end
 
 def List_add_int(g_, self_, n)
-  var node_ = Node_new_int(g_, n);
+  var node_ = Node_new_int(n);
   List_add(g_, self_, node_);
 end
 
