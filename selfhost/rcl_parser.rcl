@@ -302,7 +302,7 @@ def _parse_arg(g_)
 
   case
   when (Token_kind_eq(t_, TOKEN_KIND__IDENT()))
-    return Node_new_str(g_, Token_get_val(t_));
+    return Node_new_str(Token_get_val(t_));
   else
     panic(202); # _parse_arg: unsupported
   end
@@ -392,8 +392,8 @@ def _parse_var_declare(g_)
   consume_sym_semicolon(g_); # ;
 
   return mklist2(g_,
-    Node_new_str(g_, "var"),
-    Node_new_str(g_, var_name_)
+    Node_new_str("var"),
+    Node_new_str(var_name_)
   );
 end
 
@@ -416,8 +416,8 @@ def _parse_var_init(g_)
   consume_sym_semicolon(g_); # ;
 
   return mklist3(g_,
-    Node_new_str(g_, "var"),
-    Node_new_str(g_, var_name_),
+    Node_new_str("var"),
+    Node_new_str(var_name_),
     expr_node_
   );
 end
@@ -443,8 +443,8 @@ def _parse_var_array(g_)
   consume_sym_semicolon(g_);
 
   return mklist3(g_,
-    Node_new_str(g_, "var_array"),
-    Node_new_str(g_, var_name_),
+    Node_new_str("var_array"),
+    Node_new_str(var_name_),
     Node_new_int(width)
   );
 end
@@ -492,8 +492,8 @@ def parse_expr_addr(g_)
 
   return Node_new_list(g_,
     mklist2(g_,
-      Node_new_str(g_, "addr"),
-      Node_new_str(g_, var_name_)
+      Node_new_str("addr"),
+      Node_new_str(var_name_)
     )
   );
 end
@@ -508,7 +508,7 @@ def parse_expr_deref(g_)
 
   return Node_new_list(g_,
     mklist2(g_,
-      Node_new_str(g_, "deref"),
+      Node_new_str("deref"),
       expr_node_
     )
   );
@@ -538,15 +538,15 @@ def _make_str_expr(g_, offset)
   # g_main_ + GO_STRINGS() + offset
   return Node_new_list(g_,
     mklist3(g_,
-      Node_new_str(g_, "+"),
+      Node_new_str("+"),
       Node_new_list(g_,
         mklist3(g_,
-          Node_new_str(g_, "+"),
-          Node_new_str(g_, "g_main_"),
+          Node_new_str("+"),
+          Node_new_str("g_main_"),
           Node_new_list(g_,
             mklist2(g_,
-              Node_new_str(g_, "funcall"),
-              Node_new_str(g_, "GO_STRINGS")
+              Node_new_str("funcall"),
+              Node_new_str("GO_STRINGS")
             )
           )
         )
@@ -590,7 +590,7 @@ def _parse_expr_factor_ident(g_)
     t_ = peek(g_, 0);
     incr_token_index(g_);
 
-    return Node_new_str(g_, Token_get_val(t_));
+    return Node_new_str(Token_get_val(t_));
   end
 end
 
@@ -631,7 +631,7 @@ def _parse_expr_factor_kw(g_)
       str_eq(Token_get_val(t_), "false")
     )
   )
-    expr_node_ = Node_new_str(g_, Token_get_val(t_));
+    expr_node_ = Node_new_str(Token_get_val(t_));
     incr_token_index(g_);
     return expr_node_;
   else
@@ -701,7 +701,7 @@ def parse_expr(g_)
     expr_node_ =
       Node_new_list(g_,
         mklist3(g_,
-          Node_new_str(g_, s_op_),
+          Node_new_str(s_op_),
           expr_node_,
           factor_node_
         )
@@ -722,7 +722,7 @@ def parse_set(g_)
     lhs_node_ = parse_expr_deref(g_);
   else
     incr_token_index(g_);
-    lhs_node_ = Node_new_str(g_, Token_get_val(t_));
+    lhs_node_ = Node_new_str(Token_get_val(t_));
   end
 
   consume_sym_equal(g_); # =
@@ -732,7 +732,7 @@ def parse_set(g_)
   consume_sym_semicolon(g_); # ;
 
   return mklist3(g_,
-    Node_new_str(g_, "set"),
+    Node_new_str("set"),
     lhs_node_,
     expr_node_
   );
@@ -812,7 +812,7 @@ def parse_while(g_)
   consume_kw(g_, "end");
 
   return mklist3(g_,
-    Node_new_str(g_, "while"),
+    Node_new_str("while"),
     expr_node_,
     Node_new_list(g_, stmts_)
   );
@@ -1016,8 +1016,8 @@ def parse_global(g_)
   consume_sym_semicolon(g_);
 
   return mklist2(g_,
-    Node_new_str(g_, "gvar"),
-    Node_new_str(g_, name_)
+    Node_new_str("gvar"),
+    Node_new_str(name_)
   );
 end
 
@@ -1056,14 +1056,14 @@ end
 def make_set_byte_stmt(g_, bi, byte)
   # *(offset_ + bi) = byte
   return mklist3(g_,
-    Node_new_str(g_, "set"),
+    Node_new_str("set"),
     Node_new_list(g_,
       mklist2(g_,
-        Node_new_str(g_, "deref"),
+        Node_new_str("deref"),
         Node_new_list(g_,
           mklist3(g_,
-            Node_new_str(g_, "+"),
-            Node_new_str(g_, "offset_"),
+            Node_new_str("+"),
+            Node_new_str("offset_"),
             Node_new_int(bi)
           )
         )
@@ -1082,16 +1082,16 @@ def make_init_strings_fn(g_)
   # var offset_ = g_main_ + GO_STRINGS();
   var var_offset_ =
     mklist3(g_,
-      Node_new_str(g_, "var"),
-      Node_new_str(g_, "offset_"),
+      Node_new_str("var"),
+      Node_new_str("offset_"),
       Node_new_list(g_,
         mklist3(g_,
-          Node_new_str(g_, "+"),
-          Node_new_str(g_, "g_main_"),
+          Node_new_str("+"),
+          Node_new_str("g_main_"),
           Node_new_list(g_,
             mklist2(g_,
-              Node_new_str(g_, "funcall"),
-              Node_new_str(g_, "GO_STRINGS")
+              Node_new_str("funcall"),
+              Node_new_str("GO_STRINGS")
             )
           )
         )

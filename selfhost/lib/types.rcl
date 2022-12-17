@@ -39,7 +39,7 @@ def Node_new_int(n)
   return self_;
 end
 
-def Node_new_str(g_, str_)
+def Node_new_str(str_)
   var self_ = Node_new();
 
   fset(self_, NODE__KIND(), NODE_KIND__STR());
@@ -207,7 +207,7 @@ def List_add_int(g_, self_, n)
 end
 
 def List_add_str(g_, self_, str_)
-  var node_ = Node_new_str(g_, str_);
+  var node_ = Node_new_str(str_);
   List_add(g_, self_, node_);
 end
 
