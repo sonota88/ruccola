@@ -48,7 +48,7 @@ def Node_new_str(str_)
   return self_;
 end
 
-def Node_new_list(g_, list_)
+def Node_new_list(list_)
   var self_ = Node_new();
 
   fset(self_, NODE__KIND(), NODE_KIND__LIST());
@@ -212,7 +212,7 @@ def List_add_str(g_, self_, str_)
 end
 
 def List_add_list(g_, self_, list_)
-  var node_ = Node_new_list(g_, list_);
+  var node_ = Node_new_list(list_);
   List_add(g_, self_, node_);
 end
 

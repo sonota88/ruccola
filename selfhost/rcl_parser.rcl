@@ -490,7 +490,7 @@ def parse_expr_addr(g_)
   incr_token_index(g_);
   var var_name_ = Token_get_val(t_);
 
-  return Node_new_list(g_,
+  return Node_new_list(
     mklist2(g_,
       Node_new_str("addr"),
       Node_new_str(var_name_)
@@ -506,7 +506,7 @@ def parse_expr_deref(g_)
   expr_node_ = parse_expr(g_);
   consume_sym_paren_r(g_);      # )
 
-  return Node_new_list(g_,
+  return Node_new_list(
     mklist2(g_,
       Node_new_str("deref"),
       expr_node_
@@ -536,14 +536,14 @@ end
 
 def _make_str_expr(g_, offset)
   # g_main_ + GO_STRINGS() + offset
-  return Node_new_list(g_,
+  return Node_new_list(
     mklist3(g_,
       Node_new_str("+"),
-      Node_new_list(g_,
+      Node_new_list(
         mklist3(g_,
           Node_new_str("+"),
           Node_new_str("g_main_"),
-          Node_new_list(g_,
+          Node_new_list(
             mklist2(g_,
               Node_new_str("funcall"),
               Node_new_str("GO_STRINGS")
@@ -585,7 +585,7 @@ def _parse_expr_factor_ident(g_)
       i = i + 1;
     end
 
-    return Node_new_list(g_, funcall_list_);
+    return Node_new_list(funcall_list_);
   else
     t_ = peek(g_, 0);
     incr_token_index(g_);
@@ -699,7 +699,7 @@ def parse_expr(g_)
     factor_node_ = _parse_expr_factor(g_);
 
     expr_node_ =
-      Node_new_list(g_,
+      Node_new_list(
         mklist3(g_,
           Node_new_str(s_op_),
           expr_node_,
@@ -814,7 +814,7 @@ def parse_while(g_)
   return mklist3(g_,
     Node_new_str("while"),
     expr_node_,
-    Node_new_list(g_, stmts_)
+    Node_new_list(stmts_)
   );
 end
 
@@ -1057,10 +1057,10 @@ def make_set_byte_stmt(g_, bi, byte)
   # *(offset_ + bi) = byte
   return mklist3(g_,
     Node_new_str("set"),
-    Node_new_list(g_,
+    Node_new_list(
       mklist2(g_,
         Node_new_str("deref"),
-        Node_new_list(g_,
+        Node_new_list(
           mklist3(g_,
             Node_new_str("+"),
             Node_new_str("offset_"),
@@ -1084,11 +1084,11 @@ def make_init_strings_fn(g_)
     mklist3(g_,
       Node_new_str("var"),
       Node_new_str("offset_"),
-      Node_new_list(g_,
+      Node_new_list(
         mklist3(g_,
           Node_new_str("+"),
           Node_new_str("g_main_"),
-          Node_new_list(g_,
+          Node_new_list(
             mklist2(g_,
               Node_new_str("funcall"),
               Node_new_str("GO_STRINGS")
