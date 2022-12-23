@@ -100,11 +100,11 @@ def parse_exprs
     return exprs
   end
 
-  first_arg = parse_expr()
-  if first_arg.nil?
+  first_expr = parse_expr()
+  if first_expr.nil?
     return exprs
   else
-    exprs << first_arg
+    exprs << first_expr
   end
 
   while peek().value == ","
