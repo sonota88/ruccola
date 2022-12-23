@@ -100,12 +100,7 @@ def parse_exprs
     return exprs
   end
 
-  first_expr = parse_expr()
-  if first_expr.nil?
-    return exprs
-  else
-    exprs << first_expr
-  end
+  exprs << parse_expr()
 
   while peek().value == ","
     consume ","
