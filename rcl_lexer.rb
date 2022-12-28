@@ -47,8 +47,8 @@ def tokenize(src)
       pos += str.size
     when /\A([A-Za-z_][A-Za-z0-9_]*)/
       str = $1
-      type = KEYWORDS.include?(str) ? :kw : :ident
-      tokens << Token.new(type, str, lineno)
+      kind = KEYWORDS.include?(str) ? :kw : :ident
+      tokens << Token.new(kind, str, lineno)
       pos += str.size
     else
       p_e rest[0...100]
