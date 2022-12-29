@@ -1,7 +1,7 @@
 require_relative "common"
 
 KEYWORDS = %w[
-  def end var return case when while
+  def end var return if case when while
   global
   break
   true false
@@ -32,11 +32,6 @@ def tokenize(src)
       str = $1
       tokens << Token.new(:str, str, lineno)
       pos += str.size + 2
-    when /\A(if)[^a-z_]/
-      str = $1
-      tokens << Token.new(:kw, "case", lineno)
-      tokens << Token.new(:kw, "when", lineno)
-      pos += str.size
     when /\A(-?[0-9]+)/
       str = $1
       tokens << Token.new(:int, str.to_i, lineno)
@@ -47,8 +42,13 @@ def tokenize(src)
       pos += str.size
     when /\A([A-Za-z_][A-Za-z0-9_]*)/
       str = $1
-      kind = KEYWORDS.include?(str) ? :kw : :ident
-      tokens << Token.new(kind, str, lineno)
+      if str == "if"
+        tokens << Token.new(:kw, "case", lineno)
+        tokens << Token.new(:kw, "when", lineno)
+      else
+        kind = KEYWORDS.include?(str) ? :kw : :ident
+        tokens << Token.new(kind, str, lineno)
+      end
       pos += str.size
     else
       p_e rest[0...100]
