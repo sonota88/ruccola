@@ -114,7 +114,7 @@ def ConsCell_get_cdr(self_)
   return fget(self_, CONS_CELL__CDR());
 end
 
-def ConsCell_new(g_, car, cdr)
+def ConsCell_new(car, cdr)
   var self_ = allocate(CONS_CELL__TYPE_SIZE());
 
   ConsCell_set_car(self_, car);
@@ -171,7 +171,7 @@ end
 
 def List_add(g_, self_, node_)
   var cell_ = List_get_cell(self_);
-  var new_cell_ = ConsCell_new(g_, node_, LIST_NULL());
+  var new_cell_ = ConsCell_new(node_, LIST_NULL());
 
   var size = List_get_size(self_);
   List_set_size(self_, size + 1);
