@@ -27,7 +27,7 @@ class Test130 < Minitest::Test
 
         init_globals(g_);
 
-        xs_ = List_new(g_);
+        xs_ = List_new();
 
         # 1
         print_i(List_size(xs_));
@@ -73,7 +73,7 @@ class Test130 < Minitest::Test
         aset(&str, 1, 66); # B
         aset(&str, 2,  0);
 
-        xs_ = List_new(g_);
+        xs_ = List_new();
 
         List_add_str(g_, xs_, &str);
 
@@ -102,10 +102,10 @@ class Test130 < Minitest::Test
 
         init_globals(g_);
 
-        xs_inner_ = List_new(g_);
+        xs_inner_ = List_new();
         List_add_int(g_, xs_inner_, 123);
 
-        xs_ = List_new(g_);
+        xs_ = List_new();
         List_add_list(g_, xs_, xs_inner_);
 
         # 1
@@ -145,11 +145,11 @@ class Test130 < Minitest::Test
 
         init_globals(g_);
 
-        xs_inner_ = List_new(g_);
+        xs_inner_ = List_new();
         List_add_int(g_, xs_inner_, 22);
         List_add_int(g_, xs_inner_, 33);
 
-        xs_ = List_new(g_);
+        xs_ = List_new();
         List_add_int(g_, xs_, 11);
 
         List_add_all(g_, xs_, xs_inner_);
@@ -192,7 +192,7 @@ class Test130 < Minitest::Test
 
         init_globals(g_);
 
-        xs_ = List_new(g_);
+        xs_ = List_new();
         List_add_int(g_, xs_, 11);
         List_add_int(g_, xs_, 22);
         List_add_int(g_, xs_, 33);

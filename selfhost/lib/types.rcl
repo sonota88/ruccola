@@ -156,7 +156,7 @@ def List_get_size(self_)
   return fget(self_, LIST__SIZE());
 end
 
-def List_new(g_)
+def List_new()
   var self_ = allocate(LIST__TYPE_SIZE());
 
   List_set_cell(self_, LIST_NULL());
@@ -249,7 +249,7 @@ def List_get_as_list(self_, i)
 end
 
 def List_rest(g_, list_, n)
-  var newlist_ = List_new(g_);
+  var newlist_ = List_new();
   var i = 0;
   var work_ = List_get_cell(list_);
 
@@ -355,7 +355,7 @@ def Token_val_eq(self_, value_)
 end
 
 def Token_to_plain(g_, self_)
-  var list_ = List_new(g_);
+  var list_ = List_new();
   var kind = Token_get_kind(self_);
   var kind_str_ = allocate(3);
 
@@ -537,7 +537,7 @@ def Names_from_node_list(g_, list_)
 end
 
 def Names_to_plain(g_, self_)
-  var list_ = List_new(g_);
+  var list_ = List_new();
   var i = 0;
   var size = Names_size(self_);
 

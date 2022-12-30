@@ -813,7 +813,7 @@ def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
   asm_sub_sp(1);
 
   if (List_size(stmt_) == 3)
-    set_stmt_ = List_new(g_);
+    set_stmt_ = List_new();
     List_add_str(g_, set_stmt_, "set");
     List_add(g_, set_stmt_, List_get(stmt_, 1));
     List_add(g_, set_stmt_, List_get(stmt_, 2));

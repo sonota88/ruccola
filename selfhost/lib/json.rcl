@@ -115,7 +115,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
   );
   pos = pos + 1;
 
-  list_ = List_new(g_);
+  list_ = List_new();
 
   while (true)
     c = char_at(rest_, pos);
