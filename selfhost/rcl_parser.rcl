@@ -91,7 +91,7 @@ def read_token(g_, input_, pos, size)
   substr(&kind_str, &line, 0, sep_i);
   substr_with_check(&value_str, &line, sep_i + 1, str_size(&line), value_str_size);
 
-  t_ = Token_new(g_, &kind_str, &value_str);
+  t_ = Token_new(&kind_str, &value_str);
   return t_;
 end
 

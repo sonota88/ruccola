@@ -328,7 +328,7 @@ def TOKEN__VAL_SIZE() return 40; end
 
 def TOKEN__TYPE_SIZE () return 41; end
 
-def Token_new(g_, kind_str_, str_)
+def Token_new(kind_str_, str_)
   var self_ = allocate(TOKEN__TYPE_SIZE());
 
   fset(self_, TOKEN__KIND(), TokenKind_from_str(kind_str_));
