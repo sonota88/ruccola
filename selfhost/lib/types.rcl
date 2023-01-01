@@ -383,7 +383,7 @@ def NAME__TYPE_SIZE()
   );
 end
 
-def Name_new(g_, s_name_, width)
+def Name_new(s_name_, width)
   var self_ = allocate(NAME__TYPE_SIZE());
 
   fset(self_, NAME__WIDTH(), width);
@@ -442,7 +442,7 @@ def Names_add(g_, self_, s_name_, width)
     panic(316);
   end
 
-  name_ = Name_new(g_, s_name_, width);
+  name_ = Name_new(s_name_, width);
   items_ = Names_get_items(self_);
   aset(items_, size, name_);
 
