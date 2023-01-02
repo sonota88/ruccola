@@ -415,7 +415,7 @@ def NAMES__TYPE_SIZE()
   );
 end
 
-def Names_new(g_)
+def Names_new()
   var self_ = allocate(NAMES__TYPE_SIZE());
 
   fset(self_, NAMES__SIZE(), 0);
@@ -518,7 +518,7 @@ def Names_disp_lvar(self_, target_name_)
 end
 
 def Names_from_node_list(g_, list_)
-  var names_ = Names_new(g_);
+  var names_ = Names_new();
   var i;
   var size = List_size(list_);
 

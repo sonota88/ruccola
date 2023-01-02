@@ -855,7 +855,7 @@ def gen_func(g_, func_)
 
   asm_fn_prologue();
 
-  lvar_names_ = Names_new(g_);
+  lvar_names_ = Names_new();
 
   i = 0;
   while (i < List_size(stmts_))
@@ -1048,7 +1048,7 @@ def incr_label_id(g_)
 end
 
 def init_gvar_names(g_)
-  *(g_ + GO_GVAR_NAMES()) = Names_new(g_);
+  *(g_ + GO_GVAR_NAMES()) = Names_new();
 end
 
 def load_ast(g_)
