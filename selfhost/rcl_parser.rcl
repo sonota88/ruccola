@@ -30,8 +30,8 @@ end
 def mklist2(g_, n0_, n1_)
   var list_ = List_new();
 
-  List_add(g_, list_, n0_);
-  List_add(g_, list_, n1_);
+  List_add(list_, n0_);
+  List_add(list_, n1_);
 
   return list_;
 end
@@ -39,7 +39,7 @@ end
 def mklist3(g_, n0_, n1_, n2_)
   var list_ = mklist2(g_, n0_, n1_);
 
-  List_add(g_, list_, n2_);
+  List_add(list_, n2_);
 
   return list_;
 end
@@ -326,7 +326,7 @@ def parse_args(g_)
   end
 
   arg_node_ = _parse_arg(g_);
-  List_add(g_, args_, arg_node_);
+  List_add(args_, arg_node_);
 
   while (true)
     t_ = peek(g_, 0);
@@ -337,7 +337,7 @@ def parse_args(g_)
 
     consume_sym(g_, &s_comma);
     arg_node_ = _parse_arg(g_);
-    List_add(g_, args_, arg_node_);
+    List_add(args_, arg_node_);
   end
 
   return args_;
@@ -361,7 +361,7 @@ def parse_exprs(g_)
   end
 
   expr_node_ = parse_expr(g_);
-  List_add(g_, exprs_, expr_node_);
+  List_add(exprs_, expr_node_);
 
   while (true)
     t_ = peek(g_, 0);
@@ -372,7 +372,7 @@ def parse_exprs(g_)
 
     consume_sym(g_, &s_comma);
     expr_node_ = parse_expr(g_);
-    List_add(g_, exprs_, expr_node_);
+    List_add(exprs_, expr_node_);
   end
 
   return exprs_;
@@ -581,7 +581,7 @@ def _parse_expr_factor_ident(g_)
 
     i = 0;
     while (i < List_size(funcall_))
-      List_add(g_, funcall_list_, List_get(funcall_, i));
+      List_add(funcall_list_, List_get(funcall_, i));
       i = i + 1;
     end
 
@@ -789,7 +789,7 @@ def parse_return(g_)
     consume_sym_semicolon(g_); # ;
   else
     expr_ = parse_expr(g_);
-    List_add(g_, stmt_, expr_);
+    List_add(stmt_, expr_);
 
     consume_sym_semicolon(g_); # ;
   end
@@ -855,7 +855,7 @@ def _parse_when_clause(g_)
   stmts_ = parse_stmts(g_);
 
   when_clause_ = List_new();
-  List_add(g_, when_clause_, cond_expr_node_);
+  List_add(when_clause_, cond_expr_node_);
   List_add_all(g_, when_clause_, stmts_);
 
   return when_clause_;
