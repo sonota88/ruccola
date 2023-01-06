@@ -152,7 +152,7 @@ class Test130 < Minitest::Test
         xs_ = List_new();
         List_add_int(g_, xs_, 11);
 
-        List_add_all(g_, xs_, xs_inner_);
+        List_add_all(xs_, xs_inner_);
 
         # 1
         print_i(List_size(xs_));

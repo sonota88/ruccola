@@ -755,7 +755,7 @@ def parse_funcall(g_)
   funcall_ = List_new();
   List_add_str(g_, funcall_, fn_name_);
 
-  List_add_all(g_, funcall_, args_);
+  List_add_all(funcall_, args_);
 
   return funcall_;
 end
@@ -769,7 +769,7 @@ def parse_call(g_)
   List_add_str(g_, stmt_, "call");
 
   funcall_ = parse_funcall(g_);
-  List_add_all(g_, stmt_, funcall_);
+  List_add_all(stmt_, funcall_);
 
   consume_sym_semicolon(g_); # ;
 
@@ -856,7 +856,7 @@ def _parse_when_clause(g_)
 
   when_clause_ = List_new();
   List_add(when_clause_, cond_expr_node_);
-  List_add_all(g_, when_clause_, stmts_);
+  List_add_all(when_clause_, stmts_);
 
   return when_clause_;
 end
