@@ -139,7 +139,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
             c == 45 # -
           ))
       n = Json_parse_int(rest_, pos, &size);
-      List_add_int(g_, list_, n);
+      List_add_int(list_, n);
       pos = pos + size;
 
     when (c == C_DQ())

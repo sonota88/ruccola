@@ -240,7 +240,7 @@ end
 def StrLitList_add(g_, str_, offset)
   var s_o_ = List_new();
   List_add_str(g_, s_o_, str_);
-  List_add_int(g_, s_o_, offset);
+  List_add_int(s_o_, offset);
 
   List_add_list(g_, StrLitList_get_self(g_), s_o_);
 end

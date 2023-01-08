@@ -40,7 +40,7 @@ def main()
       print_i(n);
       putchar(C_LF());
 
-      List_add_int(g_, primes_, n);
+      List_add_int(primes_, n);
     end
 
     n = n + 1;

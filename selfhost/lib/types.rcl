@@ -201,7 +201,7 @@ def List_add_all(self_, list_)
   end
 end
 
-def List_add_int(g_, self_, n)
+def List_add_int(self_, n)
   var node_ = Node_new_int(n);
   List_add(self_, node_);
 end
@@ -361,7 +361,7 @@ def Token_to_plain(g_, self_)
 
   TokenKind_to_str(kind_str_, kind);
 
-  List_add_int(g_, list_, kind);
+  List_add_int(list_, kind);
   List_add_str(g_, list_, kind_str_);
   List_add_str(g_, list_, Token_get_val(self_));
 
@@ -543,7 +543,7 @@ def Names_to_plain(g_, self_)
 
   while (i < size)
     List_add_str(g_, list_, Names_get_str(self_, i));
-    List_add_int(g_, list_, Names_get_width(self_, i));
+    List_add_int(list_, Names_get_width(self_, i));
     i = i + 1;
   end
 

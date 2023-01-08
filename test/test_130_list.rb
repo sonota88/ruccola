@@ -33,8 +33,8 @@ class Test130 < Minitest::Test
         print_i(List_size(xs_));
         putchar(c_slash);
 
-        List_add_int(g_, xs_, 11);
-        List_add_int(g_, xs_, -22);
+        List_add_int(xs_, 11);
+        List_add_int(xs_, -22);
 
         # 2
         print_i(List_size(xs_));
@@ -103,7 +103,7 @@ class Test130 < Minitest::Test
         init_globals(g_);
 
         xs_inner_ = List_new();
-        List_add_int(g_, xs_inner_, 123);
+        List_add_int(xs_inner_, 123);
 
         xs_ = List_new();
         List_add_list(g_, xs_, xs_inner_);
@@ -146,11 +146,11 @@ class Test130 < Minitest::Test
         init_globals(g_);
 
         xs_inner_ = List_new();
-        List_add_int(g_, xs_inner_, 22);
-        List_add_int(g_, xs_inner_, 33);
+        List_add_int(xs_inner_, 22);
+        List_add_int(xs_inner_, 33);
 
         xs_ = List_new();
-        List_add_int(g_, xs_, 11);
+        List_add_int(xs_, 11);
 
         List_add_all(xs_, xs_inner_);
 
@@ -193,10 +193,10 @@ class Test130 < Minitest::Test
         init_globals(g_);
 
         xs_ = List_new();
-        List_add_int(g_, xs_, 11);
-        List_add_int(g_, xs_, 22);
-        List_add_int(g_, xs_, 33);
-        List_add_int(g_, xs_, 44);
+        List_add_int(xs_, 11);
+        List_add_int(xs_, 22);
+        List_add_int(xs_, 33);
+        List_add_int(xs_, 44);
 
         xs2_ = List_rest(g_, xs_, 2);
 
