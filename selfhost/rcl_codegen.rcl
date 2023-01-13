@@ -814,7 +814,7 @@ def gen_var(g_, fn_arg_names_, lvar_names_, stmt_)
 
   if (List_size(stmt_) == 3)
     set_stmt_ = List_new();
-    List_add_str(g_, set_stmt_, "set");
+    List_add_str(set_stmt_, "set");
     List_add(set_stmt_, List_get(stmt_, 1));
     List_add(set_stmt_, List_get(stmt_, 2));
 

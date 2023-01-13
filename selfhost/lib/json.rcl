@@ -144,7 +144,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
 
     when (c == C_DQ())
       Json_parse_str(rest_, pos, &s_temp, s_temp_size, &size);
-      List_add_str(g_, list_, &s_temp);
+      List_add_str(list_, &s_temp);
       pos = pos + size;
 
     when (c == 0)

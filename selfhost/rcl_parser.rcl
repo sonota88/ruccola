@@ -239,7 +239,7 @@ end
 
 def StrLitList_add(g_, str_, offset)
   var s_o_ = List_new();
-  List_add_str(g_, s_o_, str_);
+  List_add_str(s_o_, str_);
   List_add_int(s_o_, offset);
 
   List_add_list(g_, StrLitList_get_self(g_), s_o_);
@@ -577,7 +577,7 @@ def _parse_expr_factor_ident(g_)
     funcall_ = parse_funcall(g_);
 
     funcall_list_ = List_new();
-    List_add_str(g_, funcall_list_, "funcall");
+    List_add_str(funcall_list_, "funcall");
 
     i = 0;
     while (i < List_size(funcall_))
@@ -753,7 +753,7 @@ def parse_funcall(g_)
   consume_sym_paren_r(g_); # )
 
   funcall_ = List_new();
-  List_add_str(g_, funcall_, fn_name_);
+  List_add_str(funcall_, fn_name_);
 
   List_add_all(funcall_, args_);
 
@@ -766,7 +766,7 @@ def parse_call(g_)
 
   stmt_ = List_new();
 
-  List_add_str(g_, stmt_, "call");
+  List_add_str(stmt_, "call");
 
   funcall_ = parse_funcall(g_);
   List_add_all(stmt_, funcall_);
@@ -783,7 +783,7 @@ def parse_return(g_)
   consume_kw(g_, "return");
 
   stmt_ = List_new();
-  List_add_str(g_, stmt_, "return");
+  List_add_str(stmt_, "return");
 
   if (str_eq(Token_get_val(peek(g_, 0)), ";"))
     consume_sym_semicolon(g_); # ;
@@ -825,7 +825,7 @@ def parse_break(g_)
   consume_sym_semicolon(g_); # ;
 
   stmt_ = List_new();
-  List_add_str(g_, stmt_, "break");
+  List_add_str(stmt_, "break");
 
   return stmt_;
 end
@@ -868,7 +868,7 @@ def parse_case(g_)
   consume_kw(g_, "case");
 
   stmt_ = List_new();
-  List_add_str(g_, stmt_, "case");
+  List_add_str(stmt_, "case");
 
   while (__not(Token_val_eq(peek(g_, 0), "end")))
     when_clause_ = _parse_when_clause(g_);
@@ -892,8 +892,8 @@ def parse_vm_comment(g_)
   t_ = peek(g_, 0);
   incr_token_index(g_);
 
-  List_add_str(g_, stmt_, "_cmt");
-  List_add_str(g_, stmt_, Token_get_val(t_));
+  List_add_str(stmt_, "_cmt");
+  List_add_str(stmt_, Token_get_val(t_));
 
   consume_sym_paren_r(g_); # )
   consume_sym_semicolon(g_); # ;
@@ -997,8 +997,8 @@ def parse_func(g_)
   consume_kw(g_, "end");
 
   func_stmt_ = List_new();
-  List_add_str(g_, func_stmt_, "func");
-  List_add_str(g_, func_stmt_, fn_name_);
+  List_add_str(func_stmt_, "func");
+  List_add_str(func_stmt_, fn_name_);
   List_add_list(g_, func_stmt_, args_);
   List_add_list(g_, func_stmt_, stmts_);
 
@@ -1039,7 +1039,7 @@ def parse_top_stmts(g_)
   var top_stmt_;
 
   top_stmts_ = List_new();
-  List_add_str(g_, top_stmts_, "top_stmts");
+  List_add_str(top_stmts_, "top_stmts");
 
   while (__not(is_end(g_)))
     top_stmt_ = parse_top_stmt(g_);
@@ -1124,8 +1124,8 @@ def make_init_strings_fn(g_)
 
   # ----
 
-  List_add_str(g_, fn_, "func");
-  List_add_str(g_, fn_, "init_strings");
+  List_add_str(fn_, "func");
+  List_add_str(fn_, "init_strings");
   List_add_list(g_, fn_, args_);
   List_add_list(g_, fn_, stmts_);
 

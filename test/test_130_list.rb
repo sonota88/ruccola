@@ -75,7 +75,7 @@ class Test130 < Minitest::Test
 
         xs_ = List_new();
 
-        List_add_str(g_, xs_, &str);
+        List_add_str(xs_, &str);
 
         print_s(List_get_as_str(xs_, 0));
         putchar(c_slash);
