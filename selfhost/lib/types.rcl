@@ -211,7 +211,7 @@ def List_add_str(self_, str_)
   List_add(self_, node_);
 end
 
-def List_add_list(g_, self_, list_)
+def List_add_list(self_, list_)
   var node_ = Node_new_list(list_);
   List_add(self_, node_);
 end

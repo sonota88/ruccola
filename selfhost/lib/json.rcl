@@ -127,7 +127,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
 
     when (c == 91) # [
       child_list_ = Json_parse_list(g_, rest_, pos, &size);
-      List_add_list(g_, list_, child_list_);
+      List_add_list(list_, child_list_);
       pos = pos + size;
 
     when (c == C_LF()   ) pos = pos + 1;

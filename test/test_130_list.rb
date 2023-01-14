@@ -106,7 +106,7 @@ class Test130 < Minitest::Test
         List_add_int(xs_inner_, 123);
 
         xs_ = List_new();
-        List_add_list(g_, xs_, xs_inner_);
+        List_add_list(xs_, xs_inner_);
 
         # 1
         print_i(List_size(xs_));

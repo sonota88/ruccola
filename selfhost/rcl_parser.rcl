@@ -242,7 +242,7 @@ def StrLitList_add(g_, str_, offset)
   List_add_str(s_o_, str_);
   List_add_int(s_o_, offset);
 
-  List_add_list(g_, StrLitList_get_self(g_), s_o_);
+  List_add_list(StrLitList_get_self(g_), s_o_);
 end
 
 def StrLitList_get_str(g_, i)
@@ -872,7 +872,7 @@ def parse_case(g_)
 
   while (__not(Token_val_eq(peek(g_, 0), "end")))
     when_clause_ = _parse_when_clause(g_);
-    List_add_list(g_, stmt_, when_clause_);
+    List_add_list(stmt_, when_clause_);
   end
 
   consume_kw(g_, "end");
@@ -951,7 +951,7 @@ def parse_stmts(g_)
     end
 
     stmt_ = parse_stmt(g_);
-    List_add_list(g_, stmts_, stmt_);
+    List_add_list(stmts_, stmt_);
   end
 
   return stmts_;
@@ -991,7 +991,7 @@ def parse_func(g_)
     else
       stmt_ = parse_stmt(g_);
     end
-    List_add_list(g_, stmts_, stmt_);
+    List_add_list(stmts_, stmt_);
   end
 
   consume_kw(g_, "end");
@@ -999,8 +999,8 @@ def parse_func(g_)
   func_stmt_ = List_new();
   List_add_str(func_stmt_, "func");
   List_add_str(func_stmt_, fn_name_);
-  List_add_list(g_, func_stmt_, args_);
-  List_add_list(g_, func_stmt_, stmts_);
+  List_add_list(func_stmt_, args_);
+  List_add_list(func_stmt_, stmts_);
 
   return func_stmt_;
 end
@@ -1043,7 +1043,7 @@ def parse_top_stmts(g_)
 
   while (__not(is_end(g_)))
     top_stmt_ = parse_top_stmt(g_);
-    List_add_list(g_, top_stmts_, top_stmt_);
+    List_add_list(top_stmts_, top_stmt_);
   end
 
   return top_stmts_;
@@ -1098,7 +1098,7 @@ def make_init_strings_fn(g_)
       )
     );
 
-  List_add_list(g_, stmts_, var_offset_);
+  List_add_list(stmts_, var_offset_);
 
   # ----
 
@@ -1113,11 +1113,11 @@ def make_init_strings_fn(g_)
     str_bi = 0;
     while (str_bi < str_size(str_))
       byte = char_at(str_, str_bi);
-      List_add_list(g_, stmts_, make_set_byte_stmt(g_, bi, byte));
+      List_add_list(stmts_, make_set_byte_stmt(g_, bi, byte));
       bi = bi + 1;
       str_bi = str_bi + 1;
     end
-    List_add_list(g_, stmts_, make_set_byte_stmt(g_, bi, 0));
+    List_add_list(stmts_, make_set_byte_stmt(g_, bi, 0));
     bi = bi + 1;
     i = i + 1;
   end
@@ -1126,8 +1126,8 @@ def make_init_strings_fn(g_)
 
   List_add_str(fn_, "func");
   List_add_str(fn_, "init_strings");
-  List_add_list(g_, fn_, args_);
-  List_add_list(g_, fn_, stmts_);
+  List_add_list(fn_, args_);
+  List_add_list(fn_, stmts_);
 
   return fn_;
 end
@@ -1143,7 +1143,7 @@ def _main(g_)
   var fn_init_strings_;
   if (0 < List_size(StrLitList_get_self(g_)))
     fn_init_strings_ = make_init_strings_fn(g_);
-    List_add_list(g_, ast_, fn_init_strings_);
+    List_add_list(ast_, fn_init_strings_);
   end
 
   Json_print(ast_);
