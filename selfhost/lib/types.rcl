@@ -248,7 +248,7 @@ def List_get_as_list(self_, i)
   return Node_get_list(node_);
 end
 
-def List_rest(g_, list_, n)
+def List_rest(list_, n)
   var newlist_ = List_new();
   var i = 0;
   var work_ = List_get_cell(list_);

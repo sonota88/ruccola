@@ -566,7 +566,7 @@ def gen_call(g_, fn_arg_names_, lvar_names_, stmt_)
   var s_reg_a_ = "reg_a";
 
   fn_name_ = List_get_as_str(stmt_, 1);
-  args_ = List_rest(g_, stmt_, 2);
+  args_ = List_rest(stmt_, 2);
 
   str_cp_with_check(&vm_comment, "call", vm_comment_size);
   aset(&vm_comment, 4, 58); # :
@@ -736,14 +736,14 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   str_cp_with_check(&label_end_when_head, "end_when", label_size);
   append_label_id(&label_end_when_head, label_id, label_size);
 
-  when_clauses_ = List_rest(g_, stmt_, 1);
+  when_clauses_ = List_rest(stmt_, 1);
 
   i = 0;
   while (i < List_size(when_clauses_))
     when_index = when_index + 1;
     when_clause_ = List_get_as_list(when_clauses_, i);
     cond_expr_node_ = List_get(when_clause_, 0);
-    stmts_ = List_rest(g_, when_clause_, 1);
+    stmts_ = List_rest(when_clause_, 1);
 
     gen_expr(g_, fn_arg_names_, lvar_names_, cond_expr_node_);
     asm_cp(s_0_, s_reg_b_);

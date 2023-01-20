@@ -198,7 +198,7 @@ class Test130 < Minitest::Test
         List_add_int(xs_, 33);
         List_add_int(xs_, 44);
 
-        xs2_ = List_rest(g_, xs_, 2);
+        xs2_ = List_rest(xs_, 2);
 
         # 1
         print_i(List_size(xs2_));
