@@ -354,7 +354,7 @@ def Token_val_eq(self_, value_)
   return str_eq(Token_get_val(self_), value_);
 end
 
-def Token_to_plain(g_, self_)
+def Token_to_plain(self_)
   var list_ = List_new();
   var kind = Token_get_kind(self_);
   var kind_str_ = allocate(3);

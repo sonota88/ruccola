@@ -680,7 +680,7 @@ def _parse_expr_factor(g_)
   when (tkind == TOKEN_KIND__STR())
     return _parse_expr_factor_str(g_);
   else
-    Json_print(Token_to_plain(g_, t_));
+    Json_print(Token_to_plain(t_));
     panic(645); # not yet impl
   end
 end
