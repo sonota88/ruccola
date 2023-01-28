@@ -865,12 +865,12 @@ def gen_func(g_, func_)
     case
     when (str_eq(stmt_head_, s_var_))
       lvar_name_ = List_get_as_str(stmt_, 1);
-      Names_add(g_, lvar_names_, lvar_name_, 1);
+      Names_add(lvar_names_, lvar_name_, 1);
       gen_var(g_, fn_arg_names_, lvar_names_, stmt_);
     when (str_eq(stmt_head_, s_var_array_))
       lvar_name_ = List_get_as_str(stmt_, 1);
       lvar_width = List_get_as_int(stmt_, 2);
-      Names_add(g_, lvar_names_, lvar_name_, lvar_width);
+      Names_add(lvar_names_, lvar_name_, lvar_width);
       gen_var_array(g_, fn_arg_names_, lvar_names_, stmt_);
     else
       gen_stmt(g_, fn_arg_names_, lvar_names_, stmt_);
@@ -892,7 +892,7 @@ def register_gvar(g_, top_stmt_)
   gvar_name_ = List_get_as_str(top_stmt_, 1);
 
   gvar_names_ = get_gvar_names(g_);
-  Names_add(g_, gvar_names_, gvar_name_, 1);
+  Names_add(gvar_names_, gvar_name_, 1);
 end
 
 def gen_top_stmt(g_, top_stmt_)

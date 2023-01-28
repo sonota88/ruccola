@@ -431,7 +431,7 @@ def Names_get_items(self_)
   return self_ + NAMES__ITEMS();
 end
 
-def Names_add(g_, self_, s_name_, width)
+def Names_add(self_, s_name_, width)
   var size = Names_size(self_);
   var name_;
   var items_;
@@ -525,7 +525,6 @@ def Names_from_node_list(g_, list_)
   i = 0;
   while (i < size)
     Names_add(
-      g_,
       names_,
       List_get_as_str(list_, i),
       1
