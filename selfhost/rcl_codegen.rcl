@@ -845,7 +845,6 @@ def gen_func(g_, func_)
 
   fn_arg_names_ =
     Names_from_node_list(
-      g_,
       List_get_as_list(func_, 2)
     );
 

@@ -517,7 +517,7 @@ def Names_disp_lvar(self_, target_name_)
   return disp;
 end
 
-def Names_from_node_list(g_, list_)
+def Names_from_node_list(list_)
   var names_ = Names_new();
   var i;
   var size = List_size(list_);
