@@ -535,7 +535,7 @@ def Names_from_node_list(list_)
   return names_;
 end
 
-def Names_to_plain(g_, self_)
+def Names_to_plain(self_)
   var list_ = List_new();
   var i = 0;
   var size = Names_size(self_);

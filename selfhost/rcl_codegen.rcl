@@ -526,8 +526,8 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
       asm_cp(&cp_src, s_reg_a_);
 
     else
-      Json_print(Names_to_plain(g_, fn_arg_names_));
-      Json_print(Names_to_plain(g_, lvar_names_));
+      Json_print(Names_to_plain(fn_arg_names_));
+      Json_print(Names_to_plain(lvar_names_));
       Json_print_node(expr_);
       panic(681); # gen_expr: no such function argument or local variable
     end
