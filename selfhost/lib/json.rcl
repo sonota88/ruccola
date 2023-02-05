@@ -99,7 +99,7 @@ def Json_parse_str(rest_, pos, s_temp_, s_temp_size, size_)
   *(size_) = __sub(pos_end + 1, pos);
 end
 
-def Json_parse_list(g_, rest_, pos_start, size_)
+def Json_parse_list(rest_, pos_start, size_)
   var pos = pos_start;
   var size = 0;
   var list_;
@@ -126,7 +126,7 @@ def Json_parse_list(g_, rest_, pos_start, size_)
       break;
 
     when (c == 91) # [
-      child_list_ = Json_parse_list(g_, rest_, pos, &size);
+      child_list_ = Json_parse_list(rest_, pos, &size);
       List_add_list(list_, child_list_);
       pos = pos + size;
 
@@ -165,7 +165,7 @@ def Json_parse(g_, json_)
   var list_;
   var size;
 
-  list_ = Json_parse_list(g_, json_, 0, &size);
+  list_ = Json_parse_list(json_, 0, &size);
 
   return list_;
 end
