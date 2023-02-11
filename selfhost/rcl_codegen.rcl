@@ -1054,7 +1054,7 @@ def load_ast(g_)
   var input_size_max = 260000; var [260000]input;
 
   read_stdin_all(&input, input_size_max);
-  return Json_parse(g_, &input);
+  return Json_parse(&input);
 end
 
 def _main(g_)

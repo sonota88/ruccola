@@ -161,7 +161,7 @@ def Json_parse_list(rest_, pos_start, size_)
   return list_;
 end
 
-def Json_parse(g_, json_)
+def Json_parse(json_)
   var list_;
   var size;
 
