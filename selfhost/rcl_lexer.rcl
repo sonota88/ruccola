@@ -170,7 +170,7 @@ def print_str(str_)
   putchar(C_LF());
 end
 
-def lex(g_)
+def lex()
   var [60000]input; # INPUT_MAX
   var pos = 0;
   var size;
@@ -248,7 +248,7 @@ end
 # --------------------------------
 
 def _main(g_)
-  lex(g_);
+  lex();
 end
 
 def main()
