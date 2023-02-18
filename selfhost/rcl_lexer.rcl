@@ -247,7 +247,7 @@ end
 
 # --------------------------------
 
-def _main(g_)
+def _main()
   lex();
 end
 
@@ -258,5 +258,5 @@ def main()
   init_globals(g_);
   init_strings();
 
-  _main(g_);
+  _main();
 end
