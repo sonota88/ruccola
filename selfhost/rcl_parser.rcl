@@ -27,7 +27,7 @@ end
 
 # --------------------------------
 
-def mklist2(g_, n0_, n1_)
+def mklist2(n0_, n1_)
   var list_ = List_new();
 
   List_add(list_, n0_);
@@ -37,7 +37,7 @@ def mklist2(g_, n0_, n1_)
 end
 
 def mklist3(g_, n0_, n1_, n2_)
-  var list_ = mklist2(g_, n0_, n1_);
+  var list_ = mklist2(n0_, n1_);
 
   List_add(list_, n2_);
 
@@ -391,7 +391,7 @@ def _parse_var_declare(g_)
 
   consume_sym_semicolon(g_); # ;
 
-  return mklist2(g_,
+  return mklist2(
     Node_new_str("var"),
     Node_new_str(var_name_)
   );
@@ -491,7 +491,7 @@ def parse_expr_addr(g_)
   var var_name_ = Token_get_val(t_);
 
   return Node_new_list(
-    mklist2(g_,
+    mklist2(
       Node_new_str("addr"),
       Node_new_str(var_name_)
     )
@@ -507,7 +507,7 @@ def parse_expr_deref(g_)
   consume_sym_paren_r(g_);      # )
 
   return Node_new_list(
-    mklist2(g_,
+    mklist2(
       Node_new_str("deref"),
       expr_node_
     )
@@ -544,7 +544,7 @@ def _make_str_expr(g_, offset)
           Node_new_str("+"),
           Node_new_str("g_main_"),
           Node_new_list(
-            mklist2(g_,
+            mklist2(
               Node_new_str("funcall"),
               Node_new_str("GO_STRINGS")
             )
@@ -1015,7 +1015,7 @@ def parse_global(g_)
 
   consume_sym_semicolon(g_);
 
-  return mklist2(g_,
+  return mklist2(
     Node_new_str("gvar"),
     Node_new_str(name_)
   );
@@ -1058,7 +1058,7 @@ def make_set_byte_stmt(g_, bi, byte)
   return mklist3(g_,
     Node_new_str("set"),
     Node_new_list(
-      mklist2(g_,
+      mklist2(
         Node_new_str("deref"),
         Node_new_list(
           mklist3(g_,
@@ -1089,7 +1089,7 @@ def make_init_strings_fn(g_)
           Node_new_str("+"),
           Node_new_str("g_main_"),
           Node_new_list(
-            mklist2(g_,
+            mklist2(
               Node_new_str("funcall"),
               Node_new_str("GO_STRINGS")
             )
