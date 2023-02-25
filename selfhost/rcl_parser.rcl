@@ -534,7 +534,7 @@ def is_binop(t_)
   end
 end
 
-def _make_str_expr(g_, offset)
+def _make_str_expr(offset)
   # g_main_ + GO_STRINGS() + offset
   return Node_new_list(
     mklist3(
@@ -658,7 +658,7 @@ def _parse_expr_factor_str(g_)
     StrLitList_add(g_, str_, str_offset);
   end
 
-  return _make_str_expr(g_, str_offset);
+  return _make_str_expr(str_offset);
 end
 
 def _parse_expr_factor(g_)
