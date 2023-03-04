@@ -46,7 +46,8 @@ end
 
 # --------------------------------
 
-def get_tokens(g_)
+def get_tokens()
+  var g_ = get_g_main();
   return g_ + GO_TOKENS();
 end
 
@@ -73,7 +74,7 @@ def set_token(g_, ti, t_)
     panic(27); # set_token: capacity over
   end
 
-  tokens_ = get_tokens(g_);
+  tokens_ = get_tokens();
   aset(tokens_, ti, t_);
 end
 
@@ -154,7 +155,7 @@ def incr_token_index(g_)
 end
 
 def peek(g_, i)
-  var tokens_ = get_tokens(g_);
+  var tokens_ = get_tokens();
   var ti = get_token_index(g_);
 
   return aget(tokens_, ti + i);
