@@ -1053,7 +1053,7 @@ def parse(g_)
   return parse_top_stmts(g_);
 end
 
-def make_set_byte_stmt(g_, bi, byte)
+def make_set_byte_stmt(bi, byte)
   # *(offset_ + bi) = byte
   return mklist3(
     Node_new_str("set"),
@@ -1113,11 +1113,11 @@ def make_init_strings_fn(g_)
     str_bi = 0;
     while (str_bi < str_size(str_))
       byte = char_at(str_, str_bi);
-      List_add_list(stmts_, make_set_byte_stmt(g_, bi, byte));
+      List_add_list(stmts_, make_set_byte_stmt(bi, byte));
       bi = bi + 1;
       str_bi = str_bi + 1;
     end
-    List_add_list(stmts_, make_set_byte_stmt(g_, bi, 0));
+    List_add_list(stmts_, make_set_byte_stmt(bi, 0));
     bi = bi + 1;
     i = i + 1;
   end
