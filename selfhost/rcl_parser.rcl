@@ -65,7 +65,7 @@ def get_line_size(input_, pos_from)
   return __sub(pos_to, pos_from);
 end
 
-def set_token(g_, ti, t_)
+def set_token(ti, t_)
   var tokens_;
 
   if (__le(NUM_TOKENS_MAX(), ti))
@@ -113,7 +113,7 @@ def read_tokens(g_)
     end
 
     t_ = read_token(&input, pos, size);
-    set_token(g_, ti, t_);
+    set_token(ti, t_);
     ti = ti + 1;
 
     pos = pos + size;
