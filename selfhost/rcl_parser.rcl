@@ -119,10 +119,11 @@ def read_tokens(g_)
     pos = pos + size;
   end
 
-  set_num_tokens(g_, ti); # ti == number of tokens
+  set_num_tokens(ti); # ti == number of tokens
 end
 
-def set_num_tokens(g_, num_tokens)
+def set_num_tokens(num_tokens)
+  var g_ = get_g_main();
   *(g_ + GO_NUM_TOKENS()) = num_tokens;
 end
 
