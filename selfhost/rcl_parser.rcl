@@ -127,12 +127,13 @@ def set_num_tokens(num_tokens)
   *(g_ + GO_NUM_TOKENS()) = num_tokens;
 end
 
-def get_num_tokens(g_)
+def get_num_tokens()
+  var g_ = get_g_main();
   return *(g_ + GO_NUM_TOKENS());
 end
 
 def is_end(g_)
-  var num_tokens = get_num_tokens(g_);
+  var num_tokens = get_num_tokens();
   var ti = get_token_index(g_);
 
   return __le(num_tokens, ti);
