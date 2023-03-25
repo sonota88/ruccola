@@ -132,7 +132,8 @@ def get_num_tokens()
   return *(g_ + GO_NUM_TOKENS());
 end
 
-def is_end(g_)
+def is_end()
+  var g_ = get_g_main();
   var num_tokens = get_num_tokens();
   var ti = get_token_index(g_);
 
@@ -1044,7 +1045,7 @@ def parse_top_stmts(g_)
   top_stmts_ = List_new();
   List_add_str(top_stmts_, "top_stmts");
 
-  while (__not(is_end(g_)))
+  while (__not(is_end()))
     top_stmt_ = parse_top_stmt(g_);
     List_add_list(top_stmts_, top_stmt_);
   end
