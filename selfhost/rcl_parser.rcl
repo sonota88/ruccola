@@ -135,7 +135,7 @@ end
 def is_end()
   var g_ = get_g_main();
   var num_tokens = get_num_tokens();
-  var ti = get_token_index(g_);
+  var ti = get_token_index();
 
   return __le(num_tokens, ti);
 end
@@ -147,19 +147,20 @@ def set_token_index(ti)
   *(g_ + GO_TOKEN_INDEX()) = ti;
 end
 
-def get_token_index(g_)
+def get_token_index()
+  var g_ = get_g_main();
   return *(g_ + GO_TOKEN_INDEX());
 end
 
 def incr_token_index(g_)
   set_token_index(
-    get_token_index(g_) + 1
+    get_token_index() + 1
   );
 end
 
 def peek(g_, i)
   var tokens_ = get_tokens();
-  var ti = get_token_index(g_);
+  var ti = get_token_index();
 
   return aget(tokens_, ti + i);
 end
