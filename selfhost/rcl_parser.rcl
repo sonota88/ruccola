@@ -152,7 +152,7 @@ def get_token_index()
   return *(g_ + GO_TOKEN_INDEX());
 end
 
-def incr_token_index(g_)
+def incr_token_index()
   set_token_index(
     get_token_index() + 1
   );
@@ -172,7 +172,7 @@ def consume_kw(g_, str_)
         Token_kind_eq(t_, TOKEN_KIND__KW()),
         Token_val_eq(t_, str_)
   ))
-    incr_token_index(g_);
+    incr_token_index();
   else
     print_i_e(TOKEN_KIND__KW());
     putchar_e(47); # /
@@ -196,7 +196,7 @@ def consume_sym(g_, str_)
         Token_kind_eq(t_, TOKEN_KIND__SYM()),
         Token_val_eq(t_, str_)
   ))
-    incr_token_index(g_);
+    incr_token_index();
   else
     p_s(str_); # expected
     p_i(Token_get_kind(t_));
@@ -303,7 +303,7 @@ end
 def _parse_arg(g_)
   var n;
   var t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
 
   case
   when (Token_kind_eq(t_, TOKEN_KIND__IDENT()))
@@ -391,7 +391,7 @@ def _parse_var_declare(g_)
   consume_kw(g_, "var");
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
   var_name_ = Token_get_val(t_);
 
   consume_sym_semicolon(g_); # ;
@@ -411,7 +411,7 @@ def _parse_var_init(g_)
   consume_kw(g_, "var");
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
   var_name_ = Token_get_val(t_);
 
   consume_sym_equal(g_); # =
@@ -437,13 +437,13 @@ def _parse_var_array(g_)
   consume_sym_one_char(g_, 91); # [
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
   width = parse_int(Token_get_val(t_));
 
   consume_sym_one_char(g_, 93); # ]
 
   var_name_ = Token_get_val(peek(g_, 0));
-  incr_token_index(g_);
+  incr_token_index();
 
   consume_sym_semicolon(g_);
 
@@ -492,7 +492,7 @@ def parse_expr_addr(g_)
   consume_sym_one_char(g_, 38); # &
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
   var var_name_ = Token_get_val(t_);
 
   return Node_new_list(
@@ -566,7 +566,7 @@ def _parse_expr_factor_int(g_)
   var n;
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
 
   n = parse_int(Token_get_val(t_));
   return Node_new_int(n);
@@ -593,7 +593,7 @@ def _parse_expr_factor_ident(g_)
     return Node_new_list(funcall_list_);
   else
     t_ = peek(g_, 0);
-    incr_token_index(g_);
+    incr_token_index();
 
     return Node_new_str(Token_get_val(t_));
   end
@@ -637,7 +637,7 @@ def _parse_expr_factor_kw(g_)
     )
   )
     expr_node_ = Node_new_str(Token_get_val(t_));
-    incr_token_index(g_);
+    incr_token_index();
     return expr_node_;
   else
     panic(563); # unexpected token
@@ -650,7 +650,7 @@ def _parse_expr_factor_str(g_)
   var expr_list_;
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
 
   var str_ = Token_get_val(t_);
 
@@ -699,7 +699,7 @@ def parse_expr(g_)
 
   while (is_binop(peek(g_, 0)))
     s_op_ = Token_get_val(peek(g_, 0));
-    incr_token_index(g_);
+    incr_token_index();
 
     factor_node_ = _parse_expr_factor(g_);
 
@@ -726,7 +726,7 @@ def parse_set(g_)
   if (char_at(Token_get_val(t_), 0) == 42) # *
     lhs_node_ = parse_expr_deref(g_);
   else
-    incr_token_index(g_);
+    incr_token_index();
     lhs_node_ = Node_new_str(Token_get_val(t_));
   end
 
@@ -750,7 +750,7 @@ def parse_funcall(g_)
   var args_;
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
   fn_name_ = Token_get_val(t_);
 
   consume_sym_paren_l(g_); # (
@@ -895,7 +895,7 @@ def parse_vm_comment(g_)
   consume_sym_paren_l(g_); # (
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
 
   List_add_str(stmt_, "_cmt");
   List_add_str(stmt_, Token_get_val(t_));
@@ -974,7 +974,7 @@ def parse_func(g_)
   consume_kw(g_, "def");
 
   t_ = peek(g_, 0);
-  incr_token_index(g_);
+  incr_token_index();
   fn_name_ = Token_get_val(t_);
 
   consume_sym_paren_l(g_); # (
@@ -1016,7 +1016,7 @@ def parse_global(g_)
   consume_kw(g_, "global");
 
   name_ = Token_get_val(peek(g_, 0));
-  incr_token_index(g_);
+  incr_token_index();
 
   consume_sym_semicolon(g_);
 
