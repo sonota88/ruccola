@@ -158,7 +158,7 @@ def incr_token_index()
   );
 end
 
-def peek(g_, i)
+def peek(i)
   var tokens_ = get_tokens();
   var ti = get_token_index();
 
@@ -166,7 +166,7 @@ def peek(g_, i)
 end
 
 def consume_kw(g_, str_)
-  var t_ = peek(g_, 0);
+  var t_ = peek(0);
 
   if (__and(
         Token_kind_eq(t_, TOKEN_KIND__KW()),
@@ -191,7 +191,7 @@ def consume_kw(g_, str_)
 end
 
 def consume_sym(g_, str_)
-  var t_ = peek(g_, 0);
+  var t_ = peek(0);
   if (__and(
         Token_kind_eq(t_, TOKEN_KIND__SYM()),
         Token_val_eq(t_, str_)
@@ -302,7 +302,7 @@ end
 
 def _parse_arg(g_)
   var n;
-  var t_ = peek(g_, 0);
+  var t_ = peek(0);
   incr_token_index();
 
   case
@@ -324,7 +324,7 @@ def parse_args(g_)
 
   args_ = List_new();
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
 
   if (char_at(Token_get_val(t_), 0) == 41) # )
     return args_;
@@ -334,7 +334,7 @@ def parse_args(g_)
   List_add(args_, arg_node_);
 
   while (true)
-    t_ = peek(g_, 0);
+    t_ = peek(0);
 
     if (char_at(Token_get_val(t_), 0) != C_COMMA())
       break;
@@ -359,7 +359,7 @@ def parse_exprs(g_)
 
   exprs_ = List_new();
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
 
   if (char_at(Token_get_val(t_), 0) == 41) # )
     return exprs_;
@@ -369,7 +369,7 @@ def parse_exprs(g_)
   List_add(exprs_, expr_node_);
 
   while (true)
-    t_ = peek(g_, 0);
+    t_ = peek(0);
 
     if (char_at(Token_get_val(t_), 0) != C_COMMA())
       break;
@@ -390,7 +390,7 @@ def _parse_var_declare(g_)
 
   consume_kw(g_, "var");
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
   var_name_ = Token_get_val(t_);
 
@@ -410,7 +410,7 @@ def _parse_var_init(g_)
 
   consume_kw(g_, "var");
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
   var_name_ = Token_get_val(t_);
 
@@ -436,13 +436,13 @@ def _parse_var_array(g_)
 
   consume_sym_one_char(g_, 91); # [
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
   width = parse_int(Token_get_val(t_));
 
   consume_sym_one_char(g_, 93); # ]
 
-  var_name_ = Token_get_val(peek(g_, 0));
+  var_name_ = Token_get_val(peek(0));
   incr_token_index();
 
   consume_sym_semicolon(g_);
@@ -465,13 +465,13 @@ def parse_var(g_)
   aset(&s_equal, 0, 61); # =
   aset(&s_equal, 1,  0);
 
-  t_ = peek(g_, 1);
+  t_ = peek(1);
 
   if (char_at(Token_get_val(t_), 0) == 91) # [
     _parse_var_array(g_);
   else
 
-    t_ = peek(g_, 2);
+    t_ = peek(2);
     case
     when (Token_val_eq(t_, &s_semicolon))
       _parse_var_declare(g_);
@@ -491,7 +491,7 @@ def parse_expr_addr(g_)
 
   consume_sym_one_char(g_, 38); # &
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
   var var_name_ = Token_get_val(t_);
 
@@ -565,7 +565,7 @@ def _parse_expr_factor_int(g_)
   var t_;
   var n;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
 
   n = parse_int(Token_get_val(t_));
@@ -578,7 +578,7 @@ def _parse_expr_factor_ident(g_)
   var funcall_list_;
   var i;
 
-  if (char_at(Token_get_val(peek(g_, 1)), 0) == 40) # (
+  if (char_at(Token_get_val(peek(1)), 0) == 40) # (
     funcall_ = parse_funcall(g_);
 
     funcall_list_ = List_new();
@@ -592,7 +592,7 @@ def _parse_expr_factor_ident(g_)
 
     return Node_new_list(funcall_list_);
   else
-    t_ = peek(g_, 0);
+    t_ = peek(0);
     incr_token_index();
 
     return Node_new_str(Token_get_val(t_));
@@ -603,7 +603,7 @@ def _parse_expr_factor_sym(g_)
   var t_;
   var expr_node_;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
 
   case
   when (char_at(Token_get_val(t_), 0) == 40) # (
@@ -628,7 +628,7 @@ def _parse_expr_factor_kw(g_)
   var t_;
   var expr_node_;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
 
   if (
     __or(
@@ -649,7 +649,7 @@ def _parse_expr_factor_str(g_)
   var str_offset;
   var expr_list_;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
 
   var str_ = Token_get_val(t_);
@@ -670,7 +670,7 @@ def _parse_expr_factor(g_)
   var t_;
   var tkind;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   tkind = Token_get_kind(t_);
 
   case
@@ -697,8 +697,8 @@ def parse_expr(g_)
 
   expr_node_ = _parse_expr_factor(g_);
 
-  while (is_binop(peek(g_, 0)))
-    s_op_ = Token_get_val(peek(g_, 0));
+  while (is_binop(peek(0)))
+    s_op_ = Token_get_val(peek(0));
     incr_token_index();
 
     factor_node_ = _parse_expr_factor(g_);
@@ -721,7 +721,7 @@ def parse_set(g_)
   var lhs_node_;
   var expr_node_;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
 
   if (char_at(Token_get_val(t_), 0) == 42) # *
     lhs_node_ = parse_expr_deref(g_);
@@ -749,7 +749,7 @@ def parse_funcall(g_)
   var funcall_;
   var args_;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
   fn_name_ = Token_get_val(t_);
 
@@ -790,7 +790,7 @@ def parse_return(g_)
   stmt_ = List_new();
   List_add_str(stmt_, "return");
 
-  if (str_eq(Token_get_val(peek(g_, 0)), ";"))
+  if (str_eq(Token_get_val(peek(0)), ";"))
     consume_sym_semicolon(g_); # ;
   else
     expr_ = parse_expr(g_);
@@ -841,7 +841,7 @@ def _parse_when_clause(g_)
   var stmts_;
   var t_;
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
 
   case
   when (str_eq(Token_get_val(t_), "when"))
@@ -875,7 +875,7 @@ def parse_case(g_)
   stmt_ = List_new();
   List_add_str(stmt_, "case");
 
-  while (__not(Token_val_eq(peek(g_, 0), "end")))
+  while (__not(Token_val_eq(peek(0), "end")))
     when_clause_ = _parse_when_clause(g_);
     List_add_list(stmt_, when_clause_);
   end
@@ -894,7 +894,7 @@ def parse_vm_comment(g_)
   consume_kw(g_, "_cmt");
   consume_sym_paren_l(g_); # (
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
 
   List_add_str(stmt_, "_cmt");
@@ -907,7 +907,7 @@ def parse_vm_comment(g_)
 end
 
 def parse_stmt(g_)
-  var t_ = peek(g_, 0);
+  var t_ = peek(0);
   var val_ = Token_get_val(t_);
 
   case
@@ -925,8 +925,8 @@ def parse_stmt(g_)
     case
     when (
       __and(
-        Token_get_kind(peek(g_, 0)) == TOKEN_KIND__IDENT(),
-        char_at(Token_get_val(peek(g_, 1)), 0) == 40 # (
+        Token_get_kind(peek(0)) == TOKEN_KIND__IDENT(),
+        char_at(Token_get_val(peek(1)), 0) == 40 # (
       )
     )
       return parse_call(g_);
@@ -944,7 +944,7 @@ def parse_stmts(g_)
   stmts_ = List_new();
 
   while (true)
-    t_ = peek(g_, 0);
+    t_ = peek(0);
 
     case
     when (str_eq(Token_get_val(t_), "when"))
@@ -973,7 +973,7 @@ def parse_func(g_)
 
   consume_kw(g_, "def");
 
-  t_ = peek(g_, 0);
+  t_ = peek(0);
   incr_token_index();
   fn_name_ = Token_get_val(t_);
 
@@ -986,7 +986,7 @@ def parse_func(g_)
   stmts_ = List_new();
 
   while (true)
-    t_ = peek(g_, 0);
+    t_ = peek(0);
     if (Token_val_eq(t_, "end"))
       break;
     end
@@ -1015,7 +1015,7 @@ def parse_global(g_)
 
   consume_kw(g_, "global");
 
-  name_ = Token_get_val(peek(g_, 0));
+  name_ = Token_get_val(peek(0));
   incr_token_index();
 
   consume_sym_semicolon(g_);
@@ -1027,7 +1027,7 @@ def parse_global(g_)
 end
 
 def parse_top_stmt(g_)
-  var t_ = peek(g_, 0);
+  var t_ = peek(0);
 
   case
   when (str_eq(Token_get_val(t_), "def"))
