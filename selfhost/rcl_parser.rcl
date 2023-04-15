@@ -165,7 +165,7 @@ def peek(i)
   return aget(tokens_, ti + i);
 end
 
-def consume_kw(g_, str_)
+def consume_kw(str_)
   var t_ = peek(0);
 
   if (__and(
@@ -388,7 +388,7 @@ def _parse_var_declare(g_)
   var var_name_;
   check_heap_stack_overlap();
 
-  consume_kw(g_, "var");
+  consume_kw("var");
 
   t_ = peek(0);
   incr_token_index();
@@ -408,7 +408,7 @@ def _parse_var_init(g_)
   var expr_node_;
   check_heap_stack_overlap();
 
-  consume_kw(g_, "var");
+  consume_kw("var");
 
   t_ = peek(0);
   incr_token_index();
@@ -432,7 +432,7 @@ def _parse_var_array(g_)
   var width;
   var var_name_;
 
-  consume_kw(g_, "var");
+  consume_kw("var");
 
   consume_sym_one_char(g_, 91); # [
 
@@ -785,7 +785,7 @@ def parse_return(g_)
   var expr_;
   var stmt_;
 
-  consume_kw(g_, "return");
+  consume_kw("return");
 
   stmt_ = List_new();
   List_add_str(stmt_, "return");
@@ -806,7 +806,7 @@ def parse_while(g_)
   var expr_node_;
   var stmts_;
 
-  consume_kw(g_, "while");
+  consume_kw("while");
 
   consume_sym_paren_l(g_); # (
   expr_node_ = parse_expr(g_);
@@ -814,7 +814,7 @@ def parse_while(g_)
 
   stmts_ = parse_stmts(g_);
 
-  consume_kw(g_, "end");
+  consume_kw("end");
 
   return mklist3(
     Node_new_str("while"),
@@ -826,7 +826,7 @@ end
 def parse_break(g_)
   var stmt_;
 
-  consume_kw(g_, "break");
+  consume_kw("break");
   consume_sym_semicolon(g_); # ;
 
   stmt_ = List_new();
@@ -845,13 +845,13 @@ def _parse_when_clause(g_)
 
   case
   when (str_eq(Token_get_val(t_), "when"))
-    consume_kw(g_, "when");
+    consume_kw("when");
 
     consume_sym_paren_l(g_); # (
     cond_expr_node_ = parse_expr(g_);
     consume_sym_paren_r(g_); # )
   when (str_eq(Token_get_val(t_), "else"))
-    consume_kw(g_, "else");
+    consume_kw("else");
     cond_expr_node_ = Node_new_int(1);
   else
     panic(748); # _parse_when_clause
@@ -870,7 +870,7 @@ def parse_case(g_)
   var stmt_;
   var when_clause_;
 
-  consume_kw(g_, "case");
+  consume_kw("case");
 
   stmt_ = List_new();
   List_add_str(stmt_, "case");
@@ -880,7 +880,7 @@ def parse_case(g_)
     List_add_list(stmt_, when_clause_);
   end
 
-  consume_kw(g_, "end");
+  consume_kw("end");
 
   return stmt_;
 end
@@ -891,7 +891,7 @@ def parse_vm_comment(g_)
 
   stmt_ = List_new();
 
-  consume_kw(g_, "_cmt");
+  consume_kw("_cmt");
   consume_sym_paren_l(g_); # (
 
   t_ = peek(0);
@@ -971,7 +971,7 @@ def parse_func(g_)
   var fn_name_;
   check_heap_stack_overlap();
 
-  consume_kw(g_, "def");
+  consume_kw("def");
 
   t_ = peek(0);
   incr_token_index();
@@ -999,7 +999,7 @@ def parse_func(g_)
     List_add_list(stmts_, stmt_);
   end
 
-  consume_kw(g_, "end");
+  consume_kw("end");
 
   func_stmt_ = List_new();
   List_add_str(func_stmt_, "func");
@@ -1013,7 +1013,7 @@ end
 def parse_global(g_)
   var name_;
 
-  consume_kw(g_, "global");
+  consume_kw("global");
 
   name_ = Token_get_val(peek(0));
   incr_token_index();
