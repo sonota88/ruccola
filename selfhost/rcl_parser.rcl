@@ -190,7 +190,7 @@ def consume_kw(str_)
   end
 end
 
-def consume_sym(g_, str_)
+def consume_sym(str_)
   var t_ = peek(0);
   if (__and(
         Token_kind_eq(t_, TOKEN_KIND__SYM()),
@@ -213,7 +213,7 @@ def consume_sym_one_char(g_, c)
   aset(&str, 0, c);
   aset(&str, 1, 0);
 
-  consume_sym(g_, &str);
+  consume_sym(&str);
 end
 
 def consume_sym_paren_l(g_)
@@ -340,7 +340,7 @@ def parse_args(g_)
       break;
     end
 
-    consume_sym(g_, &s_comma);
+    consume_sym(&s_comma);
     arg_node_ = _parse_arg(g_);
     List_add(args_, arg_node_);
   end
@@ -375,7 +375,7 @@ def parse_exprs(g_)
       break;
     end
 
-    consume_sym(g_, &s_comma);
+    consume_sym(&s_comma);
     expr_node_ = parse_expr(g_);
     List_add(exprs_, expr_node_);
   end
