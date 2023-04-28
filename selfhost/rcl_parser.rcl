@@ -207,7 +207,7 @@ end
 
 # --------------------------------
 
-def consume_sym_one_char(g_, c)
+def consume_sym_one_char(c)
   var [2]str;
 
   aset(&str, 0, c);
@@ -217,19 +217,19 @@ def consume_sym_one_char(g_, c)
 end
 
 def consume_sym_paren_l(g_)
-  consume_sym_one_char(g_, 40); # (
+  consume_sym_one_char(40); # (
 end
 
 def consume_sym_paren_r(g_)
-  consume_sym_one_char(g_, 41); # )
+  consume_sym_one_char(41); # )
 end
 
 def consume_sym_semicolon(g_)
-  consume_sym_one_char(g_, 59); # ;
+  consume_sym_one_char(59); # ;
 end
 
 def consume_sym_equal(g_)
-  consume_sym_one_char(g_, 61); # =
+  consume_sym_one_char(61); # =
 end
 
 # --------------------------------
@@ -434,13 +434,13 @@ def _parse_var_array(g_)
 
   consume_kw("var");
 
-  consume_sym_one_char(g_, 91); # [
+  consume_sym_one_char(91); # [
 
   t_ = peek(0);
   incr_token_index();
   width = parse_int(Token_get_val(t_));
 
-  consume_sym_one_char(g_, 93); # ]
+  consume_sym_one_char(93); # ]
 
   var_name_ = Token_get_val(peek(0));
   incr_token_index();
@@ -489,7 +489,7 @@ def parse_expr_addr(g_)
   var t_;
   var var_name_;
 
-  consume_sym_one_char(g_, 38); # &
+  consume_sym_one_char(38); # &
 
   t_ = peek(0);
   incr_token_index();
@@ -506,7 +506,7 @@ end
 def parse_expr_deref(g_)
   var expr_node_;
 
-  consume_sym_one_char(g_, 42); # *
+  consume_sym_one_char(42); # *
   consume_sym_paren_l(g_);      # (
   expr_node_ = parse_expr(g_);
   consume_sym_paren_r(g_);      # )
