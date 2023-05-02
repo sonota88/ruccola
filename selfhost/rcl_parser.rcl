@@ -216,19 +216,19 @@ def consume_sym_one_char(c)
   consume_sym(&str);
 end
 
-def consume_sym_paren_l(g_)
+def consume_sym_paren_l()
   consume_sym_one_char(40); # (
 end
 
-def consume_sym_paren_r(g_)
+def consume_sym_paren_r()
   consume_sym_one_char(41); # )
 end
 
-def consume_sym_semicolon(g_)
+def consume_sym_semicolon()
   consume_sym_one_char(59); # ;
 end
 
-def consume_sym_equal(g_)
+def consume_sym_equal()
   consume_sym_one_char(61); # =
 end
 
@@ -394,7 +394,7 @@ def _parse_var_declare(g_)
   incr_token_index();
   var_name_ = Token_get_val(t_);
 
-  consume_sym_semicolon(g_); # ;
+  consume_sym_semicolon(); # ;
 
   return mklist2(
     Node_new_str("var"),
@@ -414,11 +414,11 @@ def _parse_var_init(g_)
   incr_token_index();
   var_name_ = Token_get_val(t_);
 
-  consume_sym_equal(g_); # =
+  consume_sym_equal(); # =
 
   expr_node_ = parse_expr(g_);
 
-  consume_sym_semicolon(g_); # ;
+  consume_sym_semicolon(); # ;
 
   return mklist3(
     Node_new_str("var"),
@@ -445,7 +445,7 @@ def _parse_var_array(g_)
   var_name_ = Token_get_val(peek(0));
   incr_token_index();
 
-  consume_sym_semicolon(g_);
+  consume_sym_semicolon();
 
   return mklist3(
     Node_new_str("var_array"),
@@ -507,9 +507,9 @@ def parse_expr_deref(g_)
   var expr_node_;
 
   consume_sym_one_char(42); # *
-  consume_sym_paren_l(g_);      # (
+  consume_sym_paren_l();      # (
   expr_node_ = parse_expr(g_);
-  consume_sym_paren_r(g_);      # )
+  consume_sym_paren_r();      # )
 
   return Node_new_list(
     mklist2(
@@ -607,9 +607,9 @@ def _parse_expr_factor_sym(g_)
 
   case
   when (char_at(Token_get_val(t_), 0) == 40) # (
-    consume_sym_paren_l(g_); # (
+    consume_sym_paren_l(); # (
     expr_node_ = parse_expr(g_);
-    consume_sym_paren_r(g_); # )
+    consume_sym_paren_r(); # )
 
     return expr_node_;
 
@@ -730,11 +730,11 @@ def parse_set(g_)
     lhs_node_ = Node_new_str(Token_get_val(t_));
   end
 
-  consume_sym_equal(g_); # =
+  consume_sym_equal(); # =
 
   expr_node_ = parse_expr(g_);
 
-  consume_sym_semicolon(g_); # ;
+  consume_sym_semicolon(); # ;
 
   return mklist3(
     Node_new_str("set"),
@@ -753,9 +753,9 @@ def parse_funcall(g_)
   incr_token_index();
   fn_name_ = Token_get_val(t_);
 
-  consume_sym_paren_l(g_); # (
+  consume_sym_paren_l(); # (
   args_ = parse_exprs(g_);
-  consume_sym_paren_r(g_); # )
+  consume_sym_paren_r(); # )
 
   funcall_ = List_new();
   List_add_str(funcall_, fn_name_);
@@ -776,7 +776,7 @@ def parse_call(g_)
   funcall_ = parse_funcall(g_);
   List_add_all(stmt_, funcall_);
 
-  consume_sym_semicolon(g_); # ;
+  consume_sym_semicolon(); # ;
 
   return stmt_;
 end
@@ -791,12 +791,12 @@ def parse_return(g_)
   List_add_str(stmt_, "return");
 
   if (str_eq(Token_get_val(peek(0)), ";"))
-    consume_sym_semicolon(g_); # ;
+    consume_sym_semicolon(); # ;
   else
     expr_ = parse_expr(g_);
     List_add(stmt_, expr_);
 
-    consume_sym_semicolon(g_); # ;
+    consume_sym_semicolon(); # ;
   end
 
   return stmt_;
@@ -808,9 +808,9 @@ def parse_while(g_)
 
   consume_kw("while");
 
-  consume_sym_paren_l(g_); # (
+  consume_sym_paren_l(); # (
   expr_node_ = parse_expr(g_);
-  consume_sym_paren_r(g_); # )
+  consume_sym_paren_r(); # )
 
   stmts_ = parse_stmts(g_);
 
@@ -827,7 +827,7 @@ def parse_break(g_)
   var stmt_;
 
   consume_kw("break");
-  consume_sym_semicolon(g_); # ;
+  consume_sym_semicolon(); # ;
 
   stmt_ = List_new();
   List_add_str(stmt_, "break");
@@ -847,9 +847,9 @@ def _parse_when_clause(g_)
   when (str_eq(Token_get_val(t_), "when"))
     consume_kw("when");
 
-    consume_sym_paren_l(g_); # (
+    consume_sym_paren_l(); # (
     cond_expr_node_ = parse_expr(g_);
-    consume_sym_paren_r(g_); # )
+    consume_sym_paren_r(); # )
   when (str_eq(Token_get_val(t_), "else"))
     consume_kw("else");
     cond_expr_node_ = Node_new_int(1);
@@ -892,7 +892,7 @@ def parse_vm_comment(g_)
   stmt_ = List_new();
 
   consume_kw("_cmt");
-  consume_sym_paren_l(g_); # (
+  consume_sym_paren_l(); # (
 
   t_ = peek(0);
   incr_token_index();
@@ -900,8 +900,8 @@ def parse_vm_comment(g_)
   List_add_str(stmt_, "_cmt");
   List_add_str(stmt_, Token_get_val(t_));
 
-  consume_sym_paren_r(g_); # )
-  consume_sym_semicolon(g_); # ;
+  consume_sym_paren_r(); # )
+  consume_sym_semicolon(); # ;
 
   return stmt_;
 end
@@ -977,11 +977,11 @@ def parse_func(g_)
   incr_token_index();
   fn_name_ = Token_get_val(t_);
 
-  consume_sym_paren_l(g_); # (
+  consume_sym_paren_l(); # (
 
   args_ = parse_args(g_);
 
-  consume_sym_paren_r(g_); # )
+  consume_sym_paren_r(); # )
 
   stmts_ = List_new();
 
@@ -1018,7 +1018,7 @@ def parse_global(g_)
   name_ = Token_get_val(peek(0));
   incr_token_index();
 
-  consume_sym_semicolon(g_);
+  consume_sym_semicolon();
 
   return mklist2(
     Node_new_str("gvar"),
