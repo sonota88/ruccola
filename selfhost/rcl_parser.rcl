@@ -234,7 +234,8 @@ end
 
 # --------------------------------
 
-def StrLitList_init(g_)
+def StrLitList_init()
+  var g_ = get_g_main();
   *(g_ + GO_STR_LIT_LIST()) = List_new();
 end
 
@@ -1138,7 +1139,7 @@ def make_init_strings_fn(g_)
 end
 
 def _main(g_)
-  StrLitList_init(g_);
+  StrLitList_init();
   set_token_index(0);
 
   read_tokens(g_);
