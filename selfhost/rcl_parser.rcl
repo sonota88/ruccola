@@ -239,7 +239,8 @@ def StrLitList_init()
   *(g_ + GO_STR_LIT_LIST()) = List_new();
 end
 
-def StrLitList_get_self(g_)
+def StrLitList_get_self()
+  var g_ = get_g_main();
   return *(g_ + GO_STR_LIT_LIST());
 end
 
@@ -248,25 +249,25 @@ def StrLitList_add(g_, str_, offset)
   List_add_str(s_o_, str_);
   List_add_int(s_o_, offset);
 
-  List_add_list(StrLitList_get_self(g_), s_o_);
+  List_add_list(StrLitList_get_self(), s_o_);
 end
 
 def StrLitList_get_str(g_, i)
-  var self_ = StrLitList_get_self(g_);
+  var self_ = StrLitList_get_self();
   var s_o_ = List_get_as_list(self_, i);
 
   return List_get_as_str(s_o_, 0);
 end
 
 def StrLitList_get_offset(g_, i)
-  var self_ = StrLitList_get_self(g_);
+  var self_ = StrLitList_get_self();
   var s_o_ = List_get_as_list(self_, i);
 
   return List_get_as_int(s_o_, 1);
 end
 
 def StrLitList_index(g_, str_)
-  var self_ = StrLitList_get_self(g_);
+  var self_ = StrLitList_get_self();
   var s_temp_;
   var i;
 
@@ -283,7 +284,7 @@ def StrLitList_index(g_, str_)
 end
 
 def StrLitList_get_new_offset(g_)
-  var self_ = StrLitList_get_self(g_);
+  var self_ = StrLitList_get_self();
   var last_str_;
   var last_offset;
   var size;
@@ -1113,7 +1114,7 @@ def make_init_strings_fn(g_)
   var str_bi;
   var str_;
   var byte;
-  var str_lit_list_ = StrLitList_get_self(g_);
+  var str_lit_list_ = StrLitList_get_self();
   while (i < List_size(str_lit_list_))
     str_ = StrLitList_get_str(g_, i);
     str_bi = 0;
@@ -1147,7 +1148,7 @@ def _main(g_)
   var ast_ = parse(g_);
 
   var fn_init_strings_;
-  if (0 < List_size(StrLitList_get_self(g_)))
+  if (0 < List_size(StrLitList_get_self()))
     fn_init_strings_ = make_init_strings_fn(g_);
     List_add_list(ast_, fn_init_strings_);
   end
