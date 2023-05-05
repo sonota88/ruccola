@@ -244,7 +244,7 @@ def StrLitList_get_self()
   return *(g_ + GO_STR_LIT_LIST());
 end
 
-def StrLitList_add(g_, str_, offset)
+def StrLitList_add(str_, offset)
   var s_o_ = List_new();
   List_add_str(s_o_, str_);
   List_add_int(s_o_, offset);
@@ -662,7 +662,7 @@ def _parse_expr_factor_str(g_)
     str_offset = StrLitList_get_offset(g_, i);
   else
     str_offset = StrLitList_get_new_offset(g_);
-    StrLitList_add(g_, str_, str_offset);
+    StrLitList_add(str_, str_offset);
   end
 
   return _make_str_expr(str_offset);
