@@ -252,7 +252,7 @@ def StrLitList_add(str_, offset)
   List_add_list(StrLitList_get_self(), s_o_);
 end
 
-def StrLitList_get_str(g_, i)
+def StrLitList_get_str(i)
   var self_ = StrLitList_get_self();
   var s_o_ = List_get_as_list(self_, i);
 
@@ -273,7 +273,7 @@ def StrLitList_index(g_, str_)
 
   i = 0;
   while (i < List_size(self_))
-    s_temp_ = StrLitList_get_str(g_, i);
+    s_temp_ = StrLitList_get_str(i);
     if (str_eq(s_temp_, str_))
       return i;
     end
@@ -295,7 +295,7 @@ def StrLitList_get_new_offset(g_)
   end
 
   var last_i = __sub(size, 1);
-  last_str_   = StrLitList_get_str(   g_, last_i);
+  last_str_   = StrLitList_get_str(   last_i);
   last_offset = StrLitList_get_offset(g_, last_i);
   return last_offset + str_size(last_str_) + 1;
 end
@@ -1116,7 +1116,7 @@ def make_init_strings_fn(g_)
   var byte;
   var str_lit_list_ = StrLitList_get_self();
   while (i < List_size(str_lit_list_))
-    str_ = StrLitList_get_str(g_, i);
+    str_ = StrLitList_get_str(i);
     str_bi = 0;
     while (str_bi < str_size(str_))
       byte = char_at(str_, str_bi);
