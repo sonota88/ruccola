@@ -259,7 +259,7 @@ def StrLitList_get_str(i)
   return List_get_as_str(s_o_, 0);
 end
 
-def StrLitList_get_offset(g_, i)
+def StrLitList_get_offset(i)
   var self_ = StrLitList_get_self();
   var s_o_ = List_get_as_list(self_, i);
 
@@ -296,7 +296,7 @@ def StrLitList_get_new_offset(g_)
 
   var last_i = __sub(size, 1);
   last_str_   = StrLitList_get_str(   last_i);
-  last_offset = StrLitList_get_offset(g_, last_i);
+  last_offset = StrLitList_get_offset(last_i);
   return last_offset + str_size(last_str_) + 1;
 end
 
@@ -659,7 +659,7 @@ def _parse_expr_factor_str(g_)
   var i = StrLitList_index(g_, str_);
 
   if (__le(0, i))
-    str_offset = StrLitList_get_offset(g_, i);
+    str_offset = StrLitList_get_offset(i);
   else
     str_offset = StrLitList_get_new_offset(g_);
     StrLitList_add(str_, str_offset);
