@@ -266,7 +266,7 @@ def StrLitList_get_offset(i)
   return List_get_as_int(s_o_, 1);
 end
 
-def StrLitList_index(g_, str_)
+def StrLitList_index(str_)
   var self_ = StrLitList_get_self();
   var s_temp_;
   var i;
@@ -656,7 +656,7 @@ def _parse_expr_factor_str(g_)
 
   var str_ = Token_get_val(t_);
 
-  var i = StrLitList_index(g_, str_);
+  var i = StrLitList_index(str_);
 
   if (__le(0, i))
     str_offset = StrLitList_get_offset(i);
