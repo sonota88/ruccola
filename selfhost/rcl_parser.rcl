@@ -283,7 +283,7 @@ def StrLitList_index(str_)
   return -1;
 end
 
-def StrLitList_get_new_offset(g_)
+def StrLitList_get_new_offset()
   var self_ = StrLitList_get_self();
   var last_str_;
   var last_offset;
@@ -661,7 +661,7 @@ def _parse_expr_factor_str(g_)
   if (__le(0, i))
     str_offset = StrLitList_get_offset(i);
   else
-    str_offset = StrLitList_get_new_offset(g_);
+    str_offset = StrLitList_get_new_offset();
     StrLitList_add(str_, str_offset);
   end
 
