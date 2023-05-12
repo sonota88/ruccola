@@ -302,7 +302,7 @@ end
 
 # --------------------------------
 
-def _parse_arg(g_)
+def _parse_arg()
   var n;
   var t_ = peek(0);
   incr_token_index();
@@ -332,7 +332,7 @@ def parse_args(g_)
     return args_;
   end
 
-  arg_node_ = _parse_arg(g_);
+  arg_node_ = _parse_arg();
   List_add(args_, arg_node_);
 
   while (true)
@@ -343,7 +343,7 @@ def parse_args(g_)
     end
 
     consume_sym(&s_comma);
-    arg_node_ = _parse_arg(g_);
+    arg_node_ = _parse_arg();
     List_add(args_, arg_node_);
   end
 
