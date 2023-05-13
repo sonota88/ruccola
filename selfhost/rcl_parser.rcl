@@ -315,7 +315,7 @@ def _parse_arg()
   end
 end
 
-def parse_args(g_)
+def parse_args()
   var args_;
   var t_;
   var arg_node_;
@@ -981,7 +981,7 @@ def parse_func(g_)
 
   consume_sym_paren_l(); # (
 
-  args_ = parse_args(g_);
+  args_ = parse_args();
 
   consume_sym_paren_r(); # )
 
