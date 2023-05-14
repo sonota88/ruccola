@@ -9,7 +9,7 @@ def Json_print_indent(lv)
   end
 end
 
-def _Json_print_node(node_, lv)
+def _Json_print_node(node_, lv, pretty)
   var kind;
   var int_val;
   var str_;
@@ -20,54 +20,69 @@ def _Json_print_node(node_, lv)
   case
   when (kind == NODE_KIND__INT())
     int_val = Node_get_int(node_);
-    Json_print_indent(lv);
+    if (pretty)
+      Json_print_indent(lv);
+    end
     print_i(int_val);
   when (kind == NODE_KIND__STR())
     str_ = Node_get_str(node_);
-    Json_print_indent(lv);
+    if (pretty)
+      Json_print_indent(lv);
+    end
     putchar(C_DQ());
     print_s(str_);
     putchar(C_DQ());
   when (kind == NODE_KIND__LIST())
     list_ = Node_get_list(node_);
-    Json_print_list(list_, lv);
+    Json_print_list(list_, lv, pretty);
   else
     panic(35); # _Json_print_node: unknown node kind
   end
 end
 
 def Json_print_node(node_)
-  _Json_print_node(node_, 0);
+  _Json_print_node(node_, 0, true);
 end
 
-def Json_print_list(list_, lv)
+def Json_print_list(list_, lv, pretty)
   var size = List_size(list_);
   var i;
   var node_;
 
-  Json_print_indent(lv);
+  if (pretty)
+    Json_print_indent(lv);
+  end
   putchar(91); # [
-  putchar(C_LF());
+  if (pretty)
+    putchar(C_LF());
+  end
 
   i = 0;
   while (i < size)
     node_ = List_get(list_, i);
-    _Json_print_node(node_, lv + 1);
+    _Json_print_node(node_, lv + 1, pretty);
 
     if (i < (size + -1))
       putchar(C_COMMA());
+      if (__not(pretty))
+        putchar(C_SPC());
+      end
     end
-    putchar(C_LF());
+    if (pretty)
+      putchar(C_LF());
+    end
 
     i = i + 1;
   end
 
-  Json_print_indent(lv);
+  if (pretty)
+    Json_print_indent(lv);
+  end
   putchar(93); # ]
 end
 
 def Json_print(list_)
-  Json_print_list(list_, 0);
+  Json_print_list(list_, 0, true);
   putchar(C_LF());
 end
 
