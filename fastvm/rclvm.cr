@@ -93,7 +93,7 @@ class Memory
   getter data : Array(Int32)
   getter vram : Array(Int32)
 
-  DATA_SIZE = 1_000_000
+  DATA_SIZE = 2_000_000
 
   def initialize
     @code = [] of Insn

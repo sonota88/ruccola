@@ -590,7 +590,7 @@ if $PROGRAM_NAME == __FILE__
     $stdin_ = File.open(stdin_file, "rb")
   end
 
-  data_size = 1_000_000
+  data_size = 2_000_000
   mem = Memory.new(data_size)
   vm = Vm.new(
     mem,

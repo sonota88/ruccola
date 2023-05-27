@@ -1,4 +1,5 @@
 require "pp"
+require "json"
 
 class Token
   attr_reader :kind, :value
@@ -16,13 +17,13 @@ class Token
   end
 
   def to_line
-    "#{@lineno}:#{@kind}:#{@value}"
+    JSON.generate([@kind, @value])
   end
 
   def self.from_line(line)
-    if /^(\d+?):(.+?):(.+)$/ =~ line
-      lineno, sym, str = $1, $2, $3
-      Token.new(sym.to_sym, str, lineno.to_i)
+    if line.start_with?("[")
+      kind_str, str = JSON.parse(line)
+      Token.new(kind_str.to_sym, str, -1) # TODO lineno
     else
       nil
     end

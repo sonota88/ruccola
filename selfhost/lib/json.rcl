@@ -86,6 +86,10 @@ def Json_print(list_)
   putchar(C_LF());
 end
 
+def Json_print_oneline(list_)
+  Json_print_list(list_, 0, false);
+end
+
 def Json_parse_int(rest_, pos, size_)
   var pos_start;
   var pos_end;

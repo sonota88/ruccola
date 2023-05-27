@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 
 #include lib/std.rcl
+#include lib/types.rcl
+#include lib/json.rcl
 
 # --------------------------------
 
@@ -136,37 +138,42 @@ def is_kw(str_)
 end
 
 def print_kw(str_)
-  print_s("kw");
-  putchar(58); # :
-  print_s(str_);
+  var list_ = List_new();
+  List_add_str(list_, "kw");
+  List_add_str(list_, str_);
+  Json_print_oneline(list_);
   putchar(C_LF());
 end
 
 def print_ident(str_)
-  print_s("ident");
-  putchar(58); # :
-  print_s(str_);
+  var list_ = List_new();
+  List_add_str(list_, "ident");
+  List_add_str(list_, str_);
+  Json_print_oneline(list_);
   putchar(C_LF());
 end
 
 def print_symbol(str_)
-  print_s("sym");
-  putchar(58); # :
-  print_s(str_);
+  var list_ = List_new();
+  List_add_str(list_, "sym");
+  List_add_str(list_, str_);
+  Json_print_oneline(list_);
   putchar(C_LF());
 end
 
 def print_int(str_)
-  print_s("int");
-  putchar(58); # :
-  print_s(str_);
+  var list_ = List_new();
+  List_add_str(list_, "int");
+  List_add_str(list_, str_);
+  Json_print_oneline(list_);
   putchar(C_LF());
 end
 
 def print_str(str_)
-  print_s("str");
-  putchar(58); # :
-  print_s(str_);
+  var list_ = List_new();
+  List_add_str(list_, "str");
+  List_add_str(list_, str_);
+  Json_print_oneline(list_);
   putchar(C_LF());
 end
 

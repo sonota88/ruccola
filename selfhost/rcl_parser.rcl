@@ -88,11 +88,12 @@ def read_token(input_, pos, size)
   substr_with_check(&line, input_, pos, pos + size, line_size);
   chomp(&line);
 
-  sep_i = char_index(&line, 58, 0); # :
-  substr(&kind_str, &line, 0, sep_i);
-  substr_with_check(&value_str, &line, sep_i + 1, str_size(&line), value_str_size);
+  var list_ = Json_parse(&line);
 
-  t_ = Token_new(&kind_str, &value_str);
+  t_ = Token_new(
+    List_get_as_str(list_, 0),
+    List_get_as_str(list_, 1)
+  );
   return t_;
 end
 
@@ -101,7 +102,7 @@ def read_tokens(g_)
   var pos = 0;
   var t_;
   var ti = 0;
-  var input_size_max = 150000; var [150000]input;
+  var input_size_max = 170000; var [170000]input;
   check_heap_stack_overlap();
 
   read_stdin_all(&input, input_size_max);
