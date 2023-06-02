@@ -137,44 +137,32 @@ def is_kw(str_)
   end
 end
 
-def print_kw(str_)
+def print_token(kind_, str_)
   var list_ = List_new();
-  List_add_str(list_, "kw");
+  List_add_str(list_, kind_);
   List_add_str(list_, str_);
   Json_print_oneline(list_);
   putchar(C_LF());
+end
+
+def print_kw(str_)
+  print_token("kw", str_);
 end
 
 def print_ident(str_)
-  var list_ = List_new();
-  List_add_str(list_, "ident");
-  List_add_str(list_, str_);
-  Json_print_oneline(list_);
-  putchar(C_LF());
+  print_token("ident", str_);
 end
 
 def print_symbol(str_)
-  var list_ = List_new();
-  List_add_str(list_, "sym");
-  List_add_str(list_, str_);
-  Json_print_oneline(list_);
-  putchar(C_LF());
+  print_token("sym", str_);
 end
 
 def print_int(str_)
-  var list_ = List_new();
-  List_add_str(list_, "int");
-  List_add_str(list_, str_);
-  Json_print_oneline(list_);
-  putchar(C_LF());
+  print_token("int", str_);
 end
 
 def print_str(str_)
-  var list_ = List_new();
-  List_add_str(list_, "str");
-  List_add_str(list_, str_);
-  Json_print_oneline(list_);
-  putchar(C_LF());
+  print_token("str", str_);
 end
 
 def lex()
