@@ -139,6 +139,7 @@ end
 
 def print_token(kind_, str_)
   var list_ = List_new();
+  # TODO lineno
   List_add_str(list_, kind_);
   List_add_str(list_, str_);
   Json_print_oneline(list_);
