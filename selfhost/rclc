@@ -32,7 +32,7 @@ is_fastvm() {
 
 print_vm_cmd() {
   if [ "$(get_envvar FASTVM 0)" = "1" ]; then
-    echo "${__DIR__}/../fastvm/exe/rclvm"
+    echo "${__DIR__}/../fastvm/exe/rcl_vm"
   else
     echo "${__DIR__}/../rclvm"
   fi

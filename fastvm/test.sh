@@ -13,7 +13,7 @@ TEMP_EXE_FILE=${TEMP_DIR}/test.exe.txt
 EXE_DIR=${__DIR__}/exe
 
 VM_RB=../rclvm
-VM_CR=${EXE_DIR}/rclvm
+VM_CR=${EXE_DIR}/rcl_vm
 
 TEMP_EXP_FILE=${TEMP_DIR}/test_exp.txt
 TEMP_ACT_FILE=${TEMP_DIR}/test_act.txt
