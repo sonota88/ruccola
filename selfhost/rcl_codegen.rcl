@@ -347,7 +347,7 @@ def _gen_expr_mult()
   putchar(C_LF());
 end
 
-def _gen_expr_eq(g_)
+def _gen_expr_eq_neq(g_, is_eq)
   var s_reg_a_ = "reg_a";
   var label_end_size = 12; var [12]label_end; # end_eq_xxxx ... 11 chars + 1
   var label_then_size = 10; var [10]label_then; # then_xxxx ... 9 chars + 1
@@ -356,7 +356,12 @@ def _gen_expr_eq(g_)
   incr_label_id(g_);
   label_id = get_label_id(g_);
 
-  str_cp_with_check(&label_end, "end_eq", label_end_size);
+  str_cp_with_check(&label_end, "end_", label_end_size);
+  if (is_eq)
+    append_str_with_check(&label_end, "eq", label_end_size);
+  else
+    append_str_with_check(&label_end, "neq", label_end_size);
+  end
   append_label_id(&label_end, label_id, label_end_size);
 
   str_cp_with_check(&label_then, "then", label_then_size);
@@ -368,43 +373,29 @@ def _gen_expr_eq(g_)
   asm_compare();
   asm_jump_eq(&label_then);
 
-  asm_cp("0", s_reg_a_);
+  if (is_eq)
+    asm_cp("0", s_reg_a_);
+  else
+    asm_cp("1", s_reg_a_);
+  end
   asm_jump(&label_end);
 
   asm_label(&label_then);
-  asm_cp("1", s_reg_a_);
+  if (is_eq)
+    asm_cp("1", s_reg_a_);
+  else
+    asm_cp("0", s_reg_a_);
+  end
 
   asm_label(&label_end);
 end
 
+def _gen_expr_eq(g_)
+  _gen_expr_eq_neq(g_, true);
+end
+
 def _gen_expr_neq(g_)
-  var s_reg_a_ = "reg_a";
-  var label_end_size = 13; var [13]label_end; # end_neq_xxxx ... 12 chars + 1
-  var label_then_size = 10; var [10]label_then; # then_xxxx ... 9 chars + 1
-  var label_id;
-
-  incr_label_id(g_);
-  label_id = get_label_id(g_);
-
-  str_cp_with_check(&label_end, "end_neq", label_end_size);
-  append_label_id(&label_end, label_id, label_end_size);
-
-  str_cp_with_check(&label_then, "then", label_then_size);
-  append_label_id(&label_then, label_id, label_then_size);
-
-  asm_pop("reg_b");
-  asm_pop(s_reg_a_);
-
-  asm_compare();
-  asm_jump_eq(&label_then);
-
-  asm_cp("1", s_reg_a_);
-  asm_jump(&label_end);
-
-  asm_label(&label_then);
-  asm_cp("0", s_reg_a_);
-
-  asm_label(&label_end);
+  _gen_expr_eq_neq(g_, false);
 end
 
 def _gen_expr_lt(g_)

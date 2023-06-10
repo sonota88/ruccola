@@ -115,11 +115,16 @@ def _gen_expr_mult
   puts "  mult_ab"
 end
 
-def _gen_expr_eq
+def _gen_expr_eq_neq(is_eq)
   $label_id += 1
   label_id = $label_id
 
-  label_end = "end_eq_#{label_id}"
+  label_end =
+    if is_eq
+      "end_eq_#{label_id}"
+    else
+      "end_neq_#{label_id}"
+    end
   label_then = "then_#{label_id}"
 
   puts "  pop reg_b"
@@ -129,38 +134,30 @@ def _gen_expr_eq
   puts "  jump_eq #{label_then}"
 
   # else
-  puts "  cp 0 reg_a"
+  if is_eq
+    puts "  cp 0 reg_a"
+  else
+    puts "  cp 1 reg_a"
+  end
   puts "  jump #{label_end}"
 
   # then
   puts "label #{label_then}"
-  puts "  cp 1 reg_a"
+  if is_eq
+    puts "  cp 1 reg_a"
+  else
+    puts "  cp 0 reg_a"
+  end
 
   puts "label #{label_end}"
 end
 
+def _gen_expr_eq
+  _gen_expr_eq_neq(true)
+end
+
 def _gen_expr_neq
-  $label_id += 1
-  label_id = $label_id
-
-  label_end = "end_neq_#{label_id}"
-  label_then = "then_#{label_id}"
-
-  puts "  pop reg_b"
-  puts "  pop reg_a"
-
-  puts "  compare"
-  puts "  jump_eq #{label_then}"
-
-  # else
-  puts "  cp 1 reg_a"
-  puts "  jump #{label_end}"
-
-  # then
-  puts "label #{label_then}"
-  puts "  cp 0 reg_a"
-
-  puts "label #{label_end}"
+  _gen_expr_eq_neq(false)
 end
 
 def _gen_expr_lt
