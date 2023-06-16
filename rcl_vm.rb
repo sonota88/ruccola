@@ -297,7 +297,7 @@ class Vm
     when /^-?\d+$/ then operand.to_i
     when /^mem:/   then @mem.data[calc_indirect_addr(operand)]
     else
-      raise not_yet_impl("operand", operand)
+      raise panic("operand", operand)
     end
   end
 
@@ -345,7 +345,7 @@ class Vm
       when Integer then arg_src
       when String  then get_value(arg_src)
       else
-        raise not_yet_impl("copy src", arg_src)
+        raise panic("arg_src", arg_src)
       end
 
     case arg_dest
@@ -355,7 +355,7 @@ class Vm
     when "sp"    then set_sp(src_val)
     when /^mem:/ then @mem.data[calc_indirect_addr(arg_dest)] = src_val
     else
-      raise not_yet_impl("copy dest", arg_dest)
+      raise panic("arg_dest", arg_dest)
     end
   end
 
@@ -368,14 +368,14 @@ class Vm
       when /^mem:/
         calc_indirect_addr(src)
       else
-        raise not_yet_impl("src", src)
+        raise panic("src", src)
       end
 
     case dest
     when "reg_a"
       @reg_a = addr
     else
-      raise not_yet_impl("dest", dest)
+      raise panic("dest", dest)
     end
   end
 
@@ -447,7 +447,7 @@ class Vm
     when "reg_b" then @reg_b = val
     when "bp"    then @bp    = val
     else
-      raise not_yet_impl("pop", arg)
+      raise panic("arg", arg)
     end
 
     set_sp(@sp + 1)
@@ -465,7 +465,7 @@ class Vm
     when "reg_a"
       @reg_a = n
     else
-      raise not_yet_impl("arg", arg)
+      raise panic("arg", arg)
     end
   end
 
@@ -480,7 +480,7 @@ class Vm
       when String
         get_value(arg_val)
       else
-        raise not_yet_impl("arg_val", arg_val)
+        raise panic("arg_val", arg_val)
       end
     c = n.chr
 
@@ -491,7 +491,7 @@ class Vm
       when String
         get_value(arg_fd)
       else
-        raise not_yet_impl("arg_fd", arg_fd)
+        raise panic("arg_fd", arg_fd)
       end
 
     case fd
@@ -524,10 +524,10 @@ class Vm
         vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
         @mem.vram[vram_addr] = src_val
       else
-        raise not_yet_impl("arg_vram", arg_vram)
+        raise panic("arg_vram", arg_vram)
       end
     else
-      raise not_yet_impl("arg_vram", arg_vram)
+      raise panic("arg_vram", arg_vram)
     end
   end
 
@@ -542,7 +542,7 @@ class Vm
       when String
         get_value(arg_vram)
       else
-        raise not_yet_impl("arg_vram", arg_vram)
+        raise panic("arg_vram", arg_vram)
       end
 
     val = @mem.vram[vram_addr]
@@ -551,7 +551,7 @@ class Vm
     when "reg_a"
       @reg_a = val
     else
-      raise not_yet_impl("arg_dest", arg_dest)
+      raise panic("arg_dest", arg_dest)
     end
   end
 
