@@ -52,3 +52,10 @@ def not_yet_impl(*args)
     .map {|arg| " (#{ arg.inspect })" }
     .join("")
 end
+
+def panic(*args)
+  "PANIC" +
+    args
+    .map {|arg| " (#{ arg.inspect })" }
+    .join("")
+end
