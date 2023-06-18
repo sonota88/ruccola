@@ -301,6 +301,23 @@ class Vm
     end
   end
 
+  def set_value(dest, val)
+    case dest
+    when String
+      case dest
+      when "reg_a" then @reg_a = val
+      when "reg_b" then @reg_b = val
+      when "bp"    then @bp    = val
+      when "sp"    then @sp    = val
+      when /^mem:/ then @mem.data[calc_indirect_addr(dest)] = val
+      else
+        raise panic("dest", dest)
+      end
+    else
+      raise panic("dest", dest)
+    end
+  end
+
   def calc_indirect_addr(str)
     _, base_str, disp_str, index_str = str.split(":")
 
@@ -348,15 +365,7 @@ class Vm
         raise panic("arg_src", arg_src)
       end
 
-    case arg_dest
-    when "reg_a" then @reg_a = src_val
-    when "reg_b" then @reg_b = src_val
-    when "bp"    then @bp    = src_val
-    when "sp"    then set_sp(src_val)
-    when /^mem:/ then @mem.data[calc_indirect_addr(arg_dest)] = src_val
-    else
-      raise panic("arg_dest", arg_dest)
-    end
+    set_value(arg_dest, src_val)
   end
 
   # load effective address
@@ -371,12 +380,7 @@ class Vm
         raise panic("src", src)
       end
 
-    case dest
-    when "reg_a"
-      @reg_a = addr
-    else
-      raise panic("dest", dest)
-    end
+    set_value(dest, addr)
   end
 
   def add_sp
@@ -442,14 +446,7 @@ class Vm
     arg = @mem.code[@pc][1]
     val = @mem.data[@sp]
 
-    case arg
-    when "reg_a" then @reg_a = val
-    when "reg_b" then @reg_b = val
-    when "bp"    then @bp    = val
-    else
-      raise panic("arg", arg)
-    end
-
+    set_value(arg, val)
     set_sp(@sp + 1)
   end
 
@@ -461,12 +458,7 @@ class Vm
     c = $stdin_.getc
     n = c.nil? ? EOF : c.ord
 
-    case arg
-    when "reg_a"
-      @reg_a = n
-    else
-      raise panic("arg", arg)
-    end
+    set_value(arg, n)
   end
 
   def write
@@ -546,13 +538,7 @@ class Vm
       end
 
     val = @mem.vram[vram_addr]
-
-    case arg_dest
-    when "reg_a"
-      @reg_a = val
-    else
-      raise panic("arg_dest", arg_dest)
-    end
+    set_value(arg_dest, val)
   end
 
   def _debug
