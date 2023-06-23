@@ -212,6 +212,8 @@ class Vm
     when String
       if %w[reg_a reg_b sp bp].include?(el)
         el.to_sym
+      elsif el.start_with?("mem:")
+        MemRef.new(el)
       else
         el
       end
@@ -331,7 +333,6 @@ class Vm
     when "bp"      then @bp
     when "sp"      then @sp
     when /^-?\d+$/ then operand.to_i
-    when /^mem:/   then @mem.data[calc_indirect_addr(operand)]
     else
       raise panic("operand", operand)
     end
@@ -350,6 +351,8 @@ class Vm
       else
         raise panic("operand", operand)
       end
+    when MemRef
+      @mem.data[calc_indirect_addr(operand)]
     else
       raise panic("operand", operand)
     end
@@ -363,7 +366,6 @@ class Vm
       when "reg_b" then @reg_b = val
       when "bp"    then @bp    = val
       when "sp"    then @sp    = val
-      when /^mem:/ then @mem.data[calc_indirect_addr(dest)] = val
       else
         raise panic("dest", dest)
       end
@@ -376,13 +378,15 @@ class Vm
       else
         raise panic("dest", dest)
       end
+    when MemRef
+      @mem.data[calc_indirect_addr(dest)] = val
     else
       raise panic("dest", dest)
     end
   end
 
-  def calc_indirect_addr(str)
-    _, base_str, disp_str, index_str = str.split(":")
+  def calc_indirect_addr(memref)
+    _, base_str, disp_str, index_str = memref.str.split(":")
 
     base  = get_value_v2(base_str)
     disp  = get_value_v2(disp_str)
@@ -436,7 +440,7 @@ class Vm
 
     addr =
       case src
-      when /^mem:/
+      when MemRef
         calc_indirect_addr(src)
       else
         raise panic("src", src)
@@ -556,14 +560,9 @@ class Vm
     case arg_vram
     when Integer
       @mem.vram[arg_vram] = src_val
-    when String
-      case arg_vram
-      when /^mem:/
-        vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
-        @mem.vram[vram_addr] = src_val
-      else
-        raise panic("arg_vram", arg_vram)
-      end
+    when MemRef
+      vram_addr = @mem.data[calc_indirect_addr(arg_vram)]
+      @mem.vram[vram_addr] = src_val
     else
       raise panic("arg_vram", arg_vram)
     end
