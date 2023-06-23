@@ -208,6 +208,16 @@ class Vm
     @mem.code = insns
       .map do |insn|
         opcode, *operands = insn
+
+        operands =
+          operands.map do |it|
+            if %w[reg_a reg_b sp bp].include?(it)
+              it.to_sym
+            else
+              it
+            end
+          end
+
         Insn.new(opcode.to_sym, operands)
       end
   end
@@ -319,6 +329,15 @@ class Vm
     case operand
     when Integer then operand
     when String  then get_value(operand)
+    when Symbol
+      case operand
+      when :reg_a then @reg_a
+      when :reg_b then @reg_b
+      when :sp    then @sp
+      when :bp    then @bp
+      else
+        raise panic("operand", operand)
+      end
     else
       raise panic("operand", operand)
     end
@@ -333,6 +352,15 @@ class Vm
       when "bp"    then @bp    = val
       when "sp"    then @sp    = val
       when /^mem:/ then @mem.data[calc_indirect_addr(dest)] = val
+      else
+        raise panic("dest", dest)
+      end
+    when Symbol
+      case dest
+      when :reg_a then @reg_a = val
+      when :reg_b then @reg_b = val
+      when :sp    then @sp    = val
+      when :bp    then @bp    = val
       else
         raise panic("dest", dest)
       end
