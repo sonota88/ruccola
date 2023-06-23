@@ -301,6 +301,15 @@ class Vm
     end
   end
 
+  def get_value_v2(operand)
+    case operand
+    when Integer then operand
+    when String  then get_value(operand)
+    else
+      raise panic("operand", operand)
+    end
+  end
+
   def set_value(dest, val)
     case dest
     when String
@@ -321,9 +330,9 @@ class Vm
   def calc_indirect_addr(str)
     _, base_str, disp_str, index_str = str.split(":")
 
-    base  = get_value(base_str)
-    disp  = get_value(disp_str)
-    index = get_value(index_str)
+    base  = get_value_v2(base_str)
+    disp  = get_value_v2(disp_str)
+    index = get_value_v2(index_str)
 
     base + disp + index
   end
@@ -361,13 +370,7 @@ class Vm
     arg_src  = fetch_operand(0)
     arg_dest = fetch_operand(1)
 
-    src_val =
-      case arg_src
-      when Integer then arg_src
-      when String  then get_value(arg_src)
-      else
-        raise panic("arg_src", arg_src)
-      end
+    src_val = get_value_v2(arg_src)
 
     set_value(arg_dest, src_val)
   end
@@ -441,7 +444,7 @@ class Vm
   def push
     arg = fetch_operand(0)
 
-    val_to_push = get_value(arg)
+    val_to_push = get_value_v2(arg)
 
     set_sp(@sp - 1)
     @mem.data[@sp] = val_to_push
@@ -470,26 +473,10 @@ class Vm
     arg_val = fetch_operand(0)
     arg_fd  = fetch_operand(1)
 
-    n =
-      case arg_val
-      when Integer
-        arg_val
-      when String
-        get_value(arg_val)
-      else
-        raise panic("arg_val", arg_val)
-      end
+    n = get_value_v2(arg_val)
     c = n.chr
 
-    fd =
-      case arg_fd
-      when Integer
-        arg_fd
-      when String
-        get_value(arg_fd)
-      else
-        raise panic("arg_fd", arg_fd)
-      end
+    fd = get_value_v2(arg_fd)
 
     case fd
     when 1
@@ -510,7 +497,7 @@ class Vm
     arg_vram = fetch_operand(0) # dest (vram)
     arg_val  = fetch_operand(1) # src
 
-    src_val = get_value(arg_val)
+    src_val = get_value_v2(arg_val)
 
     case arg_vram
     when Integer
@@ -532,15 +519,7 @@ class Vm
     arg_vram = fetch_operand(0) # src (vram)
     arg_dest = fetch_operand(1) # dest
 
-    vram_addr =
-      case arg_vram
-      when Integer
-        arg_vram
-      when String
-        get_value(arg_vram)
-      else
-        raise panic("arg_vram", arg_vram)
-      end
+    vram_addr = get_value_v2(arg_vram)
 
     val = @mem.vram[vram_addr]
     set_value(arg_dest, val)
