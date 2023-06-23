@@ -9,6 +9,20 @@ module TermColor
   BLUE   = "\e[0;34m"
 end
 
+class Insn
+  attr_reader :opcode, :operands
+
+  def initialize(opcode, operands)
+    @opcode   = opcode
+    @operands = operands
+    @_dump_str = [@opcode, *@operands].inspect
+  end
+
+  def dump
+    @_dump_str
+  end
+end
+
 class Memory
   attr_accessor :code
   attr_reader :data, :vram
@@ -22,7 +36,7 @@ class Memory
   end
 
   def label?(insn)
-    insn[0] == :_cmt && insn[1].start_with?("label:")
+    insn.opcode == :_cmt && insn.operands[0].start_with?("label:")
   end
 
   def dump_code(pc)
@@ -44,7 +58,7 @@ class Memory
             "     "
           end
 
-        opcode = work_insn[:insn][0]
+        opcode = work_insn[:insn].opcode
 
         color =
           case opcode
@@ -68,7 +82,7 @@ class Memory
           head,
           work_insn[:addr],
           indent,
-          work_insn[:insn].inspect
+          work_insn[:insn].dump
         )
       end
       .join("\n")
@@ -194,17 +208,17 @@ class Vm
     @mem.code = insns
       .map do |insn|
         opcode, *operands = insn
-        [opcode.to_sym, *operands]
+        Insn.new(opcode.to_sym, operands)
       end
   end
 
   def execute
     insn = @mem.code[@pc]
 
-    opcode = insn[0]
+    opcode = insn.opcode
 
     case opcode
-    when :exit     then return @mem.code[@pc][1]
+    when :exit     then return insn.operands[0]
     when :cp       then cp()       ; @pc += 1
     when :lea      then lea()      ; @pc += 1
     when :add_ab   then add_ab()   ; @pc += 1
@@ -355,7 +369,7 @@ class Vm
   # --------------------------------
 
   def fetch_operand(i)
-    @mem.code[@pc][i + 1]
+    @mem.code[@pc].operands[i]
   end
 
   def add_ab
