@@ -199,6 +199,19 @@ class Vm
     @sp = addr
   end
 
+  def to_operand(el)
+    case el
+    when String
+      if %w[reg_a reg_b sp bp].include?(el)
+        el.to_sym
+      else
+        el
+      end
+    else
+      el
+    end
+  end
+
   def load_program_file(path)
     insns = File.open(path).each_line.map { |line| JSON.parse(line) }
     load_program(insns)
@@ -208,16 +221,7 @@ class Vm
     @mem.code = insns
       .map do |insn|
         opcode, *operands = insn
-
-        operands =
-          operands.map do |it|
-            if %w[reg_a reg_b sp bp].include?(it)
-              it.to_sym
-            else
-              it
-            end
-          end
-
+        operands = operands.map { |it| to_operand(it) }
         Insn.new(opcode.to_sym, operands)
       end
   end
