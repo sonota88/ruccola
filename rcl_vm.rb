@@ -9,6 +9,14 @@ module TermColor
   BLUE   = "\e[0;34m"
 end
 
+class MemRef
+  attr_reader :str
+
+  def initialize(str)
+    @str = str
+  end
+end
+
 class Insn
   attr_reader :opcode, :operands
 
