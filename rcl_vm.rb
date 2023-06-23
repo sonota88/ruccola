@@ -345,6 +345,10 @@ class Vm
 
   # --------------------------------
 
+  def fetch_operand(i)
+    @mem.code[@pc][i + 1]
+  end
+
   def add_ab
     @reg_a = @reg_a + @reg_b
   end
@@ -354,8 +358,8 @@ class Vm
   end
 
   def cp
-    arg_src = @mem.code[@pc][1]
-    arg_dest = @mem.code[@pc][2]
+    arg_src  = fetch_operand(0)
+    arg_dest = fetch_operand(1)
 
     src_val =
       case arg_src
@@ -370,7 +374,8 @@ class Vm
 
   # load effective address
   def lea
-    _, dest, src = @mem.code[@pc]
+    dest = fetch_operand(0)
+    src  = fetch_operand(1)
 
     addr =
       case src
@@ -384,11 +389,11 @@ class Vm
   end
 
   def add_sp
-    set_sp(@sp + @mem.code[@pc][1])
+    set_sp(@sp + fetch_operand(0))
   end
 
   def sub_sp
-    set_sp(@sp - @mem.code[@pc][1])
+    set_sp(@sp - fetch_operand(0))
   end
 
   def compare
@@ -398,13 +403,13 @@ class Vm
   end
 
   def jump
-    jump_dest = @mem.code[@pc][1]
+    jump_dest = fetch_operand(0)
     @pc = jump_dest
   end
 
   def jump_eq
     if @zf == FLAG_TRUE
-      jump_dest = @mem.code[@pc][1]
+      jump_dest = fetch_operand(0)
       @pc = jump_dest
     else
       @pc += 1
@@ -413,7 +418,7 @@ class Vm
 
   def jump_g
     if @zf == FLAG_FALSE && @sf == FLAG_TRUE
-      jump_dest = @mem.code[@pc][1]
+      jump_dest = fetch_operand(0)
       @pc = jump_dest
     else
       @pc += 1
@@ -423,7 +428,7 @@ class Vm
   def call
     set_sp(@sp - 1) # スタックポインタを1減らす
     @mem.data[@sp] = @pc + 1 # 戻り先を記憶
-    next_addr = @mem.code[@pc][1] # ジャンプ先
+    next_addr = fetch_operand(0) # ジャンプ先
     @pc = next_addr
   end
 
@@ -434,7 +439,7 @@ class Vm
   end
 
   def push
-    arg = @mem.code[@pc][1]
+    arg = fetch_operand(0)
 
     val_to_push = get_value(arg)
 
@@ -443,7 +448,7 @@ class Vm
   end
 
   def pop
-    arg = @mem.code[@pc][1]
+    arg = fetch_operand(0)
     val = @mem.data[@sp]
 
     set_value(arg, val)
@@ -453,7 +458,7 @@ class Vm
   def read
     raise "stdin is not available" if $stdin_.nil?
 
-    arg = @mem.code[@pc][1]
+    arg = fetch_operand(0)
 
     c = $stdin_.getc
     n = c.nil? ? EOF : c.ord
@@ -462,8 +467,8 @@ class Vm
   end
 
   def write
-    arg_val = @mem.code[@pc][1]
-    arg_fd  = @mem.code[@pc][2]
+    arg_val = fetch_operand(0)
+    arg_fd  = fetch_operand(1)
 
     n =
       case arg_val
@@ -502,8 +507,8 @@ class Vm
   end
 
   def set_vram
-    arg_vram = @mem.code[@pc][1] # dest (vram)
-    arg_val = @mem.code[@pc][2] # src
+    arg_vram = fetch_operand(0) # dest (vram)
+    arg_val  = fetch_operand(1) # src
 
     src_val = get_value(arg_val)
 
@@ -524,8 +529,8 @@ class Vm
   end
 
   def get_vram
-    arg_vram = @mem.code[@pc][1] # src (vram)
-    arg_dest = @mem.code[@pc][2] # dest
+    arg_vram = fetch_operand(0) # src (vram)
+    arg_dest = fetch_operand(1) # dest
 
     vram_addr =
       case arg_vram
