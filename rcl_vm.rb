@@ -10,10 +10,12 @@ module TermColor
 end
 
 class MemRef
-  attr_reader :str
+  attr_reader :base, :disp, :index
 
-  def initialize(str)
-    @str = str
+  def initialize(base, disp, index)
+    @base  = base
+    @disp  = disp
+    @index = index
   end
 end
 
@@ -213,7 +215,15 @@ class Vm
       if %w[reg_a reg_b sp bp].include?(el)
         el.to_sym
       elsif el.start_with?("mem:")
-        MemRef.new(el)
+        _, base_str, disp_str, index_str = el.split(":")
+
+        base  = to_operand(base_str)
+        disp  = to_operand(disp_str).to_i
+        index = to_operand(index_str).to_i
+
+        MemRef.new(base, disp, index)
+      elsif /^-?\d+$/.match?(el)
+        el.to_i
       else
         el
       end
@@ -386,11 +396,9 @@ class Vm
   end
 
   def calc_indirect_addr(memref)
-    _, base_str, disp_str, index_str = memref.str.split(":")
-
-    base  = get_value_v2(base_str)
-    disp  = get_value_v2(disp_str)
-    index = get_value_v2(index_str)
+    base  = get_value_v2(memref.base)
+    disp  = memref.disp
+    index = memref.index
 
     base + disp + index
   end
