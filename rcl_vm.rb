@@ -336,7 +336,7 @@ class Vm
     puts "sf (#{@sf})"
   end
 
-  def get_value_v2(operand)
+  def get_value(operand)
     case operand
     when Integer then operand
     when Symbol
@@ -374,7 +374,7 @@ class Vm
   end
 
   def calc_indirect_addr(memref)
-    base  = get_value_v2(memref.base)
+    base  = get_value(memref.base)
     disp  = memref.disp
     index = memref.index
 
@@ -414,7 +414,7 @@ class Vm
     arg_src  = fetch_operand(0)
     arg_dest = fetch_operand(1)
 
-    src_val = get_value_v2(arg_src)
+    src_val = get_value(arg_src)
 
     set_value(arg_dest, src_val)
   end
@@ -488,7 +488,7 @@ class Vm
   def push
     arg = fetch_operand(0)
 
-    val_to_push = get_value_v2(arg)
+    val_to_push = get_value(arg)
 
     set_sp(@sp - 1)
     @mem.data[@sp] = val_to_push
@@ -517,10 +517,10 @@ class Vm
     arg_val = fetch_operand(0)
     arg_fd  = fetch_operand(1)
 
-    n = get_value_v2(arg_val)
+    n = get_value(arg_val)
     c = n.chr
 
-    fd = get_value_v2(arg_fd)
+    fd = get_value(arg_fd)
 
     case fd
     when 1
@@ -541,7 +541,7 @@ class Vm
     arg_vram = fetch_operand(0) # dest (vram)
     arg_val  = fetch_operand(1) # src
 
-    src_val = get_value_v2(arg_val)
+    src_val = get_value(arg_val)
 
     case arg_vram
     when Integer
@@ -558,7 +558,7 @@ class Vm
     arg_vram = fetch_operand(0) # src (vram)
     arg_dest = fetch_operand(1) # dest
 
-    vram_addr = get_value_v2(arg_vram)
+    vram_addr = get_value(arg_vram)
 
     val = @mem.vram[vram_addr]
     set_value(arg_dest, val)
