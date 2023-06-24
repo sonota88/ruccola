@@ -1,12 +1,21 @@
 #!/bin/bash
 
+print_this_dir() {
+  (
+    cd "$(dirname "$0")"
+    pwd
+  )
+}
+
+. $(print_this_dir)/common.sh
+
 RELEASE_FLAG=""
 
 docker_build() {
   docker build \
     --build-arg USER=$USER \
     --build-arg GROUP=$(id -gn) \
-    -t ruccola-fast-vm:2 .
+    -t $IMAGE_FULL .
 }
 
 build() {
