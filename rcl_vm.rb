@@ -336,18 +336,6 @@ class Vm
     puts "sf (#{@sf})"
   end
 
-  def get_value(operand)
-    case operand
-    when "reg_a"   then @reg_a
-    when "reg_b"   then @reg_b
-    when "bp"      then @bp
-    when "sp"      then @sp
-    when /^-?\d+$/ then operand.to_i
-    else
-      raise panic("operand", operand)
-    end
-  end
-
   def get_value_v2(operand)
     case operand
     when Integer then operand
