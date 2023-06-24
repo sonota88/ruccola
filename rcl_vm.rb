@@ -357,15 +357,6 @@ class Vm
 
   def set_value(dest, val)
     case dest
-    when String
-      case dest
-      when "reg_a" then @reg_a = val
-      when "reg_b" then @reg_b = val
-      when "bp"    then @bp    = val
-      when "sp"    then @sp    = val
-      else
-        raise panic("dest", dest)
-      end
     when Symbol
       case dest
       when :reg_a then @reg_a = val
