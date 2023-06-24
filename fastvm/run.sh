@@ -23,9 +23,9 @@ case $cmd in
   "docker-build" )
     docker_build
 ;; "build" )
-    CR_OPTS="--error-trace" build
+    CR_OPTS="--static --error-trace" build
 ;; "build-release" )
-    CR_OPTS="--release" build
+    CR_OPTS="--static --release" build
 ;; * )
      echo "command not supported" >&2
      exit 1
