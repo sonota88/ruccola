@@ -17,5 +17,5 @@ def main()
   init_strings();
 
   print_s("Hello, World!");
-  putchar(10); # (LF)
+  putchar(C_LF());
 end
