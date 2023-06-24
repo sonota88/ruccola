@@ -351,7 +351,8 @@ def parse_args()
   return args_;
 end
 
-def parse_exprs(g_)
+def parse_exprs()
+  var g_ = get_g_main();
   var exprs_;
   var t_;
   var expr_node_;
@@ -757,7 +758,7 @@ def parse_funcall(g_)
   fn_name_ = Token_get_val(t_);
 
   consume_sym_paren_l(); # (
-  args_ = parse_exprs(g_);
+  args_ = parse_exprs();
   consume_sym_paren_r(); # )
 
   funcall_ = List_new();
