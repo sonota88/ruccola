@@ -1,14 +1,14 @@
 FROM ubuntu:18.04
 
-RUN apt update \
-  && apt install -y --no-install-recommends \
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
     ca-certificates \
     wget \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN apt update \
-  && apt install -y --no-install-recommends \
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
     gcc \
     libc6-dev libpcre3-dev libevent-dev \
   && apt-get clean \
