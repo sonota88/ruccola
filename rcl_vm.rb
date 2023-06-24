@@ -351,7 +351,6 @@ class Vm
   def get_value_v2(operand)
     case operand
     when Integer then operand
-    when String  then get_value(operand)
     when Symbol
       case operand
       when :reg_a then @reg_a
