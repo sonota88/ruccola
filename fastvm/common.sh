@@ -1,1 +1,1 @@
-readonly IMAGE_FULL=ruccola-fast-vm:3
+readonly IMAGE_FULL=ruccola-fast-vm:4
