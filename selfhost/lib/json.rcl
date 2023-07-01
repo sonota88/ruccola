@@ -9,6 +9,31 @@ def Json_print_indent(lv)
   end
 end
 
+def Json_print_s(str_)
+  var fd = 1; # stdout
+
+  var i = 0;
+  var c = char_at(str_, i);
+  while (c != 0)
+    case
+    when (c == 92) # \
+      write(92, fd);
+      write(92, fd);
+    when (c == C_LF())
+      write( 92, fd); # \
+      write(110, fd); # n
+    when (c == C_DQ())
+      write(92, fd); # \
+      write(34, fd); # "
+    else
+      write(c, fd);
+    end
+
+    i = i + 1;
+    c = char_at(str_, i);
+  end
+end
+
 def _Json_print_node(node_, lv, pretty)
   var kind;
   var int_val;
@@ -30,7 +55,7 @@ def _Json_print_node(node_, lv, pretty)
       Json_print_indent(lv);
     end
     putchar(C_DQ());
-    print_s(str_);
+    Json_print_s(str_);
     putchar(C_DQ());
   when (kind == NODE_KIND__LIST())
     list_ = Node_get_list(node_);
