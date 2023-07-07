@@ -16,7 +16,7 @@ print_vm_cmd() {
   set -o nounset
 
   if [ "$val" = "1" ]; then
-    echo "${__DIR__}/fastvm/exe/rclvm"
+    echo "${__DIR__}/fastvm/exe/rcl_vm"
   else
     echo "ruby ${__DIR__}/rcl_vm.rb"
   fi
