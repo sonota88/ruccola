@@ -136,41 +136,7 @@ def Json_parse_int(rest_, pos, size_)
 end
 
 def Json_parse_str(rest_, pos, s_temp_, s_temp_size, size_)
-  var pos_src = pos + 1; # skip first '"'
-  var i = 0;
-  var c;
-
-  while (true)
-    c = aget(rest_, pos_src);
-
-    case
-    when (c == C_DQ())
-      break;
-    when (c == 92) # \
-      pos_src = pos_src + 1;
-      c = aget(rest_, pos_src);
-
-      case
-      when (c == 92    ) aset(s_temp_, i, c     ); # \\ => \
-      when (c == C_DQ()) aset(s_temp_, i, c     ); # \" => "
-      when (c == 110   ) aset(s_temp_, i, C_LF()); # \n => LF
-      else
-        panic(158); # Json_parse_str
-      end
-    else
-      aset(s_temp_, i, c);
-    end
-
-    pos_src = pos_src + 1;
-    i = i + 1;
-    if (__le(s_temp_size, i))
-      panic(167); # Json_parse_str
-    end
-  end
-
-  aset(s_temp_, i, 0);
-
-  *(size_) = __sub(pos_src + 1, pos);
+  parse_str(rest_, pos, s_temp_, s_temp_size, size_);
 end
 
 def Json_parse_list(rest_, pos_start, size_)
