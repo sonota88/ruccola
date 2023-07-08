@@ -16,6 +16,5 @@ def main()
   init_globals(g_);
   init_strings();
 
-  print_s("Hello, World!");
-  putchar(C_LF());
+  print_s("Hello, World!\n");
 end

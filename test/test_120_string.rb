@@ -74,4 +74,32 @@ class Test120 < Minitest::Test
 
     assert_equal("ab/cd/", output)
   end
+
+  # backslash escaping
+  def test_030
+    main_src = <<~'SRC'
+        var [12]g;
+        var g_ = &g;
+
+        init_globals(g_);
+        init_strings();
+
+        print_s("1\\2\"3\n4");
+    SRC
+
+    src = <<~SRC
+      #{@std_src}
+
+      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+      def GS_STRINGS() return 10; end
+
+      def main()
+        #{main_src}
+      end
+    SRC
+
+    output = run_vm(src)
+
+    assert_equal("1" + "\\" + "2" + '"' + "3" + "\n" + "4", output)
+  end
 end

@@ -199,16 +199,10 @@ def lex()
       print_symbol(&s_temp);
       pos = pos + size;
 
-    when (0 < match_str(&input, pos))
-      size = match_str(&input, pos);
-
-      substr_with_check(
-        &s_temp, &input, pos + 1, pos + 1 + size,
-        s_temp_size
-      );
-
+    when (c == C_DQ())
+      parse_str(&input, pos, &s_temp, s_temp_size, &size);
       print_str(&s_temp);
-      pos = pos + size + 2;
+      pos = pos + size;
 
     when (0 < match_int(&input, pos))
       size = match_int(&input, pos);

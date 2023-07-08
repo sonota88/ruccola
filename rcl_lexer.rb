@@ -8,6 +8,46 @@ KEYWORDS = %w[
   _cmt
 ]
 
+def parse_str(rest)
+  unescaped = ""
+  work = rest[1..] # skip first '"'
+  size = 1
+
+  loop do
+    if work.size == 0
+      raise "invalid string literal"
+    end
+
+    case work[0]
+    when '"'
+      size += 1
+      break
+    when "\\"
+      if work.size >= 2
+        case work[1]
+        when "\\", '"'
+          unescaped << work[1]
+          work = work[2..]
+        when "n"
+          unescaped << "\n"
+          work = work[2..]
+        else
+          raise "unsupported"
+        end
+        size += 2
+      else
+        raise "invalid string literal"
+      end
+    else
+      unescaped << work[0]
+      work = work[1..]
+      size += 1
+    end
+  end
+
+  [unescaped, size]
+end
+
 def tokenize(src)
   tokens = []
 
@@ -28,10 +68,10 @@ def tokenize(src)
     when %r{\A(#.*)$}
       str = $1
       pos += str.size
-    when /\A"(.*?)"/
-      str = $1
+    when /\A"/
+      str, size = parse_str(rest)
       tokens << Token.new(:str, str, lineno)
-      pos += str.size + 2
+      pos += size
     when /\A(-?[0-9]+)/
       str = $1
       tokens << Token.new(:int, str.to_i, lineno)
