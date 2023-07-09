@@ -158,6 +158,21 @@ def sprintf2(dest_, dest_size, format_, param1, param2)
   _sprintf(dest_, dest_size, format_, param1, param2);
 end
 
+def _printf(format_, param1, param2)
+  var str_size = 100; var [100]str;
+
+  _sprintf(&str, str_size, format_, param1, param2);
+  print_s(&str);
+end
+
+def printf1(format_, param1)
+  _printf(format_, param1, 0);
+end
+
+def printf2(format_, param1, param2)
+  _printf(format_, param1, param2);
+end
+
 def unparse_int(dest_, arg_n)
   var n = arg_n;
   var div;
