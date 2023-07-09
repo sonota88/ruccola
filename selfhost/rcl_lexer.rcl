@@ -105,17 +105,6 @@ def match_int(input_, pos_from)
   return __sub(pos, pos_from);
 end
 
-def match_str(input_, pos_from)
-  var pos;
-
-  if (char_at(input_, pos_from) != C_DQ())
-    return 0;
-  end
-
-  pos = char_index(input_, C_DQ(), pos_from + 1);
-  return __sub(pos, pos_from + 1);
-end
-
 def is_kw(str_)
   case
   when (str_eq(str_, "def"   )) return true;
