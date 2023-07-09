@@ -102,7 +102,7 @@ def read_tokens(g_)
   var pos = 0;
   var t_;
   var ti = 0;
-  var input_size_max = 170000; var [170000]input;
+  var input_size_max = 180000; var [180000]input;
   check_heap_stack_overlap();
 
   read_stdin_all(&input, input_size_max);

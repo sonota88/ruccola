@@ -101,6 +101,63 @@ def print_i_e(arg_n)
   _print_i(arg_n, 2);
 end
 
+def _sprintf(dest_, dest_size, format_, param1, param2)
+  var format_i = 0;
+  var dest_i = 0;
+  var c;
+  var int_str_size = 10; var [10]int_str;
+
+  while (true)
+    c = char_at(format_, format_i);
+    if (c == 0)
+      aset(dest_, dest_i, 0);
+      break;
+    end
+
+    if (c == 37) # %
+      format_i = format_i + 1;
+      c = char_at(format_, format_i);
+
+      if (c == 37) # %
+        aset(dest_, dest_i, c);
+        dest_i = dest_i + 1;
+      else
+        case
+        when (c == 100) # d
+          unparse_int(&int_str, param1);
+          str_cp_with_check(dest_ + dest_i, &int_str, __sub(dest_size, dest_i));
+          dest_i = dest_i + str_size(&int_str);
+        when (c == 115) # s
+          str_cp_with_check(dest_ + dest_i, param1, __sub(dest_size, dest_i));
+          dest_i = dest_i + str_size(param1);
+        else
+          panic(134); # _sprintf: unsupported
+        end
+
+        _sprintf(dest_ + dest_i, __sub(dest_size, dest_i), format_ + format_i + 1, param2, 0);
+        return;
+      end
+    else
+      aset(dest_, dest_i, c);
+      dest_i = dest_i + 1;
+    end
+
+    format_i = format_i + 1;
+  end
+
+  if (dest_size < dest_i)
+    panic(150); # _sprintf
+  end
+end
+
+def sprintf1(dest_, dest_size, format_, param1)
+  _sprintf(dest_, dest_size, format_, param1, 0);
+end
+
+def sprintf2(dest_, dest_size, format_, param1, param2)
+  _sprintf(dest_, dest_size, format_, param1, param2);
+end
+
 def unparse_int(dest_, arg_n)
   var n = arg_n;
   var div;

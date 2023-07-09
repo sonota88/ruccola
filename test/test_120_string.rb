@@ -102,4 +102,100 @@ class Test120 < Minitest::Test
 
     assert_equal("1" + "\\" + "2" + '"' + "3" + "\n" + "4", output)
   end
+
+  def test_040
+    main_src = <<~'SRC'
+        var [12]g;
+        var g_ = &g;
+
+        var size = 3; var [3]str;
+
+        init_globals(g_);
+        init_strings();
+
+        sprintf1(&str, size, "%s", "AB");
+        print_s(&str);
+    SRC
+
+    src = <<~SRC
+      #{@std_src}
+
+      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+      def GS_STRINGS() return 10; end
+
+      def main()
+        #{main_src}
+      end
+    SRC
+
+    output = run_vm(src)
+
+    assert_equal("AB", output)
+  end
+
+  def test_040_ng_1
+    main_src = <<~'SRC'
+        var [12]g;
+        var g_ = &g;
+
+        var size = 3; var [3]str;
+
+        init_globals(g_);
+        init_strings();
+
+        sprintf1(&str, size, "%s", "ABC");
+        print_s(&str);
+    SRC
+
+    src = <<~SRC
+      #{@std_src}
+
+      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+      def GS_STRINGS() return 10; end
+
+      def main()
+        #{main_src}
+      end
+    SRC
+
+    begin
+      run_vm(src)
+      flunk()
+    rescue
+      pass()
+    end
+  end
+
+  def test_040_ng_2
+    main_src = <<~'SRC'
+        var [12]g;
+        var g_ = &g;
+
+        var size = 3; var [3]str;
+
+        init_globals(g_);
+        init_strings();
+
+        sprintf1(&str, size, "%", "AB");
+        print_s(&str);
+    SRC
+
+    src = <<~SRC
+      #{@std_src}
+
+      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+      def GS_STRINGS() return 10; end
+
+      def main()
+        #{main_src}
+      end
+    SRC
+
+    begin
+      run_vm(src)
+      flunk()
+    rescue
+      pass()
+    end
+  end
 end
