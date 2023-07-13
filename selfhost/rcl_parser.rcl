@@ -387,7 +387,7 @@ def parse_exprs()
   return exprs_;
 end
 
-def _parse_var_declare(g_)
+def _parse_var_declare()
   var t_;
   var var_name_;
   check_heap_stack_overlap();
@@ -406,7 +406,8 @@ def _parse_var_declare(g_)
   );
 end
 
-def _parse_var_init(g_)
+def _parse_var_init()
+  var g_ = get_g_main();
   var t_;
   var var_name_;
   var expr_node_;
@@ -431,7 +432,7 @@ def _parse_var_init(g_)
   );
 end
 
-def _parse_var_array(g_)
+def _parse_var_array()
   var t_;
   var width;
   var var_name_;
@@ -472,15 +473,15 @@ def parse_var(g_)
   t_ = peek(1);
 
   if (char_at(Token_get_val(t_), 0) == 91) # [
-    _parse_var_array(g_);
+    _parse_var_array();
   else
 
     t_ = peek(2);
     case
     when (Token_val_eq(t_, &s_semicolon))
-      _parse_var_declare(g_);
+      _parse_var_declare();
     when (Token_val_eq(t_, &s_equal))
-      _parse_var_init(g_);
+      _parse_var_init();
     else
       print_s(Token_get_val(t_));
       panic(426); # parse_var: unexpected token
