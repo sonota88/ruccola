@@ -1,6 +1,11 @@
 require_relative "helper"
 
 class Test120 < Minitest::Test
+  STRINGS_GVAR_FUNCS = <<~SRC
+    def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
+    def GS_STRINGS() return 10; end
+  SRC
+
   def setup
     setup_common()
 
@@ -14,9 +19,7 @@ class Test120 < Minitest::Test
   def test_010
     src = <<~SRC
       #{@std_src}
-
-      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-      def GS_STRINGS() return 10; end
+      #{STRINGS_GVAR_FUNCS}
 
       def main()
         var [12]g;
@@ -45,9 +48,7 @@ class Test120 < Minitest::Test
   def test_020
     src = <<~SRC
       #{@std_src}
-
-      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-      def GS_STRINGS() return 10; end
+      #{STRINGS_GVAR_FUNCS}
 
       def f(s1_, s2_)
         var c_slash = 47;
@@ -89,9 +90,7 @@ class Test120 < Minitest::Test
 
     src = <<~SRC
       #{@std_src}
-
-      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-      def GS_STRINGS() return 10; end
+      #{STRINGS_GVAR_FUNCS}
 
       def main()
         #{main_src}
@@ -119,9 +118,7 @@ class Test120 < Minitest::Test
 
     src = <<~SRC
       #{@std_src}
-
-      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-      def GS_STRINGS() return 10; end
+      #{STRINGS_GVAR_FUNCS}
 
       def main()
         #{main_src}
@@ -149,9 +146,7 @@ class Test120 < Minitest::Test
 
     src = <<~SRC
       #{@std_src}
-
-      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-      def GS_STRINGS() return 10; end
+      #{STRINGS_GVAR_FUNCS}
 
       def main()
         #{main_src}
@@ -182,9 +177,7 @@ class Test120 < Minitest::Test
 
     src = <<~SRC
       #{@std_src}
-
-      def GO_STRINGS() return GO_ALLOC_CURSOR() + GS_ALLOC_CURSOR(); end
-      def GS_STRINGS() return 10; end
+      #{STRINGS_GVAR_FUNCS}
 
       def main()
         #{main_src}
