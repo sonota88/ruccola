@@ -68,6 +68,39 @@ module Checker
     end
   end
 
+  def self.find_func_def(tree, name)
+    tree[1..]
+      .find { |top_stmt|
+        head, _name, _ = top_stmt
+        head == "func" && _name == name
+      }
+  end
+
+  def self.check_total_string_size(tree)
+    require "pp"
+
+    # ["func", "GS_STRINGS", [], [["return", 20]]]
+    func_def = find_func_def(tree, "GS_STRINGS")
+    return if func_def.nil?
+
+    _, _, _, stmts = func_def
+    _, retval = stmts[0]
+    def_size = retval
+
+    # [ "func", "init_strings", [],
+    #   [ ["var", "offset_", ["+", "g_main_", ["funcall", "GO_STRINGS"]]],
+    #     ["set", ["deref", ["+", "offset_", 0]], 72],
+    #     ["set", ["deref", ["+", "offset_", 1]], 101],
+    #     ...
+    #     ]]
+    _, _, _, stmts = find_func_def(tree, "init_strings")
+    actual_size = stmts.size
+
+    if actual_size >= def_size
+      raise "total string size is too large: #{actual_size} >= #{def_size}"
+    end
+  end
+
   def self.check_gvar_width(file)
     gs_total = 0
     gs_total += 1 # alloc cursor
@@ -103,6 +136,10 @@ when "fn-sig"
 when "gvar-width"
   file = ARGV[0]
   Checker.check_gvar_width(file)
+when "string-size"
+  file = ARGV[0]
+  tree = JSON.parse(File.read(file))
+  Checker.check_total_string_size(tree)
 else
   raise "invalid command"
 end

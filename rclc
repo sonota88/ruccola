@@ -46,6 +46,7 @@ ruby ${__DIR__}/rcl_lexer.rb $src_temp > $tokensfile
 ruby ${__DIR__}/rcl_parser.rb $tokensfile > $treefile
 
 ruby ${__DIR__}/check.rb fn-sig $treefile
+ruby ${__DIR__}/check.rb string-size $treefile
 
 if [ $PRINT_ASM -eq 1 ]; then
   ruby ${__DIR__}/rcl_codegen.rb $treefile

@@ -113,6 +113,8 @@ run "lexer" $src_temp $tokensfile
 run "parser" $tokensfile $treefile
 
 ruby ${__DIR__}/../check.rb fn-sig $treefile
+ruby ${__DIR__}/../check.rb string-size $treefile
+
 run "codegen" $treefile $asmfile
 
 if [ $PRINT_ASM -eq 1 ]; then
