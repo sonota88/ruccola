@@ -459,7 +459,7 @@ def _parse_var_array()
   );
 end
 
-def parse_var(g_)
+def parse_var()
   var [2]s_semicolon;
   var [2]s_equal;
   var t_;
@@ -997,7 +997,7 @@ def parse_func(g_)
     end
 
     if (str_eq(Token_get_val(t_), "var"))
-      stmt_ = parse_var(g_);
+      stmt_ = parse_var();
     else
       stmt_ = parse_stmt(g_);
     end
