@@ -349,7 +349,7 @@ end
 
 def _gen_expr_eq_neq(g_, is_eq)
   var s_reg_a_ = "reg_a";
-  var label_end_size = 12; var [12]label_end; # end_eq_xxxx ... 11 chars + 1
+  var label_end_size = 13; var [13]label_end; # end_neq_xxxx ... 12 chars + 1
   var label_then_size = 10; var [10]label_then; # then_xxxx ... 9 chars + 1
   var label_id;
 
