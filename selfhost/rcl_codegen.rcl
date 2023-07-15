@@ -290,7 +290,7 @@ end
 def to_gvar_addr(dest_, names_, name_, dest_size)
   var base = 10;
   var offset = Names_index(names_, name_);
-  var base = base + offset;
+  base = base + offset;
 
   return render_indirection_gvar(dest_, base, dest_size);
 end
