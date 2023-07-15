@@ -708,7 +708,7 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   var label_size = 19; # end_when_xxxx_xxxx
   var [19]label_end;
   var [19]label_end_when_head;
-  var [19]label_temp;
+  var [19]label_end_when;
 
   var s_0_ = "0";
   var s_reg_b_ = "reg_b";
@@ -737,15 +737,15 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
     asm_compare();
 
     # {label_end_when_head}_{when_index}
-    str_cp(&label_temp, &label_end_when_head);
-    append_label_id(&label_temp, when_index, label_size);
-    asm_jump_eq(&label_temp);
+    str_cp(&label_end_when, &label_end_when_head);
+    append_label_id(&label_end_when, when_index, label_size);
+    asm_jump_eq(&label_end_when);
 
     gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_);
 
     asm_jump(&label_end);
 
-    asm_label(&label_temp);
+    asm_label(&label_end_when);
 
     i = i + 1;
   end
