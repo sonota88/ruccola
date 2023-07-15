@@ -292,7 +292,7 @@ def to_gvar_addr(dest_, names_, name_, dest_size)
   var offset = Names_index(names_, name_);
   base = base + offset;
 
-  return render_indirection_gvar(dest_, base, dest_size);
+  render_indirection_gvar(dest_, base, dest_size);
 end
 
 # --------------------------------
