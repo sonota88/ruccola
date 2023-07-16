@@ -81,7 +81,7 @@ def print_s_e(str_)
   _print_s(str_, 2);
 end
 
-def println(str_)
+def puts(str_)
   print_s(str_);
   putchar(C_LF());
 end
