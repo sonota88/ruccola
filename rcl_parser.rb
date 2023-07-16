@@ -186,7 +186,7 @@ def parse_deref
 end
 
 def binary_op?(t)
-  %(+ * == != <).include?(t.value)
+  %(+ * == != s= <).include?(t.value)
 end
 
 def _parse_expr_factor_int
@@ -282,7 +282,11 @@ def parse_expr
 
     factor = _parse_expr_factor()
 
+    if op == "s="
+      expr = ["funcall", "str_eq", expr, factor]
+    else
     expr = [op.to_sym, expr, factor]
+    end
   end
 
   expr

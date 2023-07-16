@@ -54,6 +54,8 @@ def match_symbol(input_, pos_from)
     return 2;
   when (__and(c0 == 33, c1 == 61)) # !=
     return 2;
+  when (__and(c0 == 115, c1 == 61)) # s=
+    return 2;
   when (c0 == 38) # &
     return 1;
   when (c0 == 40) # (

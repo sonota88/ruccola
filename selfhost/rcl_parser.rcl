@@ -44,6 +44,14 @@ def mklist3(n0_, n1_, n2_)
   return list_;
 end
 
+def mklist4(n0_, n1_, n2_, n3_)
+  var list_ = mklist3(n0_, n1_, n2_);
+
+  List_add(list_, n3_);
+
+  return list_;
+end
+
 # --------------------------------
 
 def get_tokens()
@@ -539,6 +547,8 @@ def is_binop(t_)
     return char_at(s_op_, 1) == 61; # ==
   when (c0 == 33) # !
     return char_at(s_op_, 1) == 61; # !=
+  when (c0 == 115) # s
+    return char_at(s_op_, 1) == 61; # s=
   else
     return false;
   end
@@ -708,6 +718,18 @@ def parse_expr(g_)
 
     factor_node_ = _parse_expr_factor(g_);
 
+    if (str_eq(s_op_, "s="))
+      expr_node_ =
+        Node_new_list(
+          mklist4(
+            Node_new_str("funcall"),
+            Node_new_str("str_eq"),
+            expr_node_,
+            factor_node_
+          )
+        );
+    else
+
     expr_node_ =
       Node_new_list(
         mklist3(
@@ -716,6 +738,8 @@ def parse_expr(g_)
           factor_node_
         )
       );
+
+    end
   end
 
   return expr_node_;
