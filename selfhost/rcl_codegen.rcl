@@ -317,16 +317,11 @@ def _gen_expr_deref(g_, fn_arg_names_, lvar_names_, expr_)
   var inner_expr_ = List_get(list_, 1);
 
   var s_reg_a_ = "reg_a";
-  var s_reg_a_ind_size = 8; var [8]s_reg_a_ind; # [reg_a]
-
-  aset(&s_reg_a_ind, 0, 0);
-  append_char_with_check(&s_reg_a_ind, 91, s_reg_a_ind_size); # [
-  append_str_with_check(&s_reg_a_ind, s_reg_a_, s_reg_a_ind_size);
-  append_char_with_check(&s_reg_a_ind, 93, s_reg_a_ind_size); # ]
+  var s_reg_a_ind_ = "[reg_a]";
 
   gen_expr(g_, fn_arg_names_, lvar_names_, inner_expr_);
 
-  asm_cp(&s_reg_a_ind, s_reg_a_);
+  asm_cp(s_reg_a_ind_, s_reg_a_);
 end
 
 def _gen_expr_add()
