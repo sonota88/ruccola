@@ -508,7 +508,8 @@ def parse_expr_addr()
   );
 end
 
-def parse_expr_deref(g_)
+def parse_expr_deref()
+  var g_ = get_g_main();
   var expr_node_;
 
   consume_sym_one_char(42); # *
@@ -622,7 +623,7 @@ def _parse_expr_factor_sym(g_)
     return parse_expr_addr();
 
   when (char_at(Token_get_val(t_), 0) == 42) # *
-    return parse_expr_deref(g_);
+    return parse_expr_deref();
 
   else
     panic(662); # unexpected symbol
@@ -729,7 +730,7 @@ def parse_set(g_)
   t_ = peek(0);
 
   if (char_at(Token_get_val(t_), 0) == 42) # *
-    lhs_node_ = parse_expr_deref(g_);
+    lhs_node_ = parse_expr_deref();
   else
     incr_token_index();
     lhs_node_ = Node_new_str(Token_get_val(t_));
