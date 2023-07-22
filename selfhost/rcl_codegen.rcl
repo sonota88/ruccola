@@ -228,18 +228,7 @@ end
 # --------------------------------
 
 def render_indirection_bp(dest_, disp, dest_size)
-  var [8]s_disp;
-
-  unparse_int(&s_disp, disp);
-
-  aset(dest_, 0,  91); # [
-  aset(dest_, 1,  98); # b
-  aset(dest_, 2, 112); # p
-  aset(dest_, 3,  58); # :
-  aset(dest_, 4,   0);
-
-  append_str_with_check(dest_, &s_disp, dest_size);
-  append_char_with_check(dest_, 93, dest_size); # ]
+  sprintf1(dest_, dest_size, "[bp:%d]", disp);
 end
 
 def to_fn_arg_addr(dest_, names_, name_, dest_size)
