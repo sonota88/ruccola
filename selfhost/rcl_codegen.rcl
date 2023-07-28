@@ -232,9 +232,9 @@ def render_indirection_bp(dest_, disp, dest_size)
 end
 
 def to_fn_arg_addr(dest_, names_, name_, dest_size)
-  var idx = Names_index(names_, name_);
+  var disp = Names_disp_fn_args(names_, name_);
 
-  render_indirection_bp(dest_, idx + 2, dest_size);
+  render_indirection_bp(dest_, disp, dest_size);
 end
 
 def to_lvar_addr(dest_, names_, name_, dest_size)
