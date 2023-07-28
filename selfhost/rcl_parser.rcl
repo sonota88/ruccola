@@ -674,7 +674,7 @@ def _parse_expr_factor_str()
   return _make_str_expr(str_offset);
 end
 
-def _parse_expr_factor(g_)
+def _parse_expr_factor()
   var t_;
   var tkind;
 
@@ -703,13 +703,13 @@ def parse_expr(g_)
   var factor_node_;
   var s_op_;
 
-  expr_node_ = _parse_expr_factor(g_);
+  expr_node_ = _parse_expr_factor();
 
   while (is_binop(peek(0)))
     s_op_ = Token_get_val(peek(0));
     incr_token_index();
 
-    factor_node_ = _parse_expr_factor(g_);
+    factor_node_ = _parse_expr_factor();
 
     expr_node_ =
       Node_new_list(
