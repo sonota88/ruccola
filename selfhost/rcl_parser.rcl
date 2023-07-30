@@ -369,7 +369,7 @@ def parse_exprs()
     return exprs_;
   end
 
-  expr_node_ = parse_expr(g_);
+  expr_node_ = parse_expr();
   List_add(exprs_, expr_node_);
 
   while (true)
@@ -380,7 +380,7 @@ def parse_exprs()
     end
 
     consume_sym(&s_comma);
-    expr_node_ = parse_expr(g_);
+    expr_node_ = parse_expr();
     List_add(exprs_, expr_node_);
   end
 
@@ -421,7 +421,7 @@ def _parse_var_init()
 
   consume_sym_equal(); # =
 
-  expr_node_ = parse_expr(g_);
+  expr_node_ = parse_expr();
 
   consume_sym_semicolon(); # ;
 
@@ -514,7 +514,7 @@ def parse_expr_deref()
 
   consume_sym_one_char(42); # *
   consume_sym_paren_l();      # (
-  expr_node_ = parse_expr(g_);
+  expr_node_ = parse_expr();
   consume_sym_paren_r();      # )
 
   return Node_new_list(
@@ -616,7 +616,7 @@ def _parse_expr_factor_sym()
   case
   when (char_at(Token_get_val(t_), 0) == 40) # (
     consume_sym_paren_l(); # (
-    expr_node_ = parse_expr(g_);
+    expr_node_ = parse_expr();
     consume_sym_paren_r(); # )
 
     return expr_node_;
@@ -698,7 +698,7 @@ def _parse_expr_factor()
   end
 end
 
-def parse_expr(g_)
+def parse_expr()
   var expr_node_;
   var factor_node_;
   var s_op_;
@@ -740,7 +740,7 @@ def parse_set(g_)
 
   consume_sym_equal(); # =
 
-  expr_node_ = parse_expr(g_);
+  expr_node_ = parse_expr();
 
   consume_sym_semicolon(); # ;
 
@@ -801,7 +801,7 @@ def parse_return(g_)
   if (str_eq(Token_get_val(peek(0)), ";"))
     consume_sym_semicolon(); # ;
   else
-    expr_ = parse_expr(g_);
+    expr_ = parse_expr();
     List_add(stmt_, expr_);
 
     consume_sym_semicolon(); # ;
@@ -817,7 +817,7 @@ def parse_while(g_)
   consume_kw("while");
 
   consume_sym_paren_l(); # (
-  expr_node_ = parse_expr(g_);
+  expr_node_ = parse_expr();
   consume_sym_paren_r(); # )
 
   stmts_ = parse_stmts(g_);
@@ -856,7 +856,7 @@ def _parse_when_clause(g_)
     consume_kw("when");
 
     consume_sym_paren_l(); # (
-    cond_expr_node_ = parse_expr(g_);
+    cond_expr_node_ = parse_expr();
     consume_sym_paren_r(); # )
   when (str_eq(Token_get_val(t_), "else"))
     consume_kw("else");
