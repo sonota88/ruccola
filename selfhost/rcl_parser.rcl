@@ -724,7 +724,7 @@ def parse_expr()
   return expr_node_;
 end
 
-def parse_set(g_)
+def parse_set()
   var t_;
   var lhs_node_;
   var expr_node_;
@@ -939,7 +939,7 @@ def parse_stmt(g_)
     )
       return parse_call(g_);
     else
-      return parse_set(g_);
+      return parse_set();
     end
   end
 end
