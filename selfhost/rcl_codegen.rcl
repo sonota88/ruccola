@@ -227,20 +227,14 @@ end
 
 # --------------------------------
 
-def render_indirection_bp(dest_, disp, dest_size)
-  sprintf1(dest_, dest_size, "[bp:%d]", disp);
-end
-
 def to_fn_arg_addr(dest_, names_, name_, dest_size)
   var disp = Names_disp_fn_args(names_, name_);
-
-  render_indirection_bp(dest_, disp, dest_size);
+  sprintf1(dest_, dest_size, "[bp:%d]", disp);
 end
 
 def to_lvar_addr(dest_, names_, name_, dest_size)
   var disp = Names_disp_lvar(names_, name_);
-
-  render_indirection_bp(dest_, disp, dest_size);
+  sprintf1(dest_, dest_size, "[bp:%d]", disp);
 end
 
 def append_label_id(label_, id, dest_size)
@@ -294,7 +288,7 @@ def _gen_expr_addr(fn_arg_names_, lvar_names_, expr_)
 
   if (Names_includes(lvar_names_, arg_))
     disp = Names_disp_lvar(lvar_names_, arg_);
-    render_indirection_bp(&s_src, disp, s_src_size);
+    sprintf1(&s_src, s_src_size, "[bp:%d]", disp);
     asm_lea("reg_a", &s_src);
   else
     panic(526); # _gen_expr_addr
@@ -889,8 +883,8 @@ def gen_builtin_write()
   var s_fn_arg1_size = 7; var [7]s_fn_arg1;
   var s_fn_arg2_size = 7; var [7]s_fn_arg2;
 
-  render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
-  render_indirection_bp(&s_fn_arg2, 3, s_fn_arg2_size);
+  sprintf1(&s_fn_arg1, s_fn_arg1_size, "[bp:%d]", 2);
+  sprintf1(&s_fn_arg2, s_fn_arg2_size, "[bp:%d]", 3);
 
   asm_label(s_write_);
   asm_fn_prologue();
@@ -910,7 +904,7 @@ end
 def gen_builtin_getchar()
   var s_fn_arg1_size = 7; var [7]s_fn_arg1;
 
-  render_indirection_bp(&s_fn_arg1, 2, s_fn_arg1_size);
+  sprintf1(&s_fn_arg1, s_fn_arg1_size, "[bp:%d]", 2);
 
   asm_label("getchar");
   asm_fn_prologue();
@@ -952,8 +946,8 @@ def gen_builtin_set_vram()
   var s_vram_addr_size = 7; var [7]s_vram_addr;
   var s_val_size = 7; var [7]s_val;
 
-  render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
-  render_indirection_bp(&s_val, 3, s_val_size);
+  sprintf1(&s_vram_addr, s_vram_addr_size, "[bp:%d]", 2);
+  sprintf1(&s_val, s_val_size, "[bp:%d]", 3);
 
   asm_label("set_vram");
   asm_fn_prologue();
@@ -967,7 +961,7 @@ end
 def gen_builtin_get_vram()
   var s_vram_addr_size = 7; var [7]s_vram_addr;
 
-  render_indirection_bp(&s_vram_addr, 2, s_vram_addr_size);
+  sprintf1(&s_vram_addr, s_vram_addr_size, "[bp:%d]", 2);
 
   asm_label("get_vram");
   asm_fn_prologue();
