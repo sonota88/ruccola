@@ -579,14 +579,13 @@ def _parse_expr_factor_int()
 end
 
 def _parse_expr_factor_ident()
-  var g_ = get_g_main();
   var t_;
   var funcall_;
   var funcall_list_;
   var i;
 
   if (char_at(Token_get_val(peek(1)), 0) == 40) # (
-    funcall_ = parse_funcall(g_);
+    funcall_ = parse_funcall();
 
     funcall_list_ = List_new();
     List_add_str(funcall_list_, "funcall");
@@ -751,7 +750,7 @@ def parse_set()
   );
 end
 
-def parse_funcall(g_)
+def parse_funcall()
   var t_;
   var fn_name_;
   var funcall_;
@@ -781,7 +780,7 @@ def parse_call(g_)
 
   List_add_str(stmt_, "call");
 
-  funcall_ = parse_funcall(g_);
+  funcall_ = parse_funcall();
   List_add_all(stmt_, funcall_);
 
   consume_sym_semicolon(); # ;
