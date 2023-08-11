@@ -772,7 +772,7 @@ def parse_funcall()
   return funcall_;
 end
 
-def parse_call(g_)
+def parse_call()
   var stmt_;
   var funcall_;
 
@@ -936,7 +936,7 @@ def parse_stmt(g_)
         char_at(Token_get_val(peek(1)), 0) == 40 # (
       )
     )
-      return parse_call(g_);
+      return parse_call();
     else
       return parse_set();
     end
