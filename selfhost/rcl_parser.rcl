@@ -788,7 +788,7 @@ def parse_call()
   return stmt_;
 end
 
-def parse_return(g_)
+def parse_return()
   var expr_;
   var stmt_;
 
@@ -921,7 +921,7 @@ def parse_stmt(g_)
   when (str_eq(val_, "_cmt"))
     return parse_vm_comment(g_);
   when (str_eq(val_, "return"))
-    return parse_return(g_);
+    return parse_return();
   when (str_eq(val_, "while"))
     return parse_while(g_);
   when (str_eq(val_, "break"))
