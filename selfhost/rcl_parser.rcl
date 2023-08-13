@@ -809,7 +809,8 @@ def parse_return()
   return stmt_;
 end
 
-def parse_while(g_)
+def parse_while()
+  var g_ = get_g_main();
   var expr_node_;
   var stmts_;
 
@@ -830,7 +831,7 @@ def parse_while(g_)
   );
 end
 
-def parse_break(g_)
+def parse_break()
   var stmt_;
 
   consume_kw("break");
@@ -923,9 +924,9 @@ def parse_stmt(g_)
   when (str_eq(val_, "return"))
     return parse_return();
   when (str_eq(val_, "while"))
-    return parse_while(g_);
+    return parse_while();
   when (str_eq(val_, "break"))
-    return parse_break(g_);
+    return parse_break();
   when (str_eq(val_, "case"))
     return parse_case(g_);
   else
