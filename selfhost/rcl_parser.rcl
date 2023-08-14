@@ -843,7 +843,8 @@ def parse_break()
   return stmt_;
 end
 
-def _parse_when_clause(g_)
+def _parse_when_clause()
+  var g_ = get_g_main();
   var when_clause_;
   var cond_expr_node_;
   var stmts_;
@@ -874,7 +875,7 @@ def _parse_when_clause(g_)
   return when_clause_;
 end
 
-def parse_case(g_)
+def parse_case()
   var stmt_;
   var when_clause_;
 
@@ -884,7 +885,7 @@ def parse_case(g_)
   List_add_str(stmt_, "case");
 
   while (__not(Token_val_eq(peek(0), "end")))
-    when_clause_ = _parse_when_clause(g_);
+    when_clause_ = _parse_when_clause();
     List_add_list(stmt_, when_clause_);
   end
 
@@ -928,7 +929,7 @@ def parse_stmt(g_)
   when (str_eq(val_, "break"))
     return parse_break();
   when (str_eq(val_, "case"))
-    return parse_case(g_);
+    return parse_case();
   else
     case
     when (
