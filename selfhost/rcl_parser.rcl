@@ -894,7 +894,7 @@ def parse_case()
   return stmt_;
 end
 
-def parse_vm_comment(g_)
+def parse_vm_comment()
   var t_;
   var stmt_;
 
@@ -921,7 +921,7 @@ def parse_stmt(g_)
 
   case
   when (str_eq(val_, "_cmt"))
-    return parse_vm_comment(g_);
+    return parse_vm_comment();
   when (str_eq(val_, "return"))
     return parse_return();
   when (str_eq(val_, "while"))
