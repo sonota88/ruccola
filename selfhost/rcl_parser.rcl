@@ -915,7 +915,7 @@ def parse_vm_comment()
   return stmt_;
 end
 
-def parse_stmt(g_)
+def parse_stmt()
   var t_ = peek(0);
   var val_ = Token_get_val(t_);
 
@@ -964,7 +964,7 @@ def parse_stmts(g_)
       break;
     end
 
-    stmt_ = parse_stmt(g_);
+    stmt_ = parse_stmt();
     List_add_list(stmts_, stmt_);
   end
 
@@ -1003,7 +1003,7 @@ def parse_func(g_)
     if (str_eq(Token_get_val(t_), "var"))
       stmt_ = parse_var();
     else
-      stmt_ = parse_stmt(g_);
+      stmt_ = parse_stmt();
     end
     List_add_list(stmts_, stmt_);
   end
