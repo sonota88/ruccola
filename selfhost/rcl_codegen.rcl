@@ -228,7 +228,7 @@ end
 # --------------------------------
 
 def to_fn_arg_addr(dest_, names_, name_, dest_size)
-  var disp = Names_disp_fn_args(names_, name_);
+  var disp = Names_disp_fn_arg(names_, name_);
   sprintf1(dest_, dest_size, "[bp:%d]", disp);
 end
 
