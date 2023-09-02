@@ -810,7 +810,6 @@ def parse_return()
 end
 
 def parse_while()
-  var g_ = get_g_main();
   var expr_node_;
   var stmts_;
 
@@ -820,7 +819,7 @@ def parse_while()
   expr_node_ = parse_expr();
   consume_sym_paren_r(); # )
 
-  stmts_ = parse_stmts(g_);
+  stmts_ = parse_stmts();
 
   consume_kw("end");
 
@@ -844,7 +843,6 @@ def parse_break()
 end
 
 def _parse_when_clause()
-  var g_ = get_g_main();
   var when_clause_;
   var cond_expr_node_;
   var stmts_;
@@ -866,7 +864,7 @@ def _parse_when_clause()
     panic(748); # _parse_when_clause
   end
 
-  stmts_ = parse_stmts(g_);
+  stmts_ = parse_stmts();
 
   when_clause_ = List_new();
   List_add(when_clause_, cond_expr_node_);
@@ -945,7 +943,7 @@ def parse_stmt()
   end
 end
 
-def parse_stmts(g_)
+def parse_stmts()
   var stmt_;
   var stmts_;
   var t_;
