@@ -969,7 +969,7 @@ def parse_stmts()
   return stmts_;
 end
 
-def parse_func(g_)
+def parse_func()
   var func_stmt_;
   var t_;
   var stmts_;
@@ -1038,7 +1038,7 @@ def parse_top_stmt(g_)
 
   case
   when (str_eq(Token_get_val(t_), "def"))
-    return parse_func(g_);
+    return parse_func();
   when (str_eq(Token_get_val(t_), "global"))
     return parse_global(g_);
   else
