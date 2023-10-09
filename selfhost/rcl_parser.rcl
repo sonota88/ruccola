@@ -1061,7 +1061,7 @@ def parse_top_stmts()
   return top_stmts_;
 end
 
-def parse(g_)
+def parse()
   return parse_top_stmts();
 end
 
@@ -1150,7 +1150,7 @@ def _main(g_)
 
   read_tokens(g_);
 
-  var ast_ = parse(g_);
+  var ast_ = parse();
 
   var fn_init_strings_;
   if (0 < List_size(StrLitList_get_self()))
