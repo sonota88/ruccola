@@ -227,11 +227,6 @@ end
 
 # --------------------------------
 
-def to_fn_arg_addr(dest_, names_, name_, dest_size)
-  var disp = Names_disp_fn_arg(names_, name_);
-  sprintf1(dest_, dest_size, "[bp:%d]", disp);
-end
-
 def to_lvar_addr(dest_, names_, name_, dest_size)
   var disp = Names_disp_lvar(names_, name_);
   sprintf1(dest_, dest_size, "[bp:%d]", disp);
@@ -460,6 +455,7 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
   var str_;
   var list_;
   var gvar_names_;
+  var disp;
 
   case
   when (Node_kind_eq(expr_, NODE_KIND__INT()))
@@ -478,7 +474,9 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
       asm_cp("0", s_reg_a_);
 
     when (Names_includes(fn_arg_names_, str_))
-      to_fn_arg_addr(&cp_src, fn_arg_names_, str_, cp_src_size);
+      disp = Names_disp_fn_arg(fn_arg_names_, str_);
+      sprintf1(&cp_src, cp_src_size, "[bp:%d]", disp);
+
       asm_cp(&cp_src, s_reg_a_);
 
     when (Names_includes(lvar_names_, str_))
