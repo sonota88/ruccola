@@ -227,11 +227,6 @@ end
 
 # --------------------------------
 
-def to_lvar_addr(dest_, names_, name_, dest_size)
-  var disp = Names_disp_lvar(names_, name_);
-  sprintf1(dest_, dest_size, "[bp:%d]", disp);
-end
-
 def append_label_id(label_, id, dest_size)
   var [8]id_str;
 
@@ -480,7 +475,9 @@ def gen_expr(g_, fn_arg_names_, lvar_names_, expr_)
       asm_cp(&cp_src, s_reg_a_);
 
     when (Names_includes(lvar_names_, str_))
-      to_lvar_addr(&cp_src, lvar_names_, str_, cp_src_size);
+      disp = Names_disp_lvar(lvar_names_, str_);
+      sprintf1(&cp_src, cp_src_size, "[bp:%d]", disp);
+
       asm_cp(&cp_src, s_reg_a_);
 
     when (is_gvar(g_, str_))
@@ -565,6 +562,7 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
   var list_;
   var s_reg_a_ind_ = "[reg_a]";
   var gvar_names_;
+  var disp;
 
   dest_node_ = List_get(stmt_, 1);
   expr_node_ = List_get(stmt_, 2);
@@ -577,7 +575,9 @@ def gen_set(g_, fn_arg_names_, lvar_names_, stmt_)
 
     case
     when (Names_includes(lvar_names_, dest_str_))
-      to_lvar_addr(&dest, lvar_names_, dest_str_, dest_size);
+      disp = Names_disp_lvar(lvar_names_, dest_str_);
+      sprintf1(&dest, dest_size, "[bp:%d]", disp);
+
       asm_cp(s_reg_a_, &dest);
     when (is_gvar(g_, dest_str_))
       gvar_names_ = get_gvar_names(g_);
