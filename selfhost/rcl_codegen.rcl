@@ -324,16 +324,13 @@ def _gen_expr_eq_neq(g_, is_eq)
   incr_label_id(g_);
   label_id = get_label_id(g_);
 
-  str_cp_with_check(&label_end, "end_", label_end_size);
   if (is_eq)
-    append_str_with_check(&label_end, "eq", label_end_size);
+    sprintf1(&label_end, label_end_size, "end_eq_%d", label_id);
   else
-    append_str_with_check(&label_end, "neq", label_end_size);
+    sprintf1(&label_end, label_end_size, "end_neq_%d", label_id);
   end
-  append_label_id(&label_end, label_id, label_end_size);
 
-  str_cp_with_check(&label_then, "then", label_then_size);
-  append_label_id(&label_then, label_id, label_then_size);
+  sprintf1(&label_then, label_then_size, "then_%d", label_id);
 
   asm_pop("reg_b");
   asm_pop(s_reg_a_);
