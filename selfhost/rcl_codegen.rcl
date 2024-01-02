@@ -650,8 +650,7 @@ def gen_break(g_)
   var label_id = WhileStack_top(g_);
 
   var label_end_size = 15; var [15]label_end; # end_while_xxxx
-  str_cp_with_check(&label_end, "end_while", label_end_size);
-  append_label_id(&label_end, label_id, label_end_size);
+  sprintf1(&label_end, label_end_size, "end_while_%d", label_id);
 
   asm_jump(&label_end);
 
