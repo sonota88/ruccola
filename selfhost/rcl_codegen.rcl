@@ -677,11 +677,8 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
   incr_label_id(g_);
   label_id = get_label_id(g_);
 
-  str_cp_with_check(&label_end, "end_case", label_size);
-  append_label_id(&label_end, label_id, label_size);
-
-  str_cp_with_check(&label_end_when_head, "end_when", label_size);
-  append_label_id(&label_end_when_head, label_id, label_size);
+  sprintf1(&label_end, label_size, "end_case_%d", label_id);
+  sprintf1(&label_end_when_head, label_size, "end_when_%d", label_id);
 
   when_clauses_ = List_rest(stmt_, 1);
 
@@ -697,8 +694,8 @@ def gen_case(g_, fn_arg_names_, lvar_names_, stmt_)
     asm_compare();
 
     # {label_end_when_head}_{when_index}
-    str_cp(&label_end_when, &label_end_when_head);
-    append_label_id(&label_end_when, when_index, label_size);
+    sprintf2(&label_end_when, label_size, "%s_%d", &label_end_when_head, when_index);
+
     asm_jump_eq(&label_end_when);
 
     gen_stmts(g_, fn_arg_names_, lvar_names_, stmts_);
