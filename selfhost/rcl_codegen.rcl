@@ -227,15 +227,6 @@ end
 
 # --------------------------------
 
-def append_label_id(label_, id, dest_size)
-  var [8]id_str;
-
-  append_char_with_check(label_, 95, dest_size); # _
-
-  unparse_int(&id_str, id);
-  append_str_with_check(label_, &id_str, dest_size);
-end
-
 def get_gvar_names(g_)
   return *(g_ + GO_GVAR_NAMES());
 end
