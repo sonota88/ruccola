@@ -44,11 +44,11 @@ VERBOSE=1 SKIP=1000 ./rclrun ../examples/game_of_life.rcl
 
   # 上記 (1), (2) の出力（実行ファイル）が一致することを確認:
 ./test_selfhost.sh
-  # （作者の環境だと 10.1 分程度）
+  # （作者の環境だと 9.2 分程度）
 
   # Crystal版のVMで確認:
 FASTVM=1 ./test_selfhost.sh
-  # （作者の環境だと 26.0 秒程度）
+  # （作者の環境だと 24.9 秒程度）
 ```
 
 
