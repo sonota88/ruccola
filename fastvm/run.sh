@@ -15,6 +15,7 @@ docker_build() {
   docker build \
     --build-arg USER=$USER \
     --build-arg GROUP=$(id -gn) \
+    --progress plain \
     -t $IMAGE_FULL .
 }
 
